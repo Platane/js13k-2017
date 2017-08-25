@@ -1,0 +1,17 @@
+[ignore]
+.*/node_modules/.*
+.*/dist/.*
+.*/storybook-static/.*
+.*/asset/.*
+.*/webpack.config.babel.js
+.*/webpack.config.js
+.*/.storybook/.*
+
+[include]
+
+[libs]
+flow-typed
+
+[options]
+all=true
+emoji=false

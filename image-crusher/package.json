@@ -1,0 +1,38 @@
+{
+    "name": "13k2017-image-crusher",
+    "version": "1.0.0",
+    "dependencies": {},
+    "devDependencies": {
+        "babel-cli": "6.26.0",
+        "babel-loader": "7.1.2",
+        "babel-plugin-add-module-exports": "0.2.1",
+        "babel-plugin-css-modules-transform": "1.2.7",
+        "babel-plugin-transform-assets-import-to-string": "1.0.1",
+        "babel-plugin-transform-async-to-generator": "6.24.1",
+        "babel-plugin-transform-class-properties": "6.24.1",
+        "babel-plugin-transform-object-rest-spread": "6.26.0",
+        "babel-plugin-transform-runtime": "6.23.0",
+        "babel-plugin-transform-string-literal-replace": "1.0.2",
+        "babel-preset-flow": "6.23.0",
+        "babel-runtime": "6.26.0",
+        "css-loader": "0.28.5",
+        "extract-text-webpack-plugin": "3.0.0",
+        "file-loader": "0.11.2",
+        "flow-bin": "0.53.1",
+        "flow-typed": "2.1.5",
+        "prettier": "1.5.3",
+        "raw-loader": "0.5.1",
+        "style-loader": "0.18.2",
+        "webpack": "3.5.5",
+        "webpack-dev-server": "2.7.1"
+    },
+    "scripts": {
+        "start": "webpack-dev-server --inline --devtool source-map -d",
+        "prettier:test": "prettier --single-quote --trailing-comma es5 --no-semi --tab-width 4 -l \"{scripts,src,type}/**/*.{js,css}\"",
+        "prettier:write": "prettier --single-quote --trailing-comma es5 --no-semi --tab-width 4 --write \"{scripts,src,type}/**/*.{js,css}\"",
+        "flow-typed": "flow-typed install",
+        "test:unit": "env NODE_ENV=test jest --verbose",
+        "test": "npm run test:unit && npm run prettier:test",
+        "build": "babel "
+    }
+}
