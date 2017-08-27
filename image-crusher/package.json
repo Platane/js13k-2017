@@ -1,7 +1,9 @@
 {
     "name": "13k2017-image-crusher",
     "version": "1.0.0",
-    "dependencies": {},
+    "dependencies": {
+        "pngjs": " 3.3.0"
+    },
     "devDependencies": {
         "babel-cli": "6.26.0",
         "babel-loader": "7.1.2",
@@ -10,6 +12,7 @@
         "babel-plugin-transform-assets-import-to-string": "1.0.1",
         "babel-plugin-transform-async-to-generator": "6.24.1",
         "babel-plugin-transform-class-properties": "6.24.1",
+        "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-plugin-transform-runtime": "6.23.0",
         "babel-plugin-transform-string-literal-replace": "1.0.2",
@@ -27,12 +30,10 @@
         "webpack-dev-server": "2.7.1"
     },
     "scripts": {
+        "benchmark": "babel --out-dir ./dist-cli --quiet ./src && node ./dist-cli/cli/index.js ./src/asset/sample/monalisa-64x64.png 200",
         "start": "webpack-dev-server --inline --devtool source-map -d",
-        "prettier:test": "prettier --single-quote --trailing-comma es5 --no-semi --tab-width 4 -l \"{scripts,src,type}/**/*.{js,css}\"",
-        "prettier:write": "prettier --single-quote --trailing-comma es5 --no-semi --tab-width 4 --write \"{scripts,src,type}/**/*.{js,css}\"",
         "flow-typed": "flow-typed install",
-        "test:unit": "env NODE_ENV=test jest --verbose",
-        "test": "npm run test:unit && npm run prettier:test",
+        "test": "env NODE_ENV=test jest --verbose",
         "build": "babel "
     }
 }

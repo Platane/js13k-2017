@@ -11,8 +11,10 @@ export const step = (
     let bestAdn = current_adn
     let bestFitness = current_fitness || getFitness(current_adn)
 
+    let seed = current_adn
+
     for (let i = PARAM.MUTATED_BY_STEP; i--; ) {
-        const mutated = mutate(current_adn)
+        const mutated = mutate(seed)
 
         const fitness = getFitness(mutated)
 
@@ -20,6 +22,8 @@ export const step = (
             bestAdn = mutated
             bestFitness = fitness
         }
+
+        seed = mutated
     }
 
     return bestAdn

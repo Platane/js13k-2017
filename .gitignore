@@ -4,6 +4,7 @@ yarn-error.log*
 Thumbs.db
 .tmp
 dist
+dist-cli
 lib
 gh-pages
 flow-typed

@@ -7,7 +7,29 @@ import { colorDistance } from './util/color'
 
 import { mutate, initAdn } from './genetic/mutate'
 import { getRImage } from './genetic/ADNtoRImage'
+import { packADN } from './genetic/packADN'
 import { step } from './genetic'
+
+import * as PARAM from './param'
+
+{
+    const L = 15
+
+    const canvas = document.createElement('canvas')
+    canvas.width = PARAM.COLOR_PALETTE.length * L
+    canvas.height = L
+
+    const ctx = canvas.getContext('2d')
+
+    PARAM.COLOR_PALETTE.forEach((c, i) => {
+        ctx.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`
+        ctx.beginPath()
+        ctx.rect(i * L, 0, L, L)
+        ctx.fill()
+    })
+
+    document.getElementById('app').appendChild(canvas)
+}
 
 const input: HTMLElement = document.getElementById('file')
 const next_button: HTMLElement = document.getElementById('next')
@@ -24,11 +46,6 @@ input.addEventListener('change', async e => {
 
     document.getElementById('app').appendChild(rImageToCanvas(rImage))
 
-    // {
-    //     const rimg = getRImage(initAdn())
-    //     document.getElementById('app').appendChild(rImageToCanvas(rimg))
-    //     startGen(rimg)
-    // }
     startGen(rImage)
 })
 
@@ -64,4 +81,11 @@ const startGen = target => {
     }
 
     loop()
+}
+
+{
+    const rimg = getRImage(initAdn())
+    document.getElementById('app').appendChild(rImageToCanvas(rimg))
+    startGen(rimg)
+    console.log(packADN(initAdn()))
 }

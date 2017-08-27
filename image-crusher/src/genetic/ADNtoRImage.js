@@ -1,5 +1,4 @@
 import * as PARAM from '../param'
-import { colorDistance } from '../util/color'
 import { drawCircle, createBlank } from '../util/rImage/draw'
 
 import type { ADN, Dot } from './type'
@@ -9,7 +8,7 @@ export const ADNtoRImage = (adn: ADN): RImage => {
     const rImage = createBlank()
 
     adn.forEach(({ x, y, r, color, opacity }) =>
-        drawCircle(rImage, x, y, r, color)
+        drawCircle(rImage, x, y, r, color, opacity)
     )
 
     return rImage

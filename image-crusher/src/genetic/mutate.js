@@ -20,16 +20,19 @@ const mutateValueInRange = <T>(
 }
 
 const mutateDot = (dot: Dot): Dot => {
-    switch (Math.floor(Math.random() * 4)) {
+    switch (Math.floor(Math.random() * 7)) {
         // mutate position
+        case 6:
+        case 5:
+        case 4:
         case 0: {
-            const dx = Math.floor(Math.random() * PARAM.SIZE / 20)
-            const dy = Math.floor(Math.random() * PARAM.SIZE / 20)
+            const dx = Math.floor(Math.random() * PARAM.POSITION_DELTA)
+            const dy = Math.floor(Math.random() * PARAM.POSITION_DELTA)
 
             return {
                 ...dot,
-                x: Math.min(PARAM.SIZE, Math.max(0, dot.x + dx)),
-                y: Math.min(PARAM.SIZE, Math.max(0, dot.y + dy)),
+                x: Math.min(PARAM.SIZE - 1, Math.max(0, dot.x + dx)),
+                y: Math.min(PARAM.SIZE - 1, Math.max(0, dot.y + dy)),
             }
         }
 
@@ -56,11 +59,14 @@ const mutateDot = (dot: Dot): Dot => {
             }
 
         // mutate color
+        default:
         case 3: {
             for (let k = 20; k--; ) {
                 const color = pickInRange(PARAM.COLOR_PALETTE)
 
-                const d = colorDistance(dot.color, color)
+                const d =
+                    colorDistance(dot.color, color) /
+                    (255 * 255 + 255 * 255 + 255 * 255)
 
                 if (d > 0 && d < 0.2) return { ...dot, color }
             }
