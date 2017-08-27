@@ -3,15 +3,15 @@ import type { RImage, Color } from '../type'
 export type Dot = {
     x: number,
     y: number,
+
+    // index in the available values array
     r: number,
-    color: Color,
+
+    // index in the available values param array
+    color: number,
+
+    // index in the available values param array
     opacity: number,
 }
 
 export type ADN = Dot[]
-
-export type Entity = {
-    rImage: RImage,
-
-    adn: ADN,
-}

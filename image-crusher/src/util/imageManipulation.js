@@ -11,14 +11,14 @@ export const loadFileAsDataUrl = file =>
 
 const raf = () => new Promise(resolve => requestAnimationFrame(resolve))
 
-export const dataUrlToImage = async (dataUrl: string) => {
-    const img = new Image()
-    img.src = dataUrl
+export const dataUrlToImage = (dataUrl: string) =>
+    new Promise((resolve, reject) => {
+        const img = new Image()
 
-    await raf()
+        img.addEventListener('load', () => resolve(img))
 
-    return img
-}
+        img.src = dataUrl
+    })
 
 export const loadFileAsImage = file =>
     loadFileAsDataUrl(file).then(dataUrlToImage)

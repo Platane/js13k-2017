@@ -5,12 +5,9 @@ export const COLOR_PALETTE = []
 export const POSITION_DELTA = SIZE / 0.8
 
 // prettier-ignore
-for(let r=0;r<255;r+= 64)
-for(let v=0;v<255;v+= 64)
-for(let b=0;b<255;b+= 64)
+for(let r=0;r<255;r+= 16)
+for(let v=0;v<255;v+= 16)
+for(let b=0;b<255;b+= 16)
     COLOR_PALETTE.push([r,v,b])
 
-export const N_CIRCLE = 16
-
-// GENETIC
-export const MUTATED_BY_STEP = 10
+export const N_CIRCLE = 32

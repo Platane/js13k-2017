@@ -1,6 +1,14 @@
-import { loadFileAsImage, normalizeImage } from './util/imageManipulation'
+import {
+    loadFileAsImage,
+    normalizeImage,
+    dataUrlToImage,
+} from './util/imageManipulation'
 
-import { canvasToRImage, rImageToCanvas } from './util/rImage/toCanvas'
+import {
+    canvasToRImage,
+    rImageToCanvas,
+    imageToRImage,
+} from './util/rImage/toCanvas'
 import { drawCircle } from './util/rImage/draw'
 import { diff } from './util/rImage/diff'
 import { colorDistance } from './util/color'
@@ -12,7 +20,7 @@ import { step } from './genetic'
 
 import * as PARAM from './param'
 
-{
+const displayColorPalette = () => {
     const L = 15
 
     const canvas = document.createElement('canvas')
@@ -31,61 +39,43 @@ import * as PARAM from './param'
     document.getElementById('app').appendChild(canvas)
 }
 
-const input: HTMLElement = document.getElementById('file')
-const next_button: HTMLElement = document.getElementById('next')
+const displaySpecimen = adn =>
+    document.getElementById('app').appendChild(rImageToCanvas(getRImage(adn)))
 
-input.addEventListener('change', async e => {
-    // read file as image
-    const srcImg = await loadFileAsImage(e.target.files[0])
+const IMAGE_PATH = require('./asset/sample/monalisa-64x64.png')
+const run = async () => {
+    const target = imageToRImage(await dataUrlToImage(IMAGE_PATH))
 
-    // normalize
-    const img = normalizeImage(srcImg)
+    const getFitness = adn => diff(colorDistance, target, getRImage(adn))
 
-    // extract dataImage
-    const rImage = canvasToRImage(img)
-
-    document.getElementById('app').appendChild(rImageToCanvas(rImage))
-
-    startGen(rImage)
-})
-
-const startGen = target => {
     let best = initAdn()
+    let bestFitness = getFitness(best)
 
-    const s = () =>
-        (best = step(
-            mutate,
-            adn => diff(colorDistance, target, getRImage(adn)),
-            best
-        ))
+    let generation = 0
+    let improvements = 0
 
-    const attachBest = () =>
-        document
-            .getElementById('app')
-            .appendChild(rImageToCanvas(getRImage(best)))
+    const step = () => {
+        generation++
 
-    attachBest()
+        const mutated = mutate(best)
+        const mutated_fitness = getFitness(mutated)
 
-    next_button.addEventListener('click', () => {
-        for (let i = 100; i--; ) s()
-
-        attachBest()
-    })
+        if (mutated_fitness < bestFitness) {
+            bestFitness = mutated_fitness
+            best = mutated
+        }
+    }
 
     const loop = () => {
-        for (let i = 40; i--; ) s()
+        for (let i = 300; i--; ) step()
 
-        attachBest()
+        displaySpecimen(best)
 
         requestAnimationFrame(loop)
     }
 
+    displaySpecimen(best)
     loop()
 }
 
-{
-    const rimg = getRImage(initAdn())
-    document.getElementById('app').appendChild(rImageToCanvas(rimg))
-    startGen(rimg)
-    console.log(packADN(initAdn()))
-}
+run()

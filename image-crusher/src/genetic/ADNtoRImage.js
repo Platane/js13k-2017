@@ -8,7 +8,14 @@ export const ADNtoRImage = (adn: ADN): RImage => {
     const rImage = createBlank()
 
     adn.forEach(({ x, y, r, color, opacity }) =>
-        drawCircle(rImage, x, y, r, color, opacity)
+        drawCircle(
+            rImage,
+            x,
+            y,
+            PARAM.RADIUS_AVAILABLE[r],
+            PARAM.COLOR_PALETTE[color],
+            PARAM.OPACITY_AVAILABLE[opacity]
+        )
     )
 
     return rImage

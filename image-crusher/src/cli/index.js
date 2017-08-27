@@ -12,25 +12,41 @@ import { step } from '../genetic'
 import * as PARAM from '../param'
 
 const startGen = (target, n) => {
-    let best = initAdn()
-
-    const fitness = adn => diff(colorDistance, target, getRImage(adn))
-
     console.log('-- starting')
+
+    const getFitness = adn => diff(colorDistance, target, getRImage(adn))
+
+    let best = initAdn()
+    let bestFitness = getFitness(best)
+
+    let generation = 0
+    let improvements = 0
+
+    const step = () => {
+        generation++
+
+        const mutated = mutate(best)
+        const mutated_fitness = getFitness(mutated)
+
+        if (mutated_fitness < bestFitness) {
+            bestFitness = mutated_fitness
+            best = mutated
+        }
+    }
 
     const start = Date.now()
 
     for (let i = 0; i <= n; i++) {
-        if (i % 100 === 0) {
+        if (i % 500 === 0) {
             console.log(
-                `generation ${i}, error: ${fitness(best) /
+                `generation ${i}, error: ${bestFitness /
                     (255 * 255 * 3 * PARAM.SIZE * PARAM.SIZE)}`
             )
 
             writeRImage(getRImage(best), `dist-cli/out-${i}.png`)
         }
 
-        best = step(mutate, fitness, best)
+        step()
     }
 
     console.log(`-- ended in ${Date.now() - start} ms`)

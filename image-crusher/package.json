@@ -30,7 +30,7 @@
         "webpack-dev-server": "2.7.1"
     },
     "scripts": {
-        "benchmark": "babel --out-dir ./dist-cli --quiet ./src && node ./dist-cli/cli/index.js ./src/asset/sample/monalisa-64x64.png 200",
+        "benchmark": "babel --out-dir ./dist-cli --quiet ./src && node ./dist-cli/cli/index.js ./src/asset/sample/monalisa-64x64.png 20000",
         "start": "webpack-dev-server --inline --devtool source-map -d",
         "flow-typed": "flow-typed install",
         "test": "env NODE_ENV=test jest --verbose",

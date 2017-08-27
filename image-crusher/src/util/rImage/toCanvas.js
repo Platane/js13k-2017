@@ -14,6 +14,16 @@ export const canvasToRImage = canvas => {
     return arr
 }
 
+export const imageToRImage = image => {
+    const canvas = document.createElement('canvas')
+    canvas.width = canvas.height = SIZE
+
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(image, 0, 0, SIZE, SIZE)
+
+    return canvasToRImage(canvas)
+}
+
 export const rImageToCanvas = (a: RImage, canvas) => {
     if (!canvas) canvas = document.createElement('canvas')
 
