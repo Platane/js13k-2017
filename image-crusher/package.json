@@ -6,6 +6,7 @@
     },
     "devDependencies": {
         "babel-cli": "6.26.0",
+        "jest": "20.0.4",
         "babel-loader": "7.1.2",
         "babel-plugin-add-module-exports": "0.2.1",
         "babel-plugin-css-modules-transform": "1.2.7",

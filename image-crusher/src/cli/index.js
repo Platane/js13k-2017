@@ -6,10 +6,14 @@ import { colorDistance } from '../util/color'
 
 import { mutate, initAdn } from '../genetic/mutate'
 import { getRImage } from '../genetic/ADNtoRImage'
-import { packADN } from '../genetic/packADN'
+import { packADN } from '../genetic/pack'
 import { step } from '../genetic'
 
+const fs = require('fs')
+
 import * as PARAM from '../param'
+
+const N_BATCH = 1000
 
 const startGen = (target, n) => {
     console.log('-- starting')
@@ -38,14 +42,22 @@ const startGen = (target, n) => {
     const start = Date.now()
 
     for (let i = 0; i <= n; i++) {
-        if (i % 500 === 0) {
+        if (i % N_BATCH === 0) {
             console.log(
                 `generation ${i}, error: ${bestFitness /
                     (255 * 255 * 3 * PARAM.SIZE * PARAM.SIZE)}`
             )
 
-            if ( lastWrited != best )
-                writeRImage(getRImage(lastWrited=best), `dist-cli/out-${i/500}.png`)
+            if (lastWrited != best) {
+                writeRImage(
+                    getRImage((lastWrited = best)),
+                    `dist-cli/out-${i / N_BATCH}.png`
+                )
+                fs.writeFileSync(
+                    `dist-cli/out-${i / N_BATCH}.adn`,
+                    packADN(best)
+                )
+            }
         }
 
         step()
