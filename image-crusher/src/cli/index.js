@@ -16,6 +16,7 @@ const startGen = (target, n) => {
 
     const getFitness = adn => diff(colorDistance, target, getRImage(adn))
 
+    let lastWrited = null
     let best = initAdn()
     let bestFitness = getFitness(best)
 
@@ -43,7 +44,8 @@ const startGen = (target, n) => {
                     (255 * 255 * 3 * PARAM.SIZE * PARAM.SIZE)}`
             )
 
-            writeRImage(getRImage(best), `dist-cli/out-${i}.png`)
+            if ( lastWrited != best )
+                writeRImage(getRImage(lastWrited=best), `dist-cli/out-${i/500}.png`)
         }
 
         step()
