@@ -98,3 +98,11 @@ const randomDot = (): Dot => ({
 
 export const initAdn = (): ADN =>
     Array.from({ length: PARAM.N_CIRCLE }, randomDot)
+
+export const addGene = (ancestor: ADN): ADN | null => {
+    if (ancestor.length === PARAM.N_CIRCLE) return null
+
+    const n = PARAM.GENE_BATCH
+
+    return [...ancestor, ...Array.from({ length: n }, randomDot)]
+}

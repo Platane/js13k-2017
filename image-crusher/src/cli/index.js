@@ -55,7 +55,9 @@ const startGen = (target, n) => {
                 )
                 fs.writeFileSync(
                     `dist-cli/out-${i / N_BATCH}.adn`,
-                    packADN(best)
+                    packADN(best).toString()
+                    // Buffer.from(packADN(best)).toString()
+                    // { encoding: 'ascii' }
                 )
             }
         }

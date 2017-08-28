@@ -65,7 +65,7 @@ module.exports = {
             },
 
             {
-                test: /\.(eot|ttf|woff|otf|woff2|svg|gif|jpg|png)$/,
+                test: /\.(eot|ttf|woff|otf|woff2|svg|gif|jpg|png|adn)$/,
                 use: [
                     {
                         loader: 'file-loader',

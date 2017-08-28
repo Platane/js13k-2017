@@ -13,10 +13,9 @@ import { drawCircle } from './util/rImage/draw'
 import { diff } from './util/rImage/diff'
 import { colorDistance } from './util/color'
 
-import { mutate, initAdn } from './genetic/mutate'
+import { mutate, initAdn, addGene } from './genetic/mutate'
 import { getRImage } from './genetic/ADNtoRImage'
-import { packADN } from './genetic/packADN'
-import { step } from './genetic'
+import { run as runGenetic } from './genetic/run'
 
 import * as PARAM from './param'
 
@@ -48,34 +47,9 @@ const run = async () => {
 
     const getFitness = adn => diff(colorDistance, target, getRImage(adn))
 
-    let best = initAdn()
-    let bestFitness = getFitness(best)
+    const log = tree => console.log(tree)
 
-    let generation = 0
-    let improvements = 0
-
-    const step = () => {
-        generation++
-
-        const mutated = mutate(best)
-        const mutated_fitness = getFitness(mutated)
-
-        if (mutated_fitness < bestFitness) {
-            bestFitness = mutated_fitness
-            best = mutated
-        }
-    }
-
-    const loop = () => {
-        for (let i = 300; i--; ) step()
-
-        displaySpecimen(best)
-
-        requestAnimationFrame(loop)
-    }
-
-    displaySpecimen(best)
-    loop()
+    displaySpecimen(await runGenetic(mutate, getFitness, addGene, log))
 }
 
 run()

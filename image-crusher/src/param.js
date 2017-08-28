@@ -11,3 +11,8 @@ for(let b=0;b<255;b+= 16)
     COLOR_PALETTE.push([r,v,b])
 
 export const N_CIRCLE = 32
+
+// genetic param
+export const CONVERGED_WHEN_UNCHANGED_SINCE = 200
+export const N_BATCH = 2000
+export const GENE_BATCH = 8
