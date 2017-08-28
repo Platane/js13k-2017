@@ -1,0 +1,17 @@
+.container {
+    width: 64px;
+    height: 64px;
+    background-color: orange;
+    animation: appear 260ms ease;
+}
+
+@keyframes appear {
+    0% {
+        transform: translate3d(0, -100px, 0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}

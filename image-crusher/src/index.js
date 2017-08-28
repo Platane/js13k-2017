@@ -17,6 +17,10 @@ import { mutate, initAdn, addGene } from './genetic/mutate'
 import { getRImage } from './genetic/ADNtoRImage'
 import { run as runGenetic } from './genetic/run'
 
+import { AncestorTree } from './component/AncestorTree'
+import { h, render } from 'preact'
+require('preact/devtools')
+
 import * as PARAM from './param'
 
 const displayColorPalette = () => {
@@ -47,9 +51,18 @@ const run = async () => {
 
     const getFitness = adn => diff(colorDistance, target, getRImage(adn))
 
-    const log = tree => console.log(tree)
+    const log = tree => {
+        console.log(tree)
+        render(
+            <AncestorTree ancestorTree={tree} />,
+            document.body,
+            document.body.children[0]
+        )
+    }
 
-    displaySpecimen(await runGenetic(mutate, getFitness, addGene, log))
+    const res = await runGenetic(mutate, getFitness, addGene, log)
+
+    // displaySpecimen(res)
 }
 
 run()

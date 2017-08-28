@@ -5,14 +5,15 @@ export const COLOR_PALETTE = []
 export const POSITION_DELTA = SIZE / 0.8
 
 // prettier-ignore
-for(let r=0;r<255;r+= 16)
-for(let v=0;v<255;v+= 16)
-for(let b=0;b<255;b+= 16)
+for(let r=0;r<255;r+= 32)
+for(let v=0;v<255;v+= 32)
+for(let b=0;b<255;b+= 32)
     COLOR_PALETTE.push([r,v,b])
 
 export const N_CIRCLE = 32
 
 // genetic param
-export const CONVERGED_WHEN_UNCHANGED_SINCE = 200
-export const N_BATCH = 2000
+export const CONVERGED_WHEN_UNCHANGED_SINCE = 1201
+export const N_FORK = 400
+export const N_BATCH = 100
 export const GENE_BATCH = 8

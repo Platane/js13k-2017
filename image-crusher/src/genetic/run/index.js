@@ -35,6 +35,13 @@ const getNextFork = (tree: AncestorTree): AncestorTree => {
         path.push(0)
     }
 
+    let u = tree
+    while (u) {
+        if (Math.random() > 0.5) return u
+
+        u = u.children[Math.floor(Math.random() * u.children.length)]
+    }
+
     return end
 }
 
@@ -52,7 +59,7 @@ export const run = async (
 
     const _log = () => log(ancestorTree)
 
-    for (let k = 10; k--; ) {
+    for (let k = PARAM.N_FORK; k--; ) {
         const nextFork = getNextFork(ancestorTree)
 
         const adn = addGene(nextFork.adn)
