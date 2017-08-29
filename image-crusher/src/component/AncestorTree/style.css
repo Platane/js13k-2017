@@ -1,6 +1,6 @@
 .container {
     position: relative;
-    border: solid 1px #333;
+    background-color: #f3f3f3;
 }
 .node {
     position: absolute;

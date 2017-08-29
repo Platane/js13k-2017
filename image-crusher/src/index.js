@@ -43,7 +43,7 @@ const displayColorPalette = () => {
 }
 
 const displaySpecimen = adn =>
-    document.getElementById('app').appendChild(rImageToCanvas(getRImage(adn)))
+    document.body.appendChild(rImageToCanvas(getRImage(adn)))
 
 const IMAGE_PATH = require('./asset/sample/monalisa-64x64.png')
 const run = async () => {
@@ -51,14 +51,12 @@ const run = async () => {
 
     const getFitness = adn => diff(colorDistance, target, getRImage(adn))
 
-    const log = tree => {
-        console.log(tree)
+    const log = tree =>
         render(
             <AncestorTree ancestorTree={tree} />,
             document.body,
             document.body.children[0]
         )
-    }
 
     const res = await runGenetic(mutate, getFitness, addGene, log)
 

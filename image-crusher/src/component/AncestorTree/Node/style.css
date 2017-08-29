@@ -1,8 +1,8 @@
 .container {
     width: 64px;
     height: 64px;
-    background-color: orange;
     animation: appear 260ms ease;
+    box-shadow: 0 0 0 1px #ccc;
 }
 
 @keyframes appear {

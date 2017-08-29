@@ -64,7 +64,7 @@ export const run = async (
 
         const adn = addGene(nextFork.adn)
 
-        if (!adn) break
+        if (!adn) continue
 
         const node = { adn, fitness: getFitness(adn), children: [] }
 
