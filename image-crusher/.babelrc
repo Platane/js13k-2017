@@ -5,5 +5,37 @@
         "transform-class-properties",
         "transform-es2015-modules-commonjs",
         "transform-object-rest-spread"
-    ]
+    ],
+    "env": {
+        "production": {
+            "presets": [
+                [
+                    "env",
+                    {
+                        "targets": {
+                            "browsers": ["last 2 versions", "safari >= 7"]
+                        },
+                        "loose": true,
+                        "module": false
+                    }
+                ]
+            ],
+            "plugins": [
+                [
+                    "transform-runtime",
+                    {
+                        "helpers": false,
+                        "polyfill": false,
+                        "regenerator": true,
+                        "moduleName": "babel-runtime"
+                    }
+                ],
+                ["transform-react-jsx", { "pragma": "h" }],
+                "transform-async-to-generator",
+                "transform-class-properties",
+                "transform-es2015-modules-commonjs",
+                "transform-object-rest-spread"
+            ]
+        }
+    }
 }

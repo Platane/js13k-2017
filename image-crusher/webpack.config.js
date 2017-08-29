@@ -54,6 +54,7 @@ module.exports = {
                             loader: 'css-loader',
                             options: {
                                 modules: true,
+                                minimize: production,
                                 importLoaders: true,
                                 localIdentName: production
                                     ? '[hash:8]'
