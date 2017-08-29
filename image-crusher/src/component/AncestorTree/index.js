@@ -2,6 +2,7 @@ import { h, Component } from 'preact'
 import { computePosition } from './util/index'
 import { SIZE } from '../../param'
 import { Node } from './Node'
+import { Arcs } from './Arcs'
 
 import style from './style.css'
 
@@ -20,7 +21,7 @@ const computeId = (tree, map = new Map(), id = '0') => {
     return map
 }
 
-const Mx = 10
+const Mx = 30
 const My = 40
 
 const transform = ({ x, y }) =>
@@ -44,15 +45,31 @@ export const AncestorTree = ({ ancestorTree }) => {
         { x: 0, y: 0 }
     )
 
+    const width = Mx + (max.x + 1) * (SIZE + Mx)
+    const height = My + (max.y + 1) * (SIZE + My)
+
     return (
         <div
             className={style.container}
             style={{
-                width: Mx + (max.x + 1) * (SIZE + Mx),
-                height: My + (max.y + 1) * (SIZE + My),
+                width,
+                height,
             }}
         >
-            {nodes.map(tree =>
+            <Arcs
+                arcs={links.map(([a, b]) => ({
+                    id: ids.get(a) + '->' + ids.get(a),
+                    a: pos.get(a),
+                    b: pos.get(b),
+                }))}
+                size={SIZE}
+                mx={Mx}
+                my={My}
+                width={width}
+                height={height}
+            />
+
+            {nodes.map(tree => (
                 <div
                     key={ids.get(tree)}
                     className={style.node}
@@ -62,7 +79,7 @@ export const AncestorTree = ({ ancestorTree }) => {
                 >
                     <Node tree={tree} />
                 </div>
-            )}
+            ))}
         </div>
     )
 }

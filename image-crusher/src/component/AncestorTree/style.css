@@ -5,6 +5,6 @@
 .node {
     position: absolute;
     left: 0;
-    right: 0;
-    transition: transform 260ms ease;
+    top: 0;
+    transition: transform 160ms ease;
 }
