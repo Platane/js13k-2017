@@ -4,7 +4,7 @@ import { getRImage } from '../../../genetic/ADNtoRImage'
 
 export class Image extends Component {
     shouldComponentUpdate(nextProps) {
-        return this.props.adn !== nextProps.adn
+        return this.props.adn.length == 0 || this.props.adn !== nextProps.adn
     }
 
     render() {
