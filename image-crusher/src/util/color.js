@@ -9,7 +9,7 @@ export const colorDistance = (a: Color, b: Color): number => {
 }
 
 export const blendColor = (a: Color, b: Color, k: number): Color => [
-    a[0] * (1 - k) + b[0] * k,
-    a[1] * (1 - k) + b[1] * k,
-    a[2] * (1 - k) + b[2] * k,
+    Math.round(a[0] * (1 - k) + b[0] * k),
+    Math.round(a[1] * (1 - k) + b[1] * k),
+    Math.round(a[2] * (1 - k) + b[2] * k),
 ]
