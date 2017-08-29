@@ -10,7 +10,10 @@ export const stepUntilConvergence = async (
 ) => {
     let unchanged_since = 0
 
-    while (unchanged_since < PARAM.CONVERGED_WHEN_UNCHANGED_SINCE) {
+    while (
+        unchanged_since <
+        best.adn.length * PARAM.CONVERGED_WHEN_UNCHANGED_SINCE
+    ) {
         for (let n = PARAM.N_BATCH; n--; ) {
             const adn = mutate(best.adn)
 

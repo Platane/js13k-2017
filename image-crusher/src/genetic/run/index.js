@@ -46,10 +46,11 @@ const getNextFork = (tree: AncestorTree): AncestorTree => {
         n = Math.floor(Math.random() * layers.length)
     }
 
-    return layers[n].reduce(
-        (best, x) => (!best || best.fitness > x.fitness ? x : best),
-        null
-    )
+    layers[n].sort((a, b) => (a.fitness < b.fitness ? 1 : -1))
+
+    const k = Math.floor(Math.random() * Math.min(5, layers[n].length * 0.3))
+
+    return layers[n][k]
 }
 
 export const run = async (
