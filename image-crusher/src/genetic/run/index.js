@@ -26,23 +26,30 @@ const getBestFit = (tree: AncestorTree): ADN =>
         null
     ).adn
 
+const extractNDepth = (tree: AncestorTree, n: number): AncestorTree[] =>
+    n == 0
+        ? [tree]
+        : [].concat(...tree.children.map(x => extractNDepth(x, n - 1)))
+
 const getNextFork = (tree: AncestorTree): AncestorTree => {
     const path = []
 
-    let end = tree
-    while (end.children[0]) {
-        end = end.children[0]
-        path.push(0)
+    const layers = Array.from(
+        { length: Math.ceil(PARAM.N_CIRCLE / PARAM.GENE_BATCH) },
+        (_, i) => extractNDepth(tree, i)
+    )
+
+    let n = 0
+    if (layers[layers.length - 1].length < PARAM.HORIZONTAL_TRIAL) {
+        for (n = 0; layers[n + 1].length >= PARAM.HORIZONTAL_TRIAL; n++);
+    } else {
+        n = Math.floor(Math.random() * layers.length)
     }
 
-    let u = tree
-    while (u) {
-        if (Math.random() > 0.5) return u
-
-        u = u.children[Math.floor(Math.random() * u.children.length)]
-    }
-
-    return end
+    return layers[n].reduce(
+        (best, x) => (!best || best.fitness > x.fitness ? x : best),
+        null
+    )
 }
 
 export const run = async (
