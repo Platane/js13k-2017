@@ -1,11 +1,11 @@
 import * as PARAM from '../param'
-import { drawCircle, createBlank } from '../util/rImage/draw'
+import { drawCircle, createBlank, clear } from '../util/rImage/draw'
 
 import type { ADN, Dot } from './type'
 import type { RImage } from '../type'
 
-export const ADNtoRImage = (adn: ADN): RImage => {
-    const rImage = createBlank()
+export const ADNtoRImage = (adn: ADN, target_rImage: RImage | null): RImage => {
+    const rImage = target_rImage ? clear(target_rImage) : createBlank()
 
     adn.forEach(({ x, y, r, color, opacity }) =>
         drawCircle(
@@ -28,13 +28,19 @@ const createMemoizedADNtoRImage = () => {
 
         if (x) return x.rImage
 
-        const rImage = ADNtoRImage(adn)
+        let node = null
+        if (memory.length > 50) {
+            node = memory.shift()
+            node.adn = adn
+        } else {
+            node = { adn, rImage: null }
+        }
 
-        memory.push({ adn, rImage })
+        node.rImage = ADNtoRImage(adn, node.rImage)
 
-        while (memory.length > 100) memory.shift()
+        memory.push(node)
 
-        return rImage
+        return node.rImage
     }
 
     return getRImage
