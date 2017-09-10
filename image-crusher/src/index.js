@@ -17,6 +17,7 @@ import { mutate, initAdn, addGene } from './genetic/mutate'
 import { getRImage } from './genetic/ADNtoRImage'
 import { run as runGenetic } from './genetic/run'
 import { packADN } from './genetic/pack'
+import { encode } from './genetic/pack/encode'
 
 import { AncestorTree } from './component/AncestorTree'
 import { h, render } from 'preact'
@@ -44,11 +45,11 @@ const displayColorPalette = () => {
 }
 displayColorPalette()
 
-const IMAGE_PATH = require('./asset/sample/monalisa-64x64.png')
-// const IMAGE_PATH = require('./asset/sample/love-64x64.png')
+// const IMAGE_PATH = require('./asset/sample/monalisa-64x64.png')
+const IMAGE_PATH = require('./asset/sample/mondrian-64x64.png')
 
 const printADN = tree =>
-    console.log(tree.adn, tree.fitness, packADN(tree.adn).toString(34))
+    console.log(tree.adn, tree.fitness, encode(packADN(tree.adn)))
 
 const run = async () => {
     const target = imageToRImage(await dataUrlToImage(IMAGE_PATH))

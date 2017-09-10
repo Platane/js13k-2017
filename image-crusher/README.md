@@ -9,5 +9,6 @@ state of art
 TODO
 ====
 
- * reduce color palette
+ v reduce color palette
+ * in the last iteration, use soft mutation to converge quickly
  * implement distributed computation ( with dataStore ? )

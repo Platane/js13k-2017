@@ -2,7 +2,16 @@ import { hslToRgb, colorDistance } from './util/color'
 
 export const SIZE = 64
 export const OPACITY_AVAILABLE = [0.2, 0.5, 0.8, 1]
-export const RADIUS_AVAILABLE = [2, 3, 5, 7, 9, 12, 15, 20, 36]
+export const RADIUS_AVAILABLE = [1]
+
+const last = arr => arr[arr.length - 1]
+const avLast = arr => arr[arr.length - 2]
+
+while (last(RADIUS_AVAILABLE) < SIZE)
+    RADIUS_AVAILABLE.push(
+        last(RADIUS_AVAILABLE) + (avLast(RADIUS_AVAILABLE) || 1)
+    )
+
 export const POSITION_DELTA = SIZE / 0.8
 export const COLOR_PALETTE = []
 
@@ -32,8 +41,8 @@ for(let b=0;b<256;b+= 50)
 export const N_CIRCLE = 48
 
 // genetic param
-export const HORIZONTAL_TRIAL = 5
-export const CONVERGED_WHEN_UNCHANGED_SINCE = 1000
+export const HORIZONTAL_TRIAL = 3
+export const CONVERGED_WHEN_UNCHANGED_SINCE = 100
 export const N_FORK = 100
-export const N_BATCH = 200
+export const N_BATCH = 500
 export const GENE_BATCH = 8
