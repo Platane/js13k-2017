@@ -1,0 +1,37 @@
+{
+    "name": "image-crusher-api",
+    "version": "0.1.0",
+    "author": "platane <me@platane.me>",
+    "license": "MIT",
+    "dependencies": {
+        "@google-cloud/datastore": "1.1.0"
+    },
+    "devDependencies": {
+        "babel-cli": "6.26.0",
+        "babel-core": "6.26.0",
+        "babel-jest": "21.0.2",
+        "babel-plugin-transform-async-to-generator": "6.24.1",
+        "babel-plugin-transform-class-properties": "6.24.1",
+        "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
+        "babel-plugin-transform-inline-environment-variables": "0.2.0",
+        "babel-plugin-transform-object-rest-spread": "6.26.0",
+        "babel-preset-flow": "6.23.0",
+        "babel-register": "6.26.0",
+        "flow-bin": "0.54.1",
+        "flow-typed": "2.1.5",
+        "jest": "21.0.2"
+    },
+    "engines": {
+        "node": "6.11.x"
+    },
+    "scripts": {
+        "flow-typed": "flow-typed install",
+        "build": "rm -rf lib && babel --out-dir ./lib --ignore '**/__tests__/' ./src",
+        "test": "jest"
+    },
+    "jest": {
+        "verbose": true,
+        "collectCoverage": true,
+        "modulePathIgnorePatterns": [".*/lib/.*"]
+    }
+}

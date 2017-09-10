@@ -10,3 +10,4 @@ gh-pages
 flow-typed
 webpack-stats.json
 storybook-static
+coverage

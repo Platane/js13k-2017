@@ -1,0 +1,62 @@
+
+box: node:6.11
+
+build-api:
+
+    steps:
+
+        - script:
+            cwd: image-crusher-api
+            name: install dependencies
+            code: |
+                npm install -g yarn
+                export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
+                HOME=$YARN_CACHE yarn --pure-lockfile
+
+        - script:
+            cwd: image-crusher-api
+            name: build
+            code: env NODE_ENV=ASYNC_POLYFILL yarn run build
+
+        - script:
+            cwd: image-crusher-api
+            name: test
+            code: env NODE_ENV=ASYNC_POLYFILL yarn run test
+
+        - script:
+            cwd: image-crusher-api
+            name: install production node_modules
+            code: |
+                rm -r node_modules
+                HOME=$YARN_CACHE yarn --pure-lockfile --production=true
+
+        - script:
+            cwd: image-crusher-api
+            name: prepare bundle
+            code: ./script/prepareFunctions.sh
+
+        - script:
+            name: prepare env
+            code: |
+                node -e "console.log(JSON.parse(process.env.GC_JSON_KEY_FILE).client_email)" > ./account
+                node -e "console.log(JSON.parse(process.env.GC_JSON_KEY_FILE).project_id)" > ./project
+
+
+deploy-api:
+
+    box:
+        id: google/cloud-sdk
+
+    steps:
+
+        - script:
+            name: Activate service account
+            code: |
+                echo $GC_JSON_KEY_FILE >> secret.json
+                CLOUDSDK_PYTHON_SITEPACKAGES=1 gcloud auth activate-service-account $( cat account ) --key-file secret.json --project $( cat project )
+
+        - script:
+            name: deploy function get
+            code: |
+                gcloud beta functions deploy get --local-path ./image-crusher-api/dist/get --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-velib-lambda-function --trigger-http
+                gcloud beta functions describe get
