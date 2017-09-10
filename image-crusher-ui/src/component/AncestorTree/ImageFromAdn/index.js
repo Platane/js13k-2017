@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { getRImage } from '../../../genetic/ADNtoRImage'
+import { ADNtoRImage } from '../../../genetic/ADNtoRImage'
 import { adnEqual } from '../../../util/ancestorTree/merge'
 import { Image as Image_ } from '../../Image'
 
@@ -16,7 +16,7 @@ export class Image extends Component {
         return (
             <Image_
                 {...this.props}
-                rImage={getRImage(this.props.param, this.props.adn)}
+                rImage={ADNtoRImage(this.props.param, this.props.adn)}
             />
         )
     }
