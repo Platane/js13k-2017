@@ -42,7 +42,7 @@ const displayColorPalette = PARAM => {
 
 {
     const u = async () => {
-        const path = require('./asset/sample/monalisa-64x64.png')
+        const path = require('./asset/sample/thegreatwave-64x64.png')
         console.log(imageToRImage(await dataUrlToImage(path)).join(','))
     }
     u()
@@ -70,6 +70,8 @@ const parseAncestorTree = (PARAM, a) => ({
     children: a.children.map(t => parseAncestorTree(PARAM, t)),
 })
 
+const wait = delay => new Promise(resolve => setTimeout(resolve, delay))
+
 const url = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
 const loop = async () => {
     images = (await (await fetch(url)).json()).map(x => ({
@@ -78,6 +80,8 @@ const loop = async () => {
     }))
 
     update()
+
+    await wait(5000)
 
     loop()
 }
