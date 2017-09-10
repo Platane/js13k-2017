@@ -1,5 +1,6 @@
 import { config } from '../config'
 import connectDataStore from '@google-cloud/datastore'
+import { parseImage } from '../util/dataStore/parse'
 
 export const run = async () => {
     const datastore = connectDataStore({
@@ -11,9 +12,5 @@ export const run = async () => {
 
     const [images, _] = await datastore.runQuery(query)
 
-    return images.map(x => ({
-        target: x.target,
-        PARAM: x.PARAM,
-        ancestorTree: x.ancestorTree,
-    }))
+    return images.map(parseImage)
 }
