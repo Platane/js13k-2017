@@ -38,19 +38,22 @@ export const step = (world: World): World => {
     // make tim walk
     {
         const { position, direction } = world.tim
+        const control = world.control
 
-        const newPos = {
-            x: position.x + direction.x * 0.01,
-            y: position.y + direction.y * 0.01,
-        }
+        position.x += direction.x * control.direction.y * 0.05
+        position.y += direction.y * control.direction.y * 0.05
 
-        const closestWall = getClosestWall(newPos, world.worldGrid)
+        const closestWall = getClosestWall(position, world.worldGrid)
 
         console.log(closestWall && closestWall.d)
 
-        if (!closestWall || closestWall.d > 0.05) {
-            position.x = newPos.x
-            position.y = newPos.y
+        const L = 0.2
+
+        if (closestWall && closestWall.d < L) {
+            const r = L - closestWall.d
+
+            position.x -= r * closestWall.dir.x
+            position.y -= r * closestWall.dir.y
         }
     }
 

@@ -1,5 +1,9 @@
 import { world, tick } from '../logic'
 
+document.onkeydown = e => e.which == 32 && (world.control.direction.y = 1)
+
+document.onkeyup = e => e.which == 32 && (world.control.direction.y = 0)
+
 AFRAME.registerComponent('tim', {
     init: function() {
         {

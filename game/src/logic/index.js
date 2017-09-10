@@ -12,7 +12,7 @@ export const world: World = {
     },
 
     control: {
-        direction: { x: 0, y: 1 },
+        direction: { x: 0, y: 0 },
     },
 
     walkers: [],
