@@ -1,0 +1,17 @@
+.container {
+    width: 64px;
+    height: 64px;
+    animation: appear 260ms ease;
+    box-shadow: 0 0 0 1px #ccc;
+}
+
+@keyframes appear {
+    0% {
+        transform: translate3d(0, -100px, 0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}

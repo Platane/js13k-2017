@@ -139,3 +139,38 @@ deploy-worker:
             code: |
                 gcloud beta functions deploy worker --local-path ./image-crusher-worker/dist/worker --memory=1GB --timeout 540s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe worker
+
+
+build-front:
+
+    box: node:8.1
+
+    steps:
+
+        - script:
+            cwd: image-crusher-ui
+            name: install dependencies
+            code: |
+                npm install -g yarn
+                export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
+                HOME=$YARN_CACHE yarn --pure-lockfile
+
+        - script:
+            cwd: image-crusher-ui
+            name: build
+            code: yarn run build
+
+        - script:
+            cwd: image-crusher-ui
+            name: test
+            code: yarn run test
+
+deploy-front:
+
+    box: node:8.1
+
+    steps:
+
+        - takuma7/gh-pages:
+            token: $GH_TOKEN
+            basedir: image-crusher-ui/dist

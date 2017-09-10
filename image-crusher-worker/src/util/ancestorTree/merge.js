@@ -3,7 +3,7 @@ import type { AncestorTree, ADN, Dot } from '../../type'
 const dotEqual = (a: Dot, b: Dot): boolean =>
     a.x === b.x && a.y === b.y && a.r === b.r && b.opacity === a.opacity
 
-const adnEqual = (a: ADN, b: ADN): boolean =>
+export const adnEqual = (a: ADN, b: ADN): boolean =>
     a.length === b.length && a.every((_, i) => dotEqual(a[i], b[i]))
 
 export const mergeAncestorTree = (
