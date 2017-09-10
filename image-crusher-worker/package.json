@@ -27,6 +27,7 @@
     "scripts": {
         "flow-typed": "flow-typed install",
         "build": "rm -rf lib && babel --out-dir ./lib --ignore '**/__tests__/' ./src",
+        "start": "node lib/cli.js",
         "test": "jest"
     },
     "jest": {

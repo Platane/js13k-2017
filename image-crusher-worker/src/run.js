@@ -15,7 +15,7 @@ import type { RImage, AncestorTree, Param } from './type'
 
 const pickRandom = arr => arr[Math.floor(Math.random() * arr.length)]
 
-export const run = async (options: { PARAM?: Object }) => {
+export const run = async (options: ?{ PARAM?: Object }) => {
     // connect to the datastore
     const datastore = connectDataStore({
         projectId: config.googleCloudPlatform.project_id,
@@ -36,7 +36,7 @@ export const run = async (options: { PARAM?: Object }) => {
 
     // override PARAM
     // ( for testing purpose )
-    if (options.PARAM)
+    if (options && options.PARAM)
         Object.keys(options.PARAM).forEach(
             key => (PARAM[key] = options.PARAM[key])
         )

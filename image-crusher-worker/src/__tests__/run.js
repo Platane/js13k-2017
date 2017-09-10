@@ -1,4 +1,4 @@
-import { run } from '../index'
+import { run } from '../run'
 import type { Param } from '../type'
 
 const PARAM = {
