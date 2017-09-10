@@ -3,7 +3,8 @@ import { Image } from '../Image'
 
 import style from './style.css'
 
-export const Node = ({ tree }) =>
-    <div className={style.container}>
-        <Image adn={tree.adn} />
+export const Node = ({ tree, size }) => (
+    <div className={style.container} style={{ width: size, height: size }}>
+        <Image adn={tree.adn} size={size} />
     </div>
+)

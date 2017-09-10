@@ -8,7 +8,11 @@ export class Image extends Component {
     }
 
     render() {
-        return <canvas />
+        return (
+            <canvas
+                style={{ width: this.props.size, height: this.props.size }}
+            />
+        )
     }
 
     componentDidUpdate() {

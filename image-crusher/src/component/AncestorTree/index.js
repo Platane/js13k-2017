@@ -1,6 +1,5 @@
 import { h, Component } from 'preact'
 import { computePosition } from './util/index'
-import { SIZE } from '../../param'
 import { Node } from './Node'
 import { Arcs } from './Arcs'
 
@@ -22,7 +21,8 @@ const computeId = (tree, map = new Map(), id = '0') => {
 }
 
 const Mx = 30
-const My = 40
+const My = 30
+const SIZE = 50
 
 const transform = ({ x, y }) =>
     `translate3d(${Mx + x * (SIZE + Mx)}px,${My + y * (SIZE + My)}px,0)`
@@ -78,7 +78,7 @@ export const AncestorTree = ({ ancestorTree, onClick }) => {
                         transform: transform(pos.get(tree)),
                     }}
                 >
-                    <Node tree={tree} />
+                    <Node tree={tree} size={SIZE} />
                 </div>
             ))}
         </div>
