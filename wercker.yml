@@ -33,7 +33,9 @@ build-api:
         - script:
             cwd: image-crusher-api
             name: prepare bundle
-            code: ./script/prepareFunctions.sh
+            code: |
+                chmod +x ./script/prepareFunctions.sh
+                ./script/prepareFunctions.sh
 
         - script:
             name: prepare env
@@ -63,5 +65,5 @@ deploy-api:
         - script:
             name: deploy function get
             code: |
-                gcloud beta functions deploy get --local-path ./image-crusher-api/dist/get --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-velib-lambda-function --trigger-http
+                gcloud beta functions deploy get --local-path ./image-crusher-api/dist/get --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe get
