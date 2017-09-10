@@ -1,5 +1,3 @@
-import { SIZE } from '../param'
-
 export const loadFileAsDataUrl = file =>
     new Promise(resolve => {
         const fr = new FileReader()
@@ -23,7 +21,7 @@ export const dataUrlToImage = (dataUrl: string) =>
 export const loadFileAsImage = file =>
     loadFileAsDataUrl(file).then(dataUrlToImage)
 
-export const normalizeImage = img => {
+export const normalizeImage = (SIZE: number, img) => {
     const r = SIZE / Math.min(img.naturalWidth, img.naturalHeight)
 
     const canvas = document.createElement('canvas')

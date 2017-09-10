@@ -1,4 +1,3 @@
-import { SIZE } from '../../param'
 import type { RImage } from '../../type'
 
 export const canvasToRImage = canvas => {
@@ -6,7 +5,7 @@ export const canvasToRImage = canvas => {
 
     const arr = []
 
-    const data = ctx.getImageData(0, 0, SIZE, SIZE).data
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data
 
     for (let i = 0; i < data.length / 4; i++)
         arr.push(data[i * 4 + 0], data[i * 4 + 1], data[i * 4 + 2])
@@ -15,6 +14,8 @@ export const canvasToRImage = canvas => {
 }
 
 export const imageToRImage = image => {
+    const SIZE = image.naturalWidth
+
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = SIZE
 
@@ -24,7 +25,7 @@ export const imageToRImage = image => {
     return canvasToRImage(canvas)
 }
 
-export const rImageToCanvas = (a: RImage, canvas) => {
+export const rImageToCanvas = (SIZE: number, a: RImage, canvas) => {
     if (!canvas) canvas = document.createElement('canvas')
 
     canvas.width = canvas.height = SIZE

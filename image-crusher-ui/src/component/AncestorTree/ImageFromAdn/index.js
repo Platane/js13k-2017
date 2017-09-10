@@ -1,8 +1,7 @@
 import { h, Component } from 'preact'
-import { rImageToCanvas } from '../../../util/rImage/toCanvas'
 import { getRImage } from '../../../genetic/ADNtoRImage'
 import { adnEqual } from '../../../util/ancestorTree/merge'
-import { request, cancel } from '../../../util/raf'
+import { Image as Image_ } from '../../Image'
 
 export class Image extends Component {
     shouldComponentUpdate(nextProps) {
@@ -14,19 +13,11 @@ export class Image extends Component {
     }
 
     render() {
-        this._timeout = request(this.afterRender)
         return (
-            <canvas
-                style={{ width: this.props.size, height: this.props.size }}
+            <Image_
+                {...this.props}
+                rImage={getRImage(this.props.param, this.props.adn)}
             />
         )
-    }
-
-    componentWillUnmount() {
-        cancel(this._timeout)
-    }
-
-    afterRender = () => {
-        rImageToCanvas(getRImage(this.props.param, this.props.adn), this.base)
     }
 }

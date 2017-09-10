@@ -6,8 +6,8 @@ import {
 
 import {
     canvasToRImage,
-    rImageToCanvas,
     imageToRImage,
+    rImageToCanvas,
 } from './util/rImage/toCanvas'
 
 import { drawCircle } from './util/rImage/draw'
@@ -40,6 +40,13 @@ const displayColorPalette = PARAM => {
     document.body.appendChild(canvas)
 }
 
+{
+    const u = async () => {
+        const path = require('./asset/sample/monalisa-64x64.png')
+        console.log(imageToRImage(await dataUrlToImage(path)).join(','))
+    }
+    u()
+}
 const printADN = tree =>
     console.log(tree.adn, tree.fitness, encode(packADN(tree.adn)))
 
