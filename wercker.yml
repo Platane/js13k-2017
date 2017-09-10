@@ -56,6 +56,11 @@ deploy-api:
                 CLOUDSDK_PYTHON_SITEPACKAGES=1 gcloud auth activate-service-account $( cat account ) --key-file secret.json --project $( cat project )
 
         - script:
+            name: create bucket
+            code: gsutil mb -c STANDARD -l EUROPE-WEST1 -p $( cat project ) gs://platane-image-crusher-lambda-function || echo 1
+
+
+        - script:
             name: deploy function get
             code: |
                 gcloud beta functions deploy get --local-path ./image-crusher-api/dist/get --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-velib-lambda-function --trigger-http
