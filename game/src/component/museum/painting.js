@@ -132,14 +132,17 @@ export const generatePaintings = (worldGrid: WorldGrid) => {
                     object.add(u.object)
                 }
 
-    const update = ({ position }) =>
+    const update = ({ position, direction }) =>
         p.forEach(p => {
             const x = position.x - p.object.position.x
             const y = position.y - p.object.position.z
 
             const d = Math.sqrt(x * x + y * y)
 
-            const k = Math.max(0, Math.min((d - 1.2) / 3))
+            const scal =
+                1 - Math.max(0, -(x * direction.x + y * direction.y) / d)
+
+            const k = Math.max(0, Math.min((d - 1.2) / 3)) * (3 + scal) / 3
 
             p.update(k)
         })
