@@ -8,5 +8,4 @@ export const N_BATCH = 800
 export const LIMIT = 800
 
 export const getLimit = (adn_length: number) =>
-    // (adn_length === N_CIRCLE && [100000, 100000]) || [10000, 10000]
-    (adn_length === N_CIRCLE && [100, 100]) || [100, 100]
+    (adn_length === N_CIRCLE && [100000, 100000]) || [20000, 20000]
