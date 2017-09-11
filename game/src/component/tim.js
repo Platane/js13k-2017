@@ -22,8 +22,6 @@ AFRAME.registerComponent('tim', {
 
         tick();
 
-        console.log(world.tim.position);
-
         this.el.object3D.position.set(
             world.tim.position.x,
             0.6,

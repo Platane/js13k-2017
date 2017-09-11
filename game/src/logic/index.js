@@ -29,7 +29,7 @@ export const world: World = {
     // ],
 
     tim: {
-        position: { x: 24.5, y: 30.5 },
+        position: { x: 24.5, y: 31.5 },
         direction: { x: 0, y: 1 }
     },
 
