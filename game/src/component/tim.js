@@ -24,7 +24,7 @@ AFRAME.registerComponent('tim', {
 
         this.el.object3D.position.set(
             world.tim.position.x,
-            1,
+            0.6,
             world.tim.position.y
         )
     },

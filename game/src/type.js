@@ -1,4 +1,12 @@
-export type Painting = Object
+export type Dot = {
+    x: number,
+    y: number,
+    r: number,
+    color: [number, number, number],
+    opacity: number,
+}
+
+export type Painting = Dot[]
 
 export type Wall = Painting | null
 

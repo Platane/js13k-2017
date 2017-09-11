@@ -1,13 +1,14 @@
 import type { World, Point, WorldGrid } from '../../type'
 
-const around = [
-    { x: 1, y: 0 },
-    { x: 1, y: 1 },
+window.around = [
     { x: 0, y: 1 },
-    { x: -1, y: 1 },
-    { x: -1, y: 0 },
-    { x: -1, y: -1 },
+    { x: 1, y: 0 },
     { x: 0, y: -1 },
+    { x: -1, y: 0 },
+
+    { x: 1, y: 1 },
+    { x: -1, y: 1 },
+    { x: -1, y: -1 },
     { x: 1, y: -1 },
 ]
 
@@ -44,8 +45,6 @@ export const step = (world: World): World => {
         position.y += direction.y * control.direction.y * 0.05
 
         const closestWall = getClosestWall(position, world.worldGrid)
-
-        console.log(closestWall && closestWall.d)
 
         const L = 0.2
 
