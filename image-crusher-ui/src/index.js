@@ -43,7 +43,7 @@ const displayColorPalette = PARAM => {
 }
 
 {
-    const path = require('./asset/sample/sistine-64x64.png')
+    const path = require('./asset/sample/chambre-64x64.png')
     const u = async () => {
         const target = imageToRImage(await dataUrlToImage(path))
         const data = {

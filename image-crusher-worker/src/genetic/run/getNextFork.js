@@ -18,7 +18,10 @@ export const getNextFork = (tree: AncestorTree): AncestorTree => {
     if (layers[layers.length - 1].length < HORIZONTAL_TRIAL) {
         for (n = 0; layers[n + 1].length >= HORIZONTAL_TRIAL; n++);
     } else {
-        n = Math.floor(Math.random() * layers.length)
+        n = Math.max(
+            Math.round(Math.random() * layers.length * 1.4),
+            layers.length - 1
+        )
     }
 
     layers[n].sort((a, b) => (a.fitness < b.fitness ? 1 : -1))
