@@ -1,16 +1,25 @@
 export const SIZE = 64
 export const OPACITY_AVAILABLE = [0.2, 0.5, 0.8, 1]
-export const RADIUS_AVAILABLE = [1]
+export const RADIUS_AVAILABLE = [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    22,
+    26,
+    30,
+    36,
+    40,
+]
 
-const last = arr => arr[arr.length - 1]
-const avLast = arr => arr[arr.length - 2]
-
-while (last(RADIUS_AVAILABLE) < SIZE)
-    RADIUS_AVAILABLE.push(
-        last(RADIUS_AVAILABLE) + (avLast(RADIUS_AVAILABLE) || 1)
-    )
-
-export const POSITION_DELTA = SIZE / 0.8
 export const COLOR_PALETTE = []
 
 // prettier-ignore

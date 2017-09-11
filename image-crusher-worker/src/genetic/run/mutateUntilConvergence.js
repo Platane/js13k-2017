@@ -1,31 +1,34 @@
-import { asPromise as wait } from '../../util/raf'
-import type { ADN, AncestorTree, Param } from '../../type'
+import { getLimit } from '../../config/param'
+import type { ADN, AncestorTree } from '../../type'
 
 export const mutateUntilConvergence = async (
-    PARAM: Param,
-    mutate: (adn: ADN) => ADN,
+    mutateHard: (adn: ADN) => ADN,
+    mutateSoft: (adn: ADN) => ADN,
     getFitness: (adn: ADN) => number,
     best: { adn: ADN, fitness: number }
 ) => {
     let unchanged_since = 0
 
-    while (
-        unchanged_since <
-        best.adn.length * PARAM.CONVERGED_WHEN_UNCHANGED_SINCE
-    ) {
-        for (let n = PARAM.N_BATCH; n--; ) {
-            const adn = mutate(best.adn)
+    const limit = getLimit(best.adn.length)
+    let mutate = mutateHard
+    let k = 0
 
-            const fitness = getFitness(adn)
+    while (k < limit.length) {
+        const adn = mutate(best.adn)
 
-            if (fitness < best.fitness) {
-                best.fitness = fitness
-                best.adn = adn
+        const fitness = getFitness(adn)
 
-                unchanged_since = 0
-            } else unchanged_since++
+        if (fitness < best.fitness) {
+            best.fitness = fitness
+            best.adn = adn
+
+            unchanged_since = 0
+        } else unchanged_since++
+
+        if (unchanged_since > limit[k]) {
+            k++
+            unchanged_since = 0
+            mutate = mutateSoft
         }
-
-        await wait()
     }
 }

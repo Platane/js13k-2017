@@ -5,7 +5,7 @@ import { drawCircle } from './util/rImage/draw'
 import { diff } from './util/rImage/diff'
 import { colorDistance } from './util/color'
 
-import { mutate, initAdn, addGene } from './genetic/mutate'
+import { mutateHard, mutateSoft, initAdn, addGene } from './genetic/mutate'
 import { getRImage } from './genetic/ADNtoRImage'
 import { step } from './genetic/run/step'
 import { mergeAncestorTree } from './util/ancestorTree/merge'
@@ -44,8 +44,8 @@ export const run = async (options: ?{ PARAM?: Object }) => {
     console.log('start to compute ...')
 
     const newAncestorTree = await step(
-        PARAM,
-        adn => mutate(PARAM, adn),
+        adn => mutateHard(PARAM, adn),
+        adn => mutateSoft(PARAM, adn),
         adn => diff(colorDistance, target, getRImage(PARAM, adn)),
         adn => addGene(PARAM, adn),
         ancestorTree

@@ -11,9 +11,11 @@ const data = {
     target: Array.from({ length: PARAM.SIZE * PARAM.SIZE * 3 }, () => 255),
 }
 
-xit(
+const data2 = require('./data.json')
+
+it(
     'should create image',
-    async () => await run(data),
+    async () => await run(data2),
     // set timeout
     120 * 1000
 )

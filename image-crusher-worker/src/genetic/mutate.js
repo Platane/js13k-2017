@@ -9,7 +9,7 @@ const rand = (max, min = 0) => Math.floor(min + Math.random() * (max - min))
 
 const clamp = (min, max, x) => Math.min(max, Math.max(min, x))
 
-const mutateDot = (PARAM: Param, dot: Dot): Dot => {
+const mutateDotHard = (PARAM: Param, dot: Dot): Dot => {
     switch (Math.floor(Math.random() * 7)) {
         // mutate position
         case 6:
@@ -61,7 +61,73 @@ const mutateDot = (PARAM: Param, dot: Dot): Dot => {
     }
 }
 
-export const mutate = (PARAM: Param, adn: ADN): ADN => {
+const mutateDotSoft = (PARAM: Param, dot: Dot): Dot => {
+    switch (Math.floor(Math.random() * 7)) {
+        // mutate position
+        case 6:
+        case 5:
+        case 4:
+        case 0: {
+            const dx = rand(Math.ceil(PARAM.SIZE / 10))
+            const dy = rand(Math.ceil(PARAM.SIZE / 10))
+
+            return {
+                ...dot,
+                x: clamp(0, PARAM.SIZE - 1, dot.x + dx),
+                y: clamp(0, PARAM.SIZE - 1, dot.y + dy),
+            }
+        }
+
+        // mutate radius
+        case 1: {
+            for (let k = 20; k--; ) {
+                const r = rand(PARAM.RADIUS_AVAILABLE.length)
+
+                const d =
+                    Math.abs(
+                        PARAM.RADIUS_AVAILABLE[r] -
+                            PARAM.RADIUS_AVAILABLE[dot.r]
+                    ) / PARAM.SIZE
+
+                if (d > 0 && d < 0.2) return { ...dot, r }
+            }
+            return dot
+        }
+
+        // mutate opacity
+        case 2:
+            return {
+                ...dot,
+                opacity: rand(PARAM.OPACITY_AVAILABLE.length),
+            }
+
+        // mutate color
+        default:
+        case 3: {
+            for (let k = 20; k--; ) {
+                const color = rand(PARAM.COLOR_PALETTE.length)
+
+                const d =
+                    colorDistance(
+                        PARAM.COLOR_PALETTE[dot.color],
+                        PARAM.COLOR_PALETTE[color]
+                    ) /
+                    (255 * 255 * 3)
+
+                if (d > 0 && d < 0.2) return { ...dot, color }
+            }
+            return dot
+        }
+    }
+}
+
+export const mutateSoft = (PARAM: Param, adn: ADN): ADN => {
+    const k = rand(adn.length)
+
+    return adn.map((dot, i) => (i === k ? mutateDotSoft(PARAM, dot) : dot))
+}
+
+export const mutateHard = (PARAM: Param, adn: ADN): ADN => {
     const u = rand(10)
     switch (u) {
         case 1:
@@ -83,7 +149,7 @@ export const mutate = (PARAM: Param, adn: ADN): ADN => {
             return adn.map(
                 (dot, i) =>
                     i === k
-                        ? u === 0 ? randomDot(PARAM) : mutateDot(PARAM, dot)
+                        ? u === 0 ? randomDot(PARAM) : mutateDotHard(PARAM, dot)
                         : dot
             )
     }

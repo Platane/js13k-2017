@@ -17,6 +17,8 @@ import { colorDistance } from './util/color'
 import { packADN } from './util/pack'
 import { encode } from './util/pack/encode'
 
+import * as PARAM from './param'
+
 import { List } from './component/List'
 import { h, render } from 'preact'
 require('preact/devtools')
@@ -41,9 +43,23 @@ const displayColorPalette = PARAM => {
 }
 
 {
+    const path = require('./asset/sample/mondrian-64x64.png')
     const u = async () => {
-        const path = require('./asset/sample/thegreatwave-64x64.png')
-        console.log(imageToRImage(await dataUrlToImage(path)).join(','))
+        const target = imageToRImage(await dataUrlToImage(path))
+        const data = {
+            target,
+            ancestorTree: {
+                adn: [],
+                fitness: 999999999999,
+                children: [],
+            },
+            PARAM,
+        }
+        const s = JSON.stringify(data)
+
+        const t = document.createElement('textarea')
+        t.innerHTML = s
+        document.body.appendChild(t)
     }
     u()
 }

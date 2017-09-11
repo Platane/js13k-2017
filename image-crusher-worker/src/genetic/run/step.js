@@ -4,8 +4,8 @@ import { getNextFork } from './getNextFork'
 import type { Param, ADN, AncestorTree } from '../../type'
 
 export const step = async (
-    PARAM: Param,
-    mutate: (adn: ADN) => ADN,
+    mutateHard: (adn: ADN) => ADN,
+    mutateSoft: (adn: ADN) => ADN,
     getFitness: (adn: ADN) => number,
     addGene: (adn: ADN) => ADN | null,
     ancestorTree: AncestorTree
@@ -14,7 +14,7 @@ export const step = async (
     let k = 100
 
     while (!adn || !nextFork) {
-        nextFork = getNextFork(PARAM, ancestorTree)
+        nextFork = getNextFork(ancestorTree)
 
         adn = addGene(nextFork.adn)
 
@@ -26,7 +26,7 @@ export const step = async (
 
     nextFork.children.push(node)
 
-    await mutateUntilConvergence(PARAM, mutate, getFitness, node)
+    await mutateUntilConvergence(mutateHard, mutateSoft, getFitness, node)
 
     return ancestorTree
 }
