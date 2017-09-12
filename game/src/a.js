@@ -42,8 +42,66 @@ const ceiling = new THREE.MeshBasicMaterial({ color: 0x888888 })
 
 // map
 
-const paintings = Array.from({ length: 10 }, () =>
-    Array.from({ length: 3 }, () => ({
+const l = [
+    SIZE,
+    SIZE,
+    RADIUS_AVAILABLE.length,
+    COLOR_PALETTE.length,
+    OPACITY_AVAILABLE.length,
+].map(x => Math.ceil(Math.log(x) / Math.LN2))
+
+const m = [0]
+l.forEach((l, i) => (m[i + 1] = m[i] + l))
+
+const n_dot = l.reduce((sum, l) => sum + l, 0)
+
+const readNumber = (a, b, arr) => {
+    let sum = 0
+
+    for (let k = a; k < b; k++) {
+        const bit = !!(arr[Math.floor(k / 8)] & (1 << (k % 8)))
+
+        sum += +bit << (k - a)
+    }
+
+    return sum
+}
+
+const arrayToDot = arr => ({
+    x: arr[0],
+    y: arr[1],
+    r: RADIUS_AVAILABLE[arr[2]],
+    color: COLOR_PALETTE[arr[3]],
+    opacity: OPACITY_AVAILABLE[arr[4]],
+})
+
+const unpackADN = buffer => {
+    const adn = []
+    let offset = 0
+
+    while (offset < buffer.length * 8 - n_dot) {
+        adn.push(
+            arrayToDot(
+                l.map(l => {
+                    const o = offset
+                    offset = offset + l
+
+                    return readNumber(o, offset, buffer)
+                })
+            )
+        )
+    }
+
+    return adn
+}
+
+const readPainting = path =>
+    fetch(path)
+        .then(x => x.arrayBuffer())
+        .then(x => unpackADN(new Uint8Array(x)))
+
+const paintings = Array.from({ length: 30 }, () =>
+    Array.from({ length: 30 }, () => ({
         x: Math.random() * 64,
         y: Math.random() * 64,
         r: Math.random() * 30,
@@ -82,18 +140,18 @@ const worldMap =
 const getCell = x => {
     switch (x) {
         case '1':
-            return [null, paintings[0], null, null]
+            return [null, 1, null, null]
         case '2':
-            return [null, null, paintings[0], null]
+            return [null, null, 2, null]
 
         case 'l':
-            return [null, null, rand(paintings.slice(1)), null]
+            return [null, null, Math.floor(Math.random() * 10) + 20, null]
         case 't':
-            return [null, rand(paintings.slice(1)), null, null]
+            return [null, Math.floor(Math.random() * 10) + 20, null, null]
         case 'r':
-            return [rand(paintings.slice(1)), null, null, null]
+            return [Math.floor(Math.random() * 10) + 20, null, null, null]
         case 'b':
-            return [null, null, null, rand(paintings.slice(1))]
+            return [null, null, null, Math.floor(Math.random() * 10) + 20]
 
         default:
             return [null, null, null, null]
@@ -356,7 +414,7 @@ const generatePaintings = worldGrid => {
         for (let y = 0; y < worldGrid[0].length; y++)
             for (let k = 0; worldGrid[x][y] && k < 4; k++)
                 if (worldGrid[x][y][k]) {
-                    const u = generatePainting(worldGrid[x][y][k])
+                    const u = generatePainting(paintings[worldGrid[x][y][k]])
 
                     p.push(u)
 
@@ -554,9 +612,14 @@ AFRAME.registerComponent('museum', {
 
         container.add(generateMazeObject(world.worldGrid))
 
-        this.p = generatePaintings(world.worldGrid)
-
-        container.add(this.p.object)
+        Promise.all(
+            '01'
+                .split('')
+                .map((x, i) => readPainting(x).then(p => (paintings[i] = p)))
+        ).then(() => {
+            this.p = generatePaintings(world.worldGrid)
+            container.add(this.p.object)
+        })
     },
     tick: function() {
         this.p.update(world.tim)
