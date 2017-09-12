@@ -2,8 +2,10 @@ import * as material from '../material'
 
 import type { Painting, WorldGrid } from '../../type'
 
-const L = 0.25
+const L = 0.28
 const K = 100
+
+const planeGeom = new THREE.PlaneBufferGeometry(1, 1)
 
 const getU = (n, i, k) =>
     Math.max(0, Math.min(1, (k - (1 - L) * (n - i) / n) / L))
@@ -13,8 +15,8 @@ const getDisplacement = (x, y, u: number, t: number) => {
 
     // u = 1 - (1 - u) * (1 - u)
 
-    const s = Math.sin((1 + seed) * 0.03 * t) * u
-    const c = Math.cos((1 + seed) * 0.03 * t) * u
+    const s = Math.sin((1 + seed) * 0.045 * t) * u
+    const c = Math.cos((1 + seed) * 0.035 * t) * u
 
     const vx = x - 0.5 + (x < 0.5 ? -0.4 : 0.4)
     const vy = y - 0.5
@@ -75,7 +77,7 @@ const generatePainting = (painting: Painting) => {
 
         mat.color.setRGB(...dot.color.map(x => x / 256))
 
-        const geo = new THREE.SphereGeometry(
+        const geo = new THREE.SphereBufferGeometry(
             Math.min(dot.r / size, 0.5),
             Math.ceil(dot.r / 2) + 2,
             Math.ceil(dot.r / 2) + 2
@@ -96,10 +98,15 @@ const generatePainting = (painting: Painting) => {
         const mat = material.createCanvas()
         mat.map = texture
 
-        const geo = new THREE.PlaneGeometry(1, 1)
-        const mesh = new THREE.Mesh(geo, mat)
+        const mesh = new THREE.Mesh(planeGeom, mat)
+        mesh.position.z = 0.02
 
         object.add(mesh)
+
+        const frame = new THREE.Mesh(planeGeom, material.frame)
+        frame.position.z = 0.01
+        frame.scale.set(1.1, 1.1, 1.1)
+        object.add(frame)
     }
 
     let drawn_n = -1
@@ -160,9 +167,20 @@ export const generatePaintings = (worldGrid: WorldGrid) => {
                 }
 
     let t = 0
+    let prev_direction = { x: 0, y: 0 }
 
     const update = ({ position, direction }) => {
-        t++
+        // const x = direction.x - prev_direction.x
+        // const y = direction.y - prev_direction.y
+        //
+        // const delta = x * x + y * y
+        //
+        // prev_direction.x = direction.x
+        // prev_direction.y = direction.y
+        //
+        // const j = 0.1 + delta * 60
+
+        t += 1
 
         p.forEach(p => {
             const x = position.x - p.object.position.x
