@@ -15,7 +15,10 @@ import type { RImage, AncestorTree, Param } from './type'
 
 const pickRandom = arr => arr[Math.floor(Math.random() * arr.length)]
 
-export const run = async (options: ?{ PARAM?: Object }) => {
+const countNode = (tree: AncestorTree) =>
+    tree.children.reduce((sum, child) => sum + countNode(child), 1)
+
+export const run = async () => {
     // connect to the datastore
     const datastore = connectDataStore({
         projectId: config.googleCloudPlatform.project_id,
@@ -25,21 +28,21 @@ export const run = async (options: ?{ PARAM?: Object }) => {
     // pick an image to work with
     const query = datastore.createQuery('image')
     const [images, _] = await datastore.runQuery(query)
-    const image = pickRandom(images)
 
-    const key = image[datastore.KEY]
+    // pick the one with the less node
+    const { target, PARAM, ancestorTree, key, n } = images
+        .map(image => {
+            const x = parseImage(image)
+
+            return {
+                ...x,
+                n: countNode(x.ancestorTree),
+                key: image[datastore.KEY],
+            }
+        })
+        .sort((a, b) => (a.n > b.n ? 1 : -1))[0]
 
     console.log('pick the image', key.path)
-
-    // step
-    const { target, PARAM, ancestorTree } = parseImage(image)
-
-    // override PARAM
-    // ( for testing purpose )
-    if (options && options.PARAM)
-        Object.keys(options.PARAM).forEach(
-            key => (PARAM[key] = options.PARAM[key])
-        )
 
     console.log('start to compute ...')
 

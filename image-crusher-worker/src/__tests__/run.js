@@ -6,7 +6,7 @@ const PARAM = {
     N_BATCH: 1,
 }
 
-it(
+xit(
     'should run without crashing',
     async () => await run({ PARAM }),
     // set timeout
