@@ -1,51 +1,51 @@
-import type { WorldGrid, Painting } from '../type';
-import * as PARAM from '../asset/param';
+import type { WorldGrid, Painting } from '../type'
+import * as PARAM from '../asset/param'
 
-const ml = require('../asset/monalisa.json');
+const ml = require('../asset/monalisa.json')
 
 const toPainting = (PARAM, adn) =>
     adn.map(dot => ({
         ...dot,
         r: PARAM.RADIUS_AVAILABLE[dot.r],
         opacity: PARAM.OPACITY_AVAILABLE[dot.opacity],
-        color: PARAM.COLOR_PALETTE[dot.color]
-    }));
+        color: PARAM.COLOR_PALETTE[dot.color],
+    }))
 
-const rand = arr => arr[Math.floor(arr.length * Math.random())];
+const rand = arr => arr[Math.floor(arr.length * Math.random())]
 
 const paintings: Painting[] = [
     toPainting(PARAM, ml),
     ...Array.from({ length: 10 }, () =>
-        Array.from({ length: 10 }, () => ({
+        Array.from({ length: 3 }, () => ({
             x: Math.random() * 64,
             y: Math.random() * 64,
             r: Math.random() * 30,
             color: rand(PARAM.COLOR_PALETTE),
-            opacity: 1
+            opacity: 1,
         }))
-    )
-];
+    ),
+]
 
 const getCell = x => {
     switch (x) {
         case '1':
-            return [null, paintings[0], null, null];
+            return [null, paintings[0], null, null]
         case '2':
-            return [null, null, paintings[0], null];
+            return [null, null, paintings[0], null]
 
         case 'l':
-            return [null, null, rand(paintings.slice(1)), null];
+            return [null, null, rand(paintings.slice(1)), null]
         case 't':
-            return [null, rand(paintings.slice(1)), null, null];
+            return [null, rand(paintings.slice(1)), null, null]
         case 'r':
-            return [rand(paintings.slice(1)), null, null, null];
+            return [rand(paintings.slice(1)), null, null, null]
         case 'b':
-            return [null, null, null, rand(paintings.slice(1))];
+            return [null, null, null, rand(paintings.slice(1))]
 
         default:
-            return [null, null, null, null];
+            return [null, null, null, null]
     }
-};
+}
 
 const map =
     '#                                                                              \n' +
@@ -72,10 +72,10 @@ const map =
     '                          #         #                 #         #                    \n' +
     '                          #### ######                 ###########                             \n' +
     '                             #   #                                                   \n' +
-    '                             #*  #                                                  ';
+    '                             #*  #                                                  '
 
 export const worldGrid: WorldGrid = map
     .split('\n')
-    .map(line => line.split('').map(c => (c === ' ' ? 0 : getCell(c))));
+    .map(line => line.split('').map(c => (c === ' ' ? 0 : getCell(c))))
 
 // on 1
