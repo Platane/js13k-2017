@@ -1,4 +1,4 @@
 {
-    "presets": ["flow"],
-    "plugins": ["transform-class-properties", "transform-object-rest-spread"]
+    "presets": ["flow", "minify"],
+    "plugins": ["transform-object-rest-spread"]
 }
