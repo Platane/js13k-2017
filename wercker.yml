@@ -174,3 +174,29 @@ deploy-front:
         - takuma7/gh-pages:
             token: $GH_TOKEN
             basedir: image-crusher-ui/dist
+
+
+build-deploy-game:
+
+    box: node:8.1
+
+    steps:
+
+        - script:
+            cwd: game
+            name: install dependencies
+            code: |
+                npm install -g yarn
+                export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
+                HOME=$YARN_CACHE yarn --pure-lockfile
+
+        - script:
+            cwd: game
+            name: build
+            code: |
+                chmod +x ./script/build.sh
+                ./script/build.sh
+
+        - takuma7/gh-pages:
+            token: $GH_TOKEN
+            basedir: ./game/dist
