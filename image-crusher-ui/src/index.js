@@ -63,6 +63,7 @@ const displayColorPalette = PARAM => {
     }
     u()
 }
+
 const printADN = tree =>
     console.log(tree.adn, tree.fitness, encode(packADN(tree.adn)))
 

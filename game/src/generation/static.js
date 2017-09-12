@@ -1,5 +1,13 @@
 import type { WorldGrid, Painting } from '../type'
+
 import * as PARAM from '../asset/param'
+
+import { readPainting } from './painting'
+
+const _paintings = []
+Promise.all([require('../asset/1.adn')].map(readPainting))
+    .then(x => _paintings.push(x))
+    .then(() => console.log(_paintings))
 
 const ml = require('../asset/monalisa.json')
 
