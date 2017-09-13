@@ -114,6 +114,28 @@ const paintings = Array.from({ length: 30 }, () =>
     }))
 )
 
+let step = 1
+
+const texts = [
+    [
+        ['Oups, you are lost in a museum'],
+        [],
+        ['Find your way out!'],
+        [],
+        ['First stop:'],
+        ['Find "La Joconde"'],
+    ],
+    [
+        ['Good!'],
+        [],
+        ['Next:'],
+        ['Find "Starry nigth"'],
+        ['by Van Gogh'],
+        ['in the room to your'],
+        ['right'],
+    ],
+]
+
 const worldMap =
     '#                                                                              \n' +
     '                                      #                                            \n' +
@@ -139,7 +161,7 @@ const worldMap =
     '                          #         #                 #         #                    \n' +
     '                          #### ######                 ###########                             \n' +
     '                             #   #                                                   \n' +
-    '                             #*  #                                                  '
+    '                             #   #                                                  '
 
 const getCell = x => {
     switch (x) {
@@ -306,7 +328,7 @@ const getDisplacement = (x, y, u, t) => {
     }
 }
 
-const draw = (canvas, size, painting, k, t) => {
+const draw = (canvas, size, painting, text, k, t) => {
     const l = 512
 
     canvas.width = canvas.height = l
@@ -335,12 +357,25 @@ const draw = (canvas, size, painting, k, t) => {
         ctx.globalAlpha = dot.opacity
         ctx.fill()
     })
+
+    if (k > 0.8 && text) {
+        ctx.globalAlpha = (k - 0.8) / 0.2
+        text.forEach((t, i) => {
+            ctx.fillStyle = '#333'
+            ctx.font = '50px Helvetica'
+            // ctx.beginPath()
+            ctx.fillText(t, 50, i * 60 + 100)
+        })
+    }
 }
 
-const generatePainting = painting => {
+const generatePainting = i => {
     const size = 64
 
     const object = new THREE.Object3D()
+
+    const painting = paintings[i]
+    const text = texts[i]
 
     // paint drop
     painting.forEach((dot, i) => {
@@ -389,8 +424,12 @@ const generatePainting = painting => {
     let ex_k = -1
 
     const update = (k, t) => {
+        if (i > step) k = 0
+
+        if (i == step && k > 0.9) step++
+
         if (k > 0 || Math.abs(k - ex_k) > 0.1 || (ex_k > 0 && k == 0)) {
-            draw(canvas, size, painting, (ex_k = k), t)
+            draw(canvas, size, painting, text, (ex_k = k), t)
             texture.needsUpdate = true
         }
 
@@ -400,7 +439,7 @@ const generatePainting = painting => {
 
             object.children[i].visible = u > 0
 
-            const s = 0.6 + u * 0.4
+            const s = 0.3 + (1 - u) * 0.7
 
             object.children[i].scale.set(s, s, s * u)
 
@@ -422,7 +461,7 @@ const generatePaintings = worldGrid => {
         for (let y = 0; y < worldGrid[0].length; y++)
             for (let k = 0; worldGrid[x][y] && k < 4; k++)
                 if (worldGrid[x][y][k]) {
-                    const u = generatePainting(paintings[worldGrid[x][y][k]])
+                    const u = generatePainting(worldGrid[x][y][k])
 
                     p.push(u)
 
@@ -458,7 +497,7 @@ const generatePaintings = worldGrid => {
 
         t += 1
 
-        p.forEach(p => {
+        p.forEach((p, i) => {
             const x = position.x - p.object.position.x
             const y = position.y - p.object.position.z
 
@@ -573,6 +612,43 @@ const generateMazeObject = world => {
 
             maze.add(mesh)
         }
+    }
+
+    // intro text
+    {
+        const canvas = document.createElement('canvas')
+        canvas.height = canvas.width = 512
+        const ctx = canvas.getContext('2d')
+        ctx.fillStyle = '#fff'
+        ctx.fillRect(0, 0, 512, 512)
+
+        texts[0].forEach((t, i) => {
+            ctx.fillStyle = '#333'
+            ctx.font = '30px Helvetica'
+            ctx.fillText(t, 50, i * 40 + 100)
+        })
+
+        const texture = new THREE.Texture(canvas)
+        texture.needsUpdate = true
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+        texture.repeat.set(1, 1)
+
+        const mat = new THREE.MeshBasicMaterial()
+        mat.map = texture
+
+        const mesh = new THREE.Mesh(planeGeom, mat)
+        mesh.position.z = 0.01
+
+        mesh.scale.set(2, 2, 2)
+
+        const object = new THREE.Object3D()
+
+        object.position.set(24, 1.2, 30)
+
+        object.rotation.y = 0
+
+        object.add(mesh)
+        maze.add(object)
     }
 
     {
