@@ -197,6 +197,12 @@ build-deploy-game:
                 chmod +x ./script/build.sh
                 ./script/build.sh
 
+        - script:
+            cwd: game
+            name: copy doc
+            code: |
+                cp ./doc/* ./dist
+
         - takuma7/gh-pages:
             token: $GH_TOKEN
             basedir: ./game/dist

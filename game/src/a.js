@@ -98,7 +98,9 @@ const unpackADN = buffer => {
 const readPainting = path => {
     return fetch(path)
         .then(x => x.text())
-        .then(x => unpackADN(new Uint8Array(x.split(',').map(x => +x))))
+        .then(x =>
+            unpackADN(new Uint8Array(x.split(',').map(x => +x))).reverse()
+        )
     // return fetch(path)
     //     .then(x => x.arrayBuffer())
     //     .then(x => unpackADN(new Uint8Array(x)))
