@@ -132,52 +132,105 @@ const texts = [
         ['Find "Starry nigth"'],
         ['by Van Gogh'],
         ['in the room to your'],
+        ['left'],
+    ],
+    [
+        ['Great!'],
+        [],
+        ['Find "Scream"'],
+        ['by Munch'],
+        ['in the room to your'],
         ['right'],
     ],
+    [
+        ['OK!'],
+        [],
+        ['Next:'],
+        ['"The Great Wave"'],
+        ['by Hokusai'],
+        ['in this room'],
+    ],
+    [
+        ['Nice!'],
+        [],
+        ['Next:'],
+        ['"La liberté"'],
+        ['by Delacroix'],
+        ['in the next room'],
+    ],
+    [['Nice!'], [], ["it's 12h30"], ['no more time'], ["let's say you win"]],
 ]
 
 const worldMap =
-    '#                                                                              \n' +
-    '                                      #                                            \n' +
-    '                                      ###################                             \n' +
-    '                                                        #                             \n' +
-    '                                      ################# #                             \n' +
-    '                                      #               # #                             \n' +
-    '                                      #               # #                             \n' +
-    '                                      ################# ####                                             \n' +
-    '                                      ##   #       #       #                            \n' +
-    '                                      ##   r       l       #                            \n' +
-    '                                           #       #       #                           \n' +
-    '                   ###########   #######       #       #   #                                  \n' +
-    '                          ####   ####  #       l       l   2                            \n' +
+    '                                                                                      \n' +
+    '           ###########################                                                   \n' +
+    '           #                        ###########################                       \n' +
+    '           #                        #                         ##########                        \n' +
+    '           #   ##b#  ##5#   ##b#    #                         #        #                \n' +
+    '    #6#7#8##                            r      r      3       #####    #                    \n' +
+    '                                                                      #               \n' +
+    '           #                                                           #                \n' +
+    '           #                            4      r      r       ##########                        \n' +
+    '           #   ##t#  ##t#   ##t#    #                         #                        \n' +
+    '           #                        #                         #                        \n' +
+    '           #                        ######################  ###                            \n' +
+    '           ####################   ######                 #  #                             \n' +
+    '                 #                    ###################  ####                                             \n' +
+    '                 #                    ##   #       #       #                            \n' +
+    '                 #           #  #     ##   r       l       2                            \n' +
+    '                 #                         #       #       #                           \n' +
+    '                 # ###########   #######       #       #   #                                  \n' +
+    '                          ####   ####  #       l       l   #                            \n' +
     '                          #         #  #       #       #   ######                            \n' +
     '                          #         #  #       #       #        #                       \n' +
-    '                          r  t   1  l  #       l       l   #### #                           \n' +
+    '                          r         l  #       l       l   #### #                           \n' +
     '                          #         ####       #       #   #  # #                           \n' +
-    '                          #                #       #       #  # #                       \n' +
+    '                          #    1           #       #       #  # #                       \n' +
     '                          #         ####   r       l       #  # #                            \n' +
-    '                          r  b   b  l  #   #       #       #  # #                          \n' +
+    '                          r         l  #   #       #       #  # #                          \n' +
     '                          #         #  ################ ####### #                                          \n' +
-    '                          #         #                 #         #                    \n' +
+    '                          #         #                 #         #                      \n' +
     '                          #### ######                 ###########                             \n' +
-    '                             #   #                                                   \n' +
+    '                             #   #                                                     \n' +
     '                             #   #                                                  '
 
 const getCell = x => {
     switch (x) {
+        // mona lisa
         case '1':
             return [null, 1, null, null]
+
+        /// starry night
         case '2':
             return [null, null, 2, null]
+
+        // scream
+        case '3':
+            return [3, null, null, null]
+
+        // the great wave
+        case '4':
+            return [4, null, null, null]
+
+        // delacroix
+        case '5':
+            return [null, 5, null, null]
+
+        case '6':
+            return [null, 6, null, null]
+        case '7':
+            return [null, 7, null, null]
+        case '8':
+            return [null, 8, null, null]
 
         case 'l':
             return [null, null, Math.floor(Math.random() * 10) + 20, null]
         case 't':
-            return [null, Math.floor(Math.random() * 10) + 20, null, null]
+            return [null, null, null, Math.floor(Math.random() * 10) + 20]
         case 'r':
             return [Math.floor(Math.random() * 10) + 20, null, null, null]
         case 'b':
-            return [null, null, null, Math.floor(Math.random() * 10) + 20]
+            return [null, Math.floor(Math.random() * 10) + 20, null, null]
 
         default:
             return [null, null, null, null]
@@ -190,7 +243,7 @@ const world = {
         .map(line => line.split('').map(c => (c === ' ' ? 0 : getCell(c)))),
 
     tim: {
-        position: { x: 24.5, y: 31.5 },
+        position: { x: 30.5, y: 31.5 },
         direction: { x: 0, y: 1 },
     },
 
@@ -643,7 +696,7 @@ const generateMazeObject = world => {
 
         const object = new THREE.Object3D()
 
-        object.position.set(24, 1.2, 30)
+        object.position.set(30, 1.2, 30)
 
         object.rotation.y = 0
 
@@ -697,9 +750,11 @@ AFRAME.registerComponent('museum', {
         container.add(generateMazeObject(world.worldGrid))
 
         Promise.all(
-            '12'
+            '12345678'
                 .split('')
-                .map((x, i) => readPainting(x).then(p => (paintings[i] = p)))
+                .map((x, i) =>
+                    readPainting(x).then(p => (paintings[i + 1] = p))
+                )
         ).then(() => {
             this.p = generatePaintings(world.worldGrid)
             container.add(this.p.object)
