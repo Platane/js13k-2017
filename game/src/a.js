@@ -247,6 +247,10 @@ document.onkeydown = e => e.which == 32 && (world.control.direction.y = 1)
 
 document.onkeyup = e => e.which == 32 && (world.control.direction.y = 0)
 
+document.ontouchstart = e => (world.control.direction.y = 1)
+
+document.ontouchend = e => (world.control.direction.y = 0)
+
 AFRAME.registerComponent('tim', {
     init: function() {
         {
@@ -626,7 +630,7 @@ AFRAME.registerComponent('museum', {
         })
     },
     tick: function() {
-        this.p.update(world.tim)
+        this.p && this.p.update(world.tim)
     },
 })
 
