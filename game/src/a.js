@@ -95,10 +95,14 @@ const unpackADN = buffer => {
     return adn
 }
 
-const readPainting = path =>
-    fetch(path)
-        .then(x => x.arrayBuffer())
-        .then(x => unpackADN(new Uint8Array(x)))
+const readPainting = path => {
+    return fetch(path)
+        .then(x => x.text())
+        .then(x => unpackADN(new Uint8Array(x.split(',').map(x => +x))))
+    // return fetch(path)
+    //     .then(x => x.arrayBuffer())
+    //     .then(x => unpackADN(new Uint8Array(x)))
+}
 
 const paintings = Array.from({ length: 30 }, () =>
     Array.from({ length: 30 }, () => ({
@@ -281,7 +285,7 @@ const getU = (n, i, k) =>
     Math.max(0, Math.min(1, (k - (1 - L) * (n - i) / n) / L))
 
 const getDisplacement = (x, y, u, t) => {
-    const seed = ((x * 36 + y * y * x * 137 + x * x * 89) % 37) / 37
+    const seed = (x * 36 + y * y * x * 137 + x * x * 89) % 37 / 37
 
     // u = 1 - (1 - u) * (1 - u)
 
@@ -294,7 +298,7 @@ const getDisplacement = (x, y, u, t) => {
     return {
         x: x + vx * u + s * 0.2,
         y: y + vy * u + c * 0.17,
-        z: u * (0.4 + seed * 0.4) - 0.1 + s * 0.17 * (1 + seed),
+        z: u * (0.6 + seed * 0.6) - 0.1 + s * 0.17 * (1 + seed),
     }
 }
 
@@ -392,7 +396,7 @@ const generatePainting = painting => {
 
             object.children[i].visible = u > 0
 
-            const s = 1
+            const s = 0.6 + u * 0.4
 
             object.children[i].scale.set(s, s, s * u)
 
@@ -613,7 +617,7 @@ AFRAME.registerComponent('museum', {
         container.add(generateMazeObject(world.worldGrid))
 
         Promise.all(
-            '01'
+            '12'
                 .split('')
                 .map((x, i) => readPainting(x).then(p => (paintings[i] = p)))
         ).then(() => {

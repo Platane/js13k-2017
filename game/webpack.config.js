@@ -29,7 +29,7 @@ module.exports = {
     devtool: 'source-map',
 
     devServer: {
-        port: 8083,
+        port: 8086,
         contentBase: ['./external', './src'],
         historyApiFallback: true,
         watchOptions: {
