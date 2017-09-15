@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { Image } from '../ImageFromAdn'
+import { Image } from '../../ImageFromAdn'
 
 import style from './style.css'
 

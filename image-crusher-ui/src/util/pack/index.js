@@ -5,39 +5,6 @@ import type { ADN, Dot } from '../type'
 // a dot packed is
 // x | y | r | color | opacity
 
-const l = [
-    PARAM.SIZE,
-    PARAM.SIZE,
-    PARAM.RADIUS_AVAILABLE.length,
-    PARAM.COLOR_PALETTE.length,
-    PARAM.OPACITY_AVAILABLE.length,
-].map(x => Math.ceil(Math.log(x) / Math.LN2))
-
-const m = [0]
-l.forEach((l, i) => (m[i + 1] = m[i] + l))
-
-const n_dot = l.reduce((sum, l) => sum + l, 0)
-
-const readNumber = (a: number, b: number, arr: Uint8Array) => {
-    let sum = 0
-
-    for (let k = a; k < b; k++) {
-        const bit = !!(arr[Math.floor(k / 8)] & (1 << (k % 8)))
-
-        sum += +bit << (k - a)
-    }
-
-    return sum
-}
-
-const writeNumber = (a: number, b: number, arr: Uint8Array, value: number) => {
-    for (let k = a; k < b; k++) {
-        const bit = !!(value & (1 << (k - a)))
-
-        arr[Math.floor(k / 8)] += +bit << (k % 8)
-    }
-}
-
 const dotToArray = (dot: Dot): number[] => [
     dot.x,
     dot.y,
@@ -53,7 +20,35 @@ const arrayToDot = (arr: number[]): Dot => ({
     opacity: arr[4],
 })
 
-export const packADN = (adn: ADN): Uint8Array => {
+const getL = param =>
+    [
+        param.SIZE,
+        param.SIZE,
+        param.RADIUS_AVAILABLE.length,
+        param.COLOR_PALETTE.length,
+        param.OPACITY_AVAILABLE.length,
+    ].map(x => Math.ceil(Math.log(x) / Math.LN2))
+
+const getN_dot = l => l.reduce((sum, l) => sum + l, 0)
+
+export const packADN = (param, adn: ADN): Uint8Array => {
+    const l = getL(param)
+
+    const n_dot = getN_dot(l)
+
+    const writeNumber = (
+        a: number,
+        b: number,
+        arr: Uint8Array,
+        value: number
+    ) => {
+        for (let k = a; k < b; k++) {
+            const bit = !!(value & (1 << (k - a)))
+
+            arr[Math.floor(k / 8)] += +bit << (k % 8)
+        }
+    }
+
     const buffer = new Uint8Array(Math.ceil(adn.length * n_dot / 8))
 
     let offset = 0
@@ -69,7 +64,23 @@ export const packADN = (adn: ADN): Uint8Array => {
     return buffer
 }
 
-export const unpackADN = (buffer: Uint8Array): ADN => {
+export const unpackADN = (param, buffer: Uint8Array): ADN => {
+    const l = getL(param)
+
+    const n_dot = getN_dot(l)
+
+    const readNumber = (a: number, b: number, arr: Uint8Array) => {
+        let sum = 0
+
+        for (let k = a; k < b; k++) {
+            const bit = !!(arr[Math.floor(k / 8)] & (1 << (k % 8)))
+
+            sum += +bit << (k - a)
+        }
+
+        return sum
+    }
+
     const adn = []
     let offset = 0
 

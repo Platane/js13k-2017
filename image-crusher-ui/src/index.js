@@ -20,6 +20,7 @@ import { encode } from './util/pack/encode'
 import * as PARAM from './param'
 
 import { List } from './component/List'
+import { FloatingRes } from './component/FloatingRes'
 import { h, render } from 'preact'
 require('preact/devtools')
 
@@ -64,37 +65,35 @@ const displayColorPalette = PARAM => {
     u()
 }
 
-const printADN = tree =>
-    console.log(tree.adn, tree.fitness, encode(packADN(tree.adn)))
+
+
+const printADN = ( tree, param_ ) => {
+    adn = tree.adn
+    param = param_
+    update()
+}
 
 let images
+let adn
+let param
 const update = () =>
     images &&
     render(
-        <List images={images} onClick={printADN} />,
+        <div>
+        <List images={images} onClick={printADN} />
+        <FloatingRes adn={adn} param={param}/>
+    </div>,
         document.body,
         document.body.children[0]
     )
 
-const parseAncestorTree = (PARAM, a) => ({
-    ...a,
-    adn: a.adn.map(x => ({
-        ...x,
-        opacity: PARAM.OPACITY_AVAILABLE[x.opacity],
-        r: PARAM.RADIUS_AVAILABLE[x.r],
-        color: PARAM.COLOR_PALETTE[x.color],
-    })),
-    children: a.children.map(t => parseAncestorTree(PARAM, t)),
-})
 
 const wait = delay => new Promise(resolve => setTimeout(resolve, delay))
 
 const url = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
+// const url = 'https://storage.googleapis.com/platane-imagedot-result/res.json'
 const loop = async () => {
-    images = (await (await fetch(url)).json()).map(x => ({
-        ...x,
-        // ancestorTree: parseAncestorTree(x.PARAM, x.ancestorTree),
-    }))
+    images = (await (await fetch(url)).json())
 
     update()
 

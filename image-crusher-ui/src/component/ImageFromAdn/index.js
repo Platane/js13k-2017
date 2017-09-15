@@ -1,7 +1,7 @@
 import { h, Component } from 'preact'
-import { ADNtoRImage } from '../../../genetic/ADNtoRImage'
-import { adnEqual } from '../../../util/ancestorTree/merge'
-import { Image as Image_ } from '../../Image'
+import { ADNtoRImage } from '../../genetic/ADNtoRImage'
+import { adnEqual } from '../../util/ancestorTree/merge'
+import { RImage } from '../RImage'
 
 export class Image extends Component {
     shouldComponentUpdate(nextProps) {
@@ -14,7 +14,7 @@ export class Image extends Component {
 
     render() {
         return (
-            <Image_
+            <RImage
                 {...this.props}
                 rImage={ADNtoRImage(this.props.param, this.props.adn)}
             />

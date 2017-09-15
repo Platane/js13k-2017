@@ -1,10 +1,9 @@
 import { h, Component } from 'preact'
 import { rImageToCanvas } from '../../util/rImage/toCanvas'
-import { getRImage } from '../../genetic/ADNtoRImage'
 import { adnEqual } from '../../util/ancestorTree/merge'
 import { request, cancel } from '../../util/raf'
 
-export class Image extends Component {
+export class RImage extends Component {
     shouldComponentUpdate(nextProps) {
         return this.props.rImage !== nextProps.rImage
     }

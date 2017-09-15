@@ -73,7 +73,7 @@ export const AncestorTree = ({ ancestorTree, param, onClick }) => {
                 <div
                     key={ids.get(tree)}
                     className={style.node}
-                    onClick={() => onClick(tree)}
+                    onClick={() => onClick(tree, param)}
                     style={{
                         transform: transform(pos.get(tree)),
                     }}

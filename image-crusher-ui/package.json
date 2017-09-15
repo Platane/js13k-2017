@@ -1,9 +1,7 @@
 {
     "name": "13k2017-image-crusher",
     "version": "1.0.0",
-    "dependencies": {
-        "pngjs": " 3.3.0"
-    },
+    "dependencies": {},
     "devDependencies": {
         "babel-cli": "6.26.0",
         "babel-loader": "7.1.2",
@@ -14,24 +12,23 @@
         "babel-plugin-transform-class-properties": "6.24.1",
         "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
         "babel-plugin-transform-object-rest-spread": "6.26.0",
-        "babel-plugin-transform-react-jsx": " 6.24.1",
+        "babel-plugin-transform-react-jsx": "6.24.1",
         "babel-plugin-transform-runtime": "6.23.0",
         "babel-plugin-transform-string-literal-replace": "1.0.2",
-        "babel-preset-env": " 1.6.0",
+        "babel-preset-env": "1.6.0",
         "babel-preset-flow": "6.23.0",
         "babel-runtime": "6.26.0",
-        "css-loader": "0.28.5",
+        "css-loader": "0.28.7",
         "extract-text-webpack-plugin": "3.0.0",
         "file-loader": "0.11.2",
-        "flow-bin": "0.53.1",
+        "flow-bin": "0.54.1",
         "flow-typed": "2.1.5",
         "jest": "20.0.4",
-        "preact": " 8.2.5",
-        "prettier": " 1.6.0",
+        "preact": "8.2.5",
         "raw-loader": "0.5.1",
         "style-loader": "0.18.2",
-        "webpack": "3.5.5",
-        "webpack-dev-server": "2.7.1"
+        "webpack": "3.6.0",
+        "webpack-dev-server": "2.8.2"
     },
     "scripts": {
         "start": "webpack-dev-server --inline --devtool source-map -d",
