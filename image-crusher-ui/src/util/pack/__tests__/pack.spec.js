@@ -1,7 +1,15 @@
-import { packADN, unpackADN } from '../index'
+import { packADN, unpackADN, writeNumber, readNumber } from '../index'
 
-const sample = [
+import * as param from '../../../param'
+
+const samples = [
     [{ x: 14, y: 13, r: 2, color: 9, opacity: 1 }],
+    [
+        { color: 129, opacity: 3, r: 16, x: 28, y: 35 },
+        { color: 44, opacity: 3, r: 16, x: 56, y: 39 },
+        { color: 124, opacity: 2, r: 14, x: 37, y: 16 },
+        { color: 199, opacity: 3, r: 6, x: 52, y: 11 },
+    ],
     [
         { color: 129, opacity: 3, r: 16, x: 28, y: 35 },
         { color: 44, opacity: 3, r: 16, x: 56, y: 39 },
@@ -14,10 +22,21 @@ const sample = [
     ],
 ]
 
-describe('packADN', () => {
-    it('pack / unpack should be identity', () =>
-        expect(unpackADN(packADN(sample[0]))).toEqual(sample[0]))
+describe('packADN', () =>
+    samples.forEach((adn, i) =>
+        it(`pack / unpack should be identity ${i}`, () =>
+            expect(unpackADN(param, packADN(param, adn))).toEqual(adn))
+    ))
 
-    it('pack / unpack should be identity 2', () =>
-        expect(unpackADN(packADN(sample[1]))).toEqual(sample[1]))
-})
+describe('readNumber / writeNumber in Uint8Array', () =>
+    it(`should read the written number`, () => {
+        const arr = new Uint8Array(20)
+
+        writeNumber(5, 9, arr, 15)
+        writeNumber(0, 5, arr, 0)
+        writeNumber(9, 16, arr, 0)
+
+        expect(readNumber(0, 5, arr)).toBe(0)
+        expect(readNumber(5, 9, arr)).toBe(15)
+        expect(readNumber(9, 16, arr)).toBe(0)
+    }))

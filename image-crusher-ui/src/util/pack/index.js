@@ -1,6 +1,4 @@
-import * as PARAM from '../../param'
-
-import type { ADN, Dot } from '../type'
+import type { ADN, Dot } from '../../type'
 
 // a dot packed is
 // x | y | r | color | opacity
@@ -31,35 +29,47 @@ const getL = param =>
 
 const getN_dot = l => l.reduce((sum, l) => sum + l, 0)
 
+export const writeNumber = (
+    a: number,
+    b: number,
+    arr: Uint8Array,
+    value: number
+) => {
+    for (let k = a; k < b; k++) {
+        const bit = !!(value & (1 << (k - a)))
+
+        arr[Math.floor(k / 8)] += +bit << (k % 8)
+    }
+}
+
+export const readNumber = (a: number, b: number, arr: Uint8Array) => {
+    let sum = 0
+
+    for (let k = a; k < b; k++) {
+        const bit = !!(arr[Math.floor(k / 8)] & (1 << (k % 8)))
+
+        sum += +bit << (k - a)
+    }
+
+    return sum
+}
+
 export const packADN = (param, adn: ADN): Uint8Array => {
     const l = getL(param)
 
     const n_dot = getN_dot(l)
 
-    const writeNumber = (
-        a: number,
-        b: number,
-        arr: Uint8Array,
-        value: number
-    ) => {
-        for (let k = a; k < b; k++) {
-            const bit = !!(value & (1 << (k - a)))
-
-            arr[Math.floor(k / 8)] += +bit << (k % 8)
-        }
-    }
-
     const buffer = new Uint8Array(Math.ceil(adn.length * n_dot / 8))
 
     let offset = 0
 
-    for (let i = 0; i < adn.length; i++) {
-        dotToArray(adn[i]).forEach((value, k) => {
+    adn.forEach(dot =>
+        dotToArray(dot).forEach((value, k) => {
             writeNumber(offset, offset + l[k], buffer, value)
 
             offset += l[k]
         })
-    }
+    )
 
     return buffer
 }
@@ -84,7 +94,7 @@ export const unpackADN = (param, buffer: Uint8Array): ADN => {
     const adn = []
     let offset = 0
 
-    while (offset < buffer.length * 8 - n_dot) {
+    while (offset <= buffer.length * 8 - n_dot) {
         adn.push(
             arrayToDot(
                 l.map(l => {
