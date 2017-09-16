@@ -197,18 +197,18 @@ const worldMap =
     '           #                        #                         ##########                        \n' +
     '     #######   ##b#  ##6#   ##b#    #                         #        #                \n' +
     '     #     #                            r      r      4       #####    #                    \n' +
-    '     7                                                                #               \n' +
-    '     9                                                                #                \n' +
+    '     7                                                                 #               \n' +
+    '     9                                                                 #                \n' +
     '     8     #                            5      r      r       ##########                        \n' +
     '     #     #   ##t#  ##t#   ##t#    #                         #                         \n' +
     '           #                        #                         #                         \n' +
-    '           #                        ######################  ###                            \n' +
-    '           ####################   ######                 #  #                             \n' +
+    '           #                        #####################  ####                           \n' +
+    '           ####################   #######################  #                             \n' +
     '                 #                    ###################  ####                                             \n' +
     '                 #                    ##   #       #       #                            \n' +
-    '                 #           #  #     ##   r       l       3                             \n' +
+    '                 #                    ##   r       l       3                             \n' +
     '                 #                         #       #       #                            \n' +
-    '                 # ###########   #######       #       #   #                                  \n' +
+    '                 #############   #######       #       #   #                                  \n' +
     '                          ####   ####  #       l       l   #                            \n' +
     '                          #         #  #       #       #   ######                             \n' +
     '                          #         #  #       #       #        #                       \n' +
@@ -523,18 +523,22 @@ const generatePainting = i => {
         if (k > 0 || Math.abs(k - ex_k) > 0.1 || (ex_k > 0 && k == 0)) {
             draw(canvas, size, painting, text, (ex_k = k), t)
             texture.needsUpdate = true
+
+            painting.forEach((dot, i) => {
+                const u = getU(painting.length, i, k)
+                const d = getDisplacement(dot.x / size, dot.y / size, u, t)
+
+                object.children[i].visible = u > 0
+
+                object.children[i].scale.set(d.s, d.s, d.s * u)
+
+                object.children[i].position.set(
+                    d.x - 0.5,
+                    -(d.y - 0.5),
+                    d.z - 0.1
+                )
+            })
         }
-
-        painting.forEach((dot, i) => {
-            const u = getU(painting.length, i, k)
-            const d = getDisplacement(dot.x / size, dot.y / size, u, t)
-
-            object.children[i].visible = u > 0
-
-            object.children[i].scale.set(d.s, d.s, d.s * u)
-
-            object.children[i].position.set(d.x - 0.5, -(d.y - 0.5), d.z - 0.1)
-        })
     }
 
     update(0, 0)
