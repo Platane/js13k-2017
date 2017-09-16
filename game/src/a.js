@@ -50,9 +50,6 @@ const l = [
     OPACITY_AVAILABLE.length,
 ].map(x => Math.ceil(Math.log(x) / Math.LN2))
 
-const m = [0]
-l.forEach((l, i) => (m[i + 1] = m[i] + l))
-
 const n_dot = l.reduce((sum, l) => sum + l, 0)
 
 const readNumber = (a, b, arr) => {
@@ -79,7 +76,7 @@ const unpackADN = buffer => {
     const adn = []
     let offset = 0
 
-    while (offset < buffer.length * 8 - n_dot) {
+    while (offset <= buffer.length * 8 - n_dot) {
         adn.push(
             arrayToDot(
                 l.map(l => {
@@ -364,7 +361,7 @@ const getU = (n, i, k) =>
     Math.max(0, Math.min(1, (k - (1 - L) * (n - i) / n) / L))
 
 const getDisplacement = (x, y, u, t) => {
-    const seed = (x * 36 + y * y * x * 137 + x * x * 89) % 37 / 37
+    const seed = ((x * 36 + y * y * x * 137 + x * x * 89) % 37) / 37
 
     // u = 1 - (1 - u) * (1 - u)
 
@@ -377,7 +374,9 @@ const getDisplacement = (x, y, u, t) => {
     return {
         x: x + vx * u + s * 0.2,
         y: y + vy * u + c * 0.17,
-        z: u * (0.6 + seed * 0.6) - 0.1 + s * 0.17 * (1 + seed),
+        z: u * (0.6 + seed * 0.6 + s * 0.23 * (1 + seed)),
+
+        s: 0.3 + (1 - u) * 0.7,
     }
 }
 
@@ -397,14 +396,14 @@ const draw = (canvas, size, painting, text, k, t) => {
         const u = getU(painting.length, i, k)
         const d = getDisplacement(dot.x / size, dot.y / size, u, t)
 
-        const w = dot.r * dot.r - d.z * d.z
+        const dotr = dot.r * d.s / size
 
-        const r =
-            d.z > dot.r / size
-                ? 0
-                : Math.sqrt(dot.r / size * dot.r / size - d.z * d.z)
+        const r = d.z > dotr ? 0 : Math.sqrt(dotr * dotr - d.z * d.z)
+
+        console.log(k, u, dot.r, r)
 
         ctx.beginPath()
+
         ctx.arc(d.x * l, d.y * l, r * l, 0, Math.PI * 2)
         ctx.fillStyle = 'rgb(' + dot.color + ')'
         ctx.globalAlpha = dot.opacity
@@ -432,19 +431,17 @@ const generatePainting = i => {
 
     // paint drop
     painting.forEach((dot, i) => {
-        const mat = new THREE.MeshBasicMaterial(
-            {
-                // transparent: true,
-                // opacity: dot.opacity ,
-            }
-        )
+        const mat = new THREE.MeshLambertMaterial({
+            // transparent: true,
+            // opacity: dot.opacity ,
+        })
 
         mat.color.setRGB(...dot.color.map(x => x / 256))
 
         const geo = new THREE.SphereBufferGeometry(
             Math.min(dot.r / size, 0.5),
-            Math.ceil(dot.r / 2) + 2,
-            Math.ceil(dot.r / 2) + 2
+            Math.ceil(dot.r / 4) + 4,
+            Math.ceil(dot.r / 4) + 4
         )
         const mesh = new THREE.Mesh(geo, mat)
 
@@ -492,11 +489,9 @@ const generatePainting = i => {
 
             object.children[i].visible = u > 0
 
-            const s = 0.3 + (1 - u) * 0.7
+            object.children[i].scale.set(d.s, d.s, d.s * u)
 
-            object.children[i].scale.set(s, s, s * u)
-
-            object.children[i].position.set(d.x - 0.5, -(d.y - 0.5), d.z)
+            object.children[i].position.set(d.x - 0.5, -(d.y - 0.5), d.z - 0.1)
         })
     }
 
@@ -538,16 +533,6 @@ const generatePaintings = worldGrid => {
     let prev_direction = { x: 0, y: 0 }
 
     const update = ({ position, direction }) => {
-        // const x = direction.x - prev_direction.x
-        // const y = direction.y - prev_direction.y
-        //
-        // const delta = x * x + y * y
-        //
-        // prev_direction.x = direction.x
-        // prev_direction.y = direction.y
-        //
-        // const j = 0.1 + delta * 60
-
         t += 1
 
         p.forEach((p, i) => {
@@ -558,7 +543,7 @@ const generatePaintings = worldGrid => {
 
             const scal = Math.max(0, -(x * direction.x + y * direction.y) / d)
 
-            if (d < 3 && scal > 0.88) {
+            if (d < 3 && scal > 0.92) {
                 p.t = Math.min(K + 50, p.t + 1)
             } else p.t = Math.max((p.t + 1) * 0.98 - 2, 0)
 

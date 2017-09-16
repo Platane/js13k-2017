@@ -42,7 +42,11 @@ export const FloatingRes = ({ adn, param }) =>
             </div>
 
             <textarea className={style.textarea}>
-                {JSON.stringify(packADN(param, adn))}
+                {JSON.stringify(encode(packADN(param, adn)))}
+            </textarea>
+
+            <textarea className={style.textarea}>
+                {JSON.stringify(param)}
             </textarea>
         </div>
     )
