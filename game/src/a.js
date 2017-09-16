@@ -618,16 +618,19 @@ const generateMazeObject = world => {
     {
         const canvas = document.createElement('canvas')
         canvas.height = 1
-        canvas.width = 128
+        canvas.width = 256
         const ctx = canvas.getContext('2d')
-        for (let i = 128; i--; ) {
+        for (let i = 256; i--; ) {
             ctx.beginPath()
             ctx.rect(i, 0, 1, 1)
 
             ctx.fillStyle =
-                i >= 120
-                    ? '#888'
-                    : `hsl(0, 0%, ${94 + Math.min(1, i / 60) * 6}%)`
+                i >= 240
+                    ? `hsl(0, 0%, ${40 + Math.min(1, (256 - i) / 4) * 12}%)`
+                    : `hsl(0, 0%, ${94 + Math.min(1, i / 100) * 6}%)`
+
+            console.log(i, Math.min(1, (256 - i) / 6))
+
             ctx.fill()
         }
 
@@ -801,17 +804,14 @@ const generateMazeObject = world => {
                     return p
                 })
 
+                geom.faceVertexUvs[0][geom.faces.length] = [top, top, bottom]
+                geom.faceVertexUvs[0][geom.faces.length + 1] = [
+                    bottom,
+                    bottom,
+                    top,
+                ]
+
                 if (i == 3 || i == 0) {
-                    geom.faceVertexUvs[0][geom.faces.length] = [
-                        top,
-                        top,
-                        bottom,
-                    ]
-                    geom.faceVertexUvs[0][geom.faces.length + 1] = [
-                        bottom,
-                        bottom,
-                        top,
-                    ]
                     geom.faces.push(
                         new THREE.Face3(
                             geom.vertices.length + 1,
@@ -825,16 +825,6 @@ const generateMazeObject = world => {
                         )
                     )
                 } else {
-                    geom.faceVertexUvs[0][geom.faces.length] = [
-                        top,
-                        top,
-                        bottom,
-                    ]
-                    geom.faceVertexUvs[0][geom.faces.length + 1] = [
-                        top,
-                        bottom,
-                        bottom,
-                    ]
                     geom.faces.push(
                         new THREE.Face3(
                             geom.vertices.length,
@@ -842,9 +832,9 @@ const generateMazeObject = world => {
                             geom.vertices.length + 2
                         ),
                         new THREE.Face3(
-                            geom.vertices.length + 1,
                             geom.vertices.length + 3,
-                            geom.vertices.length + 2
+                            geom.vertices.length + 2,
+                            geom.vertices.length + 1
                         )
                     )
                 }
