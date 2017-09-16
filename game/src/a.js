@@ -93,12 +93,12 @@ const unpackADN = buffer => {
 }
 
 const readPainting = path => {
-    return fetch(path)
-        .then(x => x.text())
-        .then(x => unpackADN(new Uint8Array(x.split(',').map(x => +x))))
     // return fetch(path)
-    //     .then(x => x.arrayBuffer())
-    //     .then(x => unpackADN(new Uint8Array(x)))
+    //     .then(x => x.text())
+    //     .then(x => unpackADN(new Uint8Array(x.split(',').map(x => +x))))
+    return fetch(path)
+        .then(x => x.arrayBuffer())
+        .then(x => unpackADN(new Uint8Array(x)))
 }
 
 const paintings = Array.from({ length: 30 }, () =>
@@ -213,12 +213,21 @@ const getCell = x => {
         case '5':
             return [null, 5, null, null]
 
+        // 6 michelangelo
         case '6':
             return [null, 6, null, null]
+
+        // 7 chamber
         case '7':
             return [null, 7, null, null]
+
+        // 8 keith
         case '8':
             return [null, 8, null, null]
+
+        // 9 mondrian
+        case '9':
+            return [null, 9, null, null]
 
         case 'l':
             return [null, null, Math.floor(Math.random() * 10) + 20, null]
@@ -399,8 +408,6 @@ const draw = (canvas, size, painting, text, k, t) => {
         const dotr = dot.r * d.s / size
 
         const r = d.z > dotr ? 0 : Math.sqrt(dotr * dotr - d.z * d.z)
-
-        console.log(k, u, dot.r, r)
 
         ctx.beginPath()
 
@@ -734,8 +741,18 @@ AFRAME.registerComponent('museum', {
 
         container.add(generateMazeObject(world.worldGrid))
 
+        // 1 mona lisa
+        // 2 starry night
+        // 3 munch
+        // 4 great wave
+        // 5 delacroix
+        // 6 michelangelo
+        // 7 chamber
+        // 8 keith
+        // 9 mondrian
+
         Promise.all(
-            '12345678'
+            '123456789'
                 .split('')
                 .map((x, i) =>
                     readPainting(x).then(p => (paintings[i + 1] = p))
