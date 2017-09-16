@@ -850,7 +850,7 @@ const generateMazeObject = world => {
         geom.uvsNeedUpdate = true
 
         const mesh = new THREE.Mesh(geom, wall)
-        mesh.scale.set(1, 3, 1)
+        mesh.scale.set(1, 2.8, 1)
         maze.add(mesh)
     }
 
@@ -882,7 +882,7 @@ const generateMazeObject = world => {
             const mesh = new THREE.Mesh(geom, ceiling)
 
             mesh.rotation.x = Math.PI / 2
-            mesh.position.set(x + 0.03, 3.5, h / 2)
+            mesh.position.set(x + 0.03, 4.5, h / 2)
 
             maze.add(mesh)
         }
@@ -907,7 +907,7 @@ const generateMazeObject = world => {
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping
         texture.repeat.set(1, 1)
 
-        const mat = new THREE.MeshBasicMaterial()
+        const mat = new THREE.MeshLambertMaterial()
         mat.map = texture
 
         const mesh = new THREE.Mesh(planeGeom, mat)

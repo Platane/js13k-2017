@@ -10,6 +10,16 @@
         <a-camera wasd-controls-enabled="false" reverse-mouse-drag="false" user-height="0"></a-camera>
     </a-entity>
     <a-sky color="#c8dbec"></a-sky>
+
+    <a-light type="ambient" color="#aaa" groundColor="#fff"></a-light>
+
+    <a-light type="directional" color="#5e6571" position="0 0 0" rotation="0 0 0" target="#directionaltarget">
+        <a-entity id="directionaltarget" position="0 0.5 -0.1"></a-entity>
+    </a-light>
+
+    <a-light type="point" position="30 3 30" rotation="0 0 0" color="#63584f">
+
+</a-light>
 </a-scene>
 </body>
 </html>
