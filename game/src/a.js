@@ -222,7 +222,14 @@ const worldMap =
     '                          #### ######                 ###########                             \n' +
     '                             #   #                                                      \n' +
     '                             #   #                                                         \n' +
-    '                             ####                                                       '
+    '                             ####                                                       \n' +
+    '                                                                                        \n' +
+    '                                                                                         \n' +
+    '                                                                                         \n' +
+    '                                                                                         \n' +
+    '                                                                                         \n' +
+    '                                                                                         \n' +
+    '                                                                                           '
 
 const getCell = x => {
     switch (x) {
@@ -668,9 +675,65 @@ const generateMazeObject = world => {
         floor.map = texture
     }
 
+    // floor aomap
+    {
+        const S = 1024
+        const canvas = document.createElement('canvas')
+        canvas.width = canvas.height = S
+        const ctx = canvas.getContext('2d')
+
+        const w = world.length
+        const h = world[0].length
+
+        // fill with white
+        ctx.fillStyle = '#fff'
+        ctx.fillRect(0, 0, S, S)
+
+        // prepare to draw each box with blur
+        ctx.fillStyle = '#333'
+        ctx.filter = `blur(${0.12 * S / w}px)`
+
+        // size of each box
+        const s = 1.12
+
+        for (let x = world.length; x--; )
+            for (let y = world[0].length; y--; )
+                if (world[x][y]) {
+                    ctx.fillRect(
+                        (x - (s - 1) / 2) / w * S,
+                        (y - (s - 1) / 2) / h * S,
+                        s * S / w,
+                        s * S / h
+                    )
+                }
+
+        const texture = new THREE.Texture(
+            canvas,
+            THREE.UVMapping,
+            THREE.ClampToEdgeWrapping,
+            THREE.LinearFilter,
+            THREE.LinearFilter
+            // THREE.NearestFilter,
+            // THREE.NearestFilter
+        )
+        texture.needsUpdate = true
+        // texture.repeat.set(world.length / L, world[0].length / L)
+
+        floor.aoMap = texture
+        floor.aoMapIntensity = 1.4
+
+        // document.body.appendChild(canvas)
+        // canvas.style.position = 'fixed'
+        // canvas.style.zIndex = 99999999
+        // canvas.style.top = 0
+    }
+
     // floor
     {
-        const geom = new THREE.PlaneBufferGeometry(w, h)
+        const geom = new THREE.PlaneGeometry(w, h)
+
+        geom.faceVertexUvs[2] = geom.faceVertexUvs[1] = geom.faceVertexUvs[0]
+
         const mesh = new THREE.Mesh(geom, floor)
         mesh.position.set(w / 2, 0, h / 2)
         mesh.rotation.x = -Math.PI / 2
