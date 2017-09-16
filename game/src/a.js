@@ -606,6 +606,38 @@ const generateMazeObject = world => {
     const w = world.length
     const h = world[0].length
 
+    // wall mat
+    const wall = new THREE.MeshLambertMaterial()
+    {
+        const canvas = document.createElement('canvas')
+        canvas.height = 1
+        canvas.width = 128
+        const ctx = canvas.getContext('2d')
+        for (let i = 128; i--; ) {
+            ctx.beginPath()
+            ctx.rect(i, 0, 1, 1)
+
+            ctx.fillStyle =
+                i >= 120
+                    ? '#888'
+                    : `hsl(0, 0%, ${94 + Math.min(1, i / 60) * 6}%)`
+            ctx.fill()
+        }
+
+        const texture = new THREE.Texture(
+            canvas,
+            THREE.UVMapping,
+            THREE.ClampToEdgeWrapping,
+            THREE.NearestFilter,
+            THREE.LinearFilter
+        )
+        texture.needsUpdate = true
+        texture.repeat.set(1, 1)
+
+        wall.map = texture
+    }
+
+    // floor mat
     const floor = new THREE.MeshLambertMaterial()
     {
         const canvas = document.createElement('canvas')
@@ -650,7 +682,12 @@ const generateMazeObject = world => {
     {
         const geom = new THREE.Geometry()
 
+        geom.faceVertexUvs = [[]]
+
         const faces = [[], [], [], []]
+
+        const top = new THREE.Vector2(1, 0)
+        const bottom = new THREE.Vector2(0, 0)
 
         for (let x = world.length; x--; )
             for (let y = world[0].length; y--; )
@@ -701,7 +738,17 @@ const generateMazeObject = world => {
                     return p
                 })
 
-                if (i == 3 || i == 0)
+                if (i == 3 || i == 0) {
+                    geom.faceVertexUvs[0][geom.faces.length] = [
+                        top,
+                        top,
+                        bottom,
+                    ]
+                    geom.faceVertexUvs[0][geom.faces.length + 1] = [
+                        bottom,
+                        bottom,
+                        top,
+                    ]
                     geom.faces.push(
                         new THREE.Face3(
                             geom.vertices.length + 1,
@@ -709,12 +756,22 @@ const generateMazeObject = world => {
                             geom.vertices.length + 2
                         ),
                         new THREE.Face3(
-                            geom.vertices.length + 1,
                             geom.vertices.length + 2,
-                            geom.vertices.length + 3
+                            geom.vertices.length + 3,
+                            geom.vertices.length + 1
                         )
                     )
-                else
+                } else {
+                    geom.faceVertexUvs[0][geom.faces.length] = [
+                        top,
+                        top,
+                        bottom,
+                    ]
+                    geom.faceVertexUvs[0][geom.faces.length + 1] = [
+                        top,
+                        bottom,
+                        bottom,
+                    ]
                     geom.faces.push(
                         new THREE.Face3(
                             geom.vertices.length,
@@ -727,6 +784,7 @@ const generateMazeObject = world => {
                             geom.vertices.length + 2
                         )
                     )
+                }
 
                 geom.vertices.push(...m)
             }
@@ -736,6 +794,7 @@ const generateMazeObject = world => {
         geom.computeFaceNormals()
         geom.verticesNeedUpdate = true
         geom.normalsNeedUpdate = true
+        geom.uvsNeedUpdate = true
 
         const mesh = new THREE.Mesh(geom, wall)
         mesh.scale.set(1, 3, 1)
