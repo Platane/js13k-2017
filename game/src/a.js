@@ -310,6 +310,8 @@ const around = [
 const isInside = (grid, x, y) =>
     x >= 0 && x < grid.length && y >= 0 && y < grid[0].length
 
+const isWall = (grid, x, y) => !isInside(grid, x, y) || grid[x][y]
+
 const getClosestWall = (p, grid) => {
     const gx = Math.floor(p.x)
     const gy = Math.floor(p.y)
@@ -319,7 +321,7 @@ const getClosestWall = (p, grid) => {
         const y = gy + dir.y
 
         // is a wall
-        if (!isInside(grid, x, y) || grid[x][y]) {
+        if (isWall(grid, x, y)) {
             const dx = dir.x === 0 ? 0 : dir.x > 0 ? 1 - p.x % 1 : p.x % 1
             const dy = dir.y === 0 ? 0 : dir.y > 0 ? 1 - p.y % 1 : p.y % 1
 
@@ -642,24 +644,119 @@ const generateMazeObject = world => {
 
     // wall
     {
-        const geom = new THREE.BoxBufferGeometry(1, 3.2, 1)
-        const geomlat = new THREE.BoxBufferGeometry(1.01, 0.2, 1.01)
+        const geom = new THREE.Geometry()
+
+        const faces = [[], [], [], []]
 
         for (let x = world.length; x--; )
             for (let y = world[0].length; y--; )
-                if (world[x][y]) {
-                    const mesh = new THREE.Mesh(geom, wall)
-                    mesh.position.set(x + 0.5, 0.8, y + 0.5)
+                if (world[x][y])
+                    for (let u = 0; u < 4; u++)
+                        if (!isWall(world, x + around[u].x, y + around[u].y))
+                            faces[u].push({
+                                x: x + around[u].x,
+                                y: y + around[u].y,
+                            })
 
-                    mesh.castShadow = true
-                    mesh.receiveShadow = false
-                    maze.add(mesh)
+        for (let i = 0; i < 4; i++) {
+            const f = faces[i]
+            const v = around[i].y ? 'y' : 'x'
+            const u = v === 'y' ? 'x' : 'y'
+            const dir = around[i].y + around[i].x
 
-                    const mesh2 = new THREE.Mesh(geomlat, lat)
-                    mesh2.position.set(x + 0.5, 0.05, y + 0.5)
-                    maze.add(mesh2)
+            while (f.length) {
+                const j = f.shift()
+
+                let a = j[u]
+                let b = a
+
+                const anchor = j[v]
+
+                let fl = -1
+                while (fl != f.length) {
+                    fl = f.length
+                    for (let k = f.length; k--; )
+                        if (f[k][v] === anchor) {
+                            if (f[k][u] === a - 1) {
+                                f.splice(k, 1)
+                                a = a - 1
+                            } else if (f[k][u] === b + 1) {
+                                f.splice(k, 1)
+                                b = b - 1
+                            }
+                        }
                 }
+
+                const m = Array.from({ length: 4 }, (_, j) => {
+                    const p = new THREE.Vector3(0, 0, 0)
+                    p[v] = anchor + (i > 1 ? 1 : 0)
+                    p[u] = j % 2 ? a : b + 1
+
+                    p.z = p.y
+                    p.y = +(j > 1)
+                    return p
+                })
+
+                if (i == 3 || i == 0)
+                    geom.faces.push(
+                        new THREE.Face3(
+                            geom.vertices.length + 1,
+                            geom.vertices.length,
+                            geom.vertices.length + 2
+                        ),
+                        new THREE.Face3(
+                            geom.vertices.length + 1,
+                            geom.vertices.length + 2,
+                            geom.vertices.length + 3
+                        )
+                    )
+                else
+                    geom.faces.push(
+                        new THREE.Face3(
+                            geom.vertices.length,
+                            geom.vertices.length + 1,
+                            geom.vertices.length + 2
+                        ),
+                        new THREE.Face3(
+                            geom.vertices.length + 1,
+                            geom.vertices.length + 3,
+                            geom.vertices.length + 2
+                        )
+                    )
+
+                geom.vertices.push(...m)
+            }
+        }
+
+        geom.computeFlatVertexNormals()
+        geom.computeFaceNormals()
+        geom.verticesNeedUpdate = true
+        geom.normalsNeedUpdate = true
+
+        const mesh = new THREE.Mesh(geom, wall)
+        mesh.scale.set(1, 3, 1)
+        maze.add(mesh)
     }
+
+    // {
+    //     const geom = new THREE.BoxBufferGeometry(1, 0.2, 1)
+    //     const geomlat = new THREE.BoxBufferGeometry(1.01, 0.2, 1.01)
+    //
+    //     for (let x = world.length; x--; )
+    //         for (let y = world[0].length; y--; )
+    //             if (world[x][y]) {
+    //                 const mesh = new THREE.Mesh(geom, wall)
+    //                 mesh.position.set(x + 0.5, 0.8, y + 0.5)
+    //
+    //                 mesh.castShadow = true
+    //                 mesh.receiveShadow = false
+    //                 maze.add(mesh)
+    //
+    //                 const mesh2 = new THREE.Mesh(geomlat, lat)
+    //                 mesh2.position.set(x + 0.5, 0.05, y + 0.5)
+    //                 maze.add(mesh2)
+    //             }
+    // }
 
     // ceiling
     {
@@ -788,6 +885,13 @@ AFRAME.registerComponent('museum', {
 ////////////////////////////
 window.onload = () => {
     const { renderer } = document.getElementsByTagName('a-scene')[0]
+
+    // const loop = () => {
+    //     console.log(renderer.info.render.faces)
+    //     setTimeout(loop,100)
+    // }
+    //
+    // loop()
 
     // renderer.shadowMap.enabled = true;
     // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
