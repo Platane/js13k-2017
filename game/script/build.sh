@@ -16,4 +16,8 @@ cd ..
 
 mv ./out.zip ./dist
 
+cp ./node_modules/aframe/gh-pages/dist/aframe-v0.6.1.min.js ./dist
+
+stat --printf="%s\n" ./dist/out.zip
+
 echo ok

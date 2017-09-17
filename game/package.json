@@ -2,22 +2,21 @@
     "name": "13k2017-game",
     "version": "1.0.0",
     "dependencies": {
-        "babel-loader": " 7.1.2",
-        "babel-minify": " 0.2.0",
-        "webpack": " 3.5.6",
-        "webpack-dev-server": " 2.7.1"
+        "aframe": "0.6.1"
     },
     "devDependencies": {
         "babel-cli": "6.26.0",
+        "babel-loader": "7.1.2",
+        "babel-minify": "0.2.0",
         "babel-plugin-transform-object-rest-spread": "6.26.0",
-        "babel-plugin-transform-string-literal-replace": "1.0.2",
-        "babel-preset-env": " 1.6.0",
         "babel-preset-flow": "6.23.0",
-        "flow-typed": "2.1.5"
+        "flow-typed": "2.1.5",
+        "webpack": "3.6.0",
+        "webpack-dev-server": "2.8.2"
     },
     "scripts": {
         "start": "webpack-dev-server --inline --devtool source-map -d",
         "flow-typed": "flow-typed install",
-        "build": "(rm -r dist || echo 1 ) && mkdir dist && cp src/* dist && babel -o ./dist/a.js ./src/a.js"
+        "build": "./script/build.sh"
     }
 }

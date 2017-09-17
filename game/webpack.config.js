@@ -30,7 +30,11 @@ module.exports = {
 
     devServer: {
         port: 8086,
-        contentBase: ['./external', './src'],
+        contentBase: [
+            './external',
+            './src',
+            './node_modules/aframe/gh-pages/dist',
+        ],
         historyApiFallback: true,
         watchOptions: {
             ignored: /node_modules/,
