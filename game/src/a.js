@@ -122,9 +122,14 @@ const paintings = Array.from({ length: 30 }, () => {
     const hues = [Math.random(), Math.random()]
 
     return Array.from({ length: 30 }, (_, i) => ({
-        x: Math.random() * 64,
-        y: Math.random() * 64,
-        r: Math.random() * 30,
+        // x: 10,
+        // y: 10,
+        // r: 10,
+        // color: [255, 0, 0],
+        // opacity: 1,
+        r: Math.floor(Math.random() * 30) + 10,
+        x: Math.floor(Math.random() * 64),
+        y: Math.floor(Math.random() * 64),
         color: hslToRgb(
             hues[+(i > 15)],
             Math.random() * 0.5,
@@ -133,6 +138,13 @@ const paintings = Array.from({ length: 30 }, () => {
         opacity: Math.random(),
     }))
 })
+
+// for (let i = 30; i--; )
+//     paintings[i] = [
+//         { x: 10, y: 3, r: 3, color: [125, 0, 0], opacity: 1 },
+//         { x: 50, y: 10, r: 10, color: [255, 255, 0], opacity: 1 },
+//         { x: 30, y: 30, r: 10, color: [255, 0, 255], opacity: 1 },
+//     ]
 
 let step = 1
 
@@ -204,7 +216,7 @@ const worldMap =
     '           #                        #                         #                         \n' +
     '           #                        #####################  ####                           \n' +
     '           ####################   #######################  #                             \n' +
-    '                 #                    ###################  ####                                             \n' +
+    '                 #                    ###################  #                                             \n' +
     '                 #                    ##   #       #       #                            \n' +
     '                 #                    ##   r       l       3                             \n' +
     '                 #                         #       #       #                            \n' +
@@ -213,16 +225,16 @@ const worldMap =
     '                          #         #  #       #       #   ######                             \n' +
     '                          #         #  #       #       #        #                       \n' +
     '                          r         l  #       l       l   #### #                           \n' +
-    '                          #         ####       #       #   #  # #                           \n' +
-    '                          #    1           2       #       #  # #                        \n' +
-    '                          #         ####   r       l       #  # #                            \n' +
-    '                          r         l  #   #       #       #  # #                          \n' +
+    '                          #         ####       #       #   #### #                           \n' +
+    '                          #    1           2       #       #### #                        \n' +
+    '                          #         ####   r       l       #### #                            \n' +
+    '                          r         l  #   #       #       #### #                          \n' +
     '                          #         #  ################ ####### #                                          \n' +
-    '                          #         #                 #         #                       \n' +
-    '                          #### ######                 ###########                             \n' +
+    '                          #         ###################         #                                \n' +
+    '                          #### ##################################                             \n' +
     '                             #   #                                                      \n' +
     '                             #   #                                                         \n' +
-    '                             ####                                                       \n' +
+    '                             #####                                                      \n' +
     '                                                                                        \n' +
     '                                                                                         \n' +
     '                                                                                         \n' +
@@ -422,6 +434,8 @@ const getDisplacement = (x, y, u, t) => {
     const vx = x - 0.5 + (x < 0.5 ? -0.4 : 0.4)
     const vy = y - 0.5
 
+    const q = 1 - (1 - u) * (1 - u) * (1 - u)
+
     return {
         x: x + vx * u + s * 0.2,
         y: y + vy * u + c * 0.17,
@@ -477,20 +491,53 @@ const generatePainting = i => {
 
     const painting = paintings[i]
     const text = texts[i]
+    const canvas = document.createElement('canvas')
+
+    const l = 512
+
+    const ctx = canvas.getContext('2d')
+    ctx.fillStyle = '#fff'
+    ctx.fillRect(0, 0, size, size)
 
     // paint drop
-    painting.forEach((dot, i) => {
-        const mat = new THREE.MeshLambertMaterial({
-            // transparent: true,
-            // opacity: dot.opacity ,
-        })
+    painting.forEach(({ r, opacity, color, x, y }, i) => {
+        const mat = new THREE.MeshLambertMaterial()
+        {
+            ctx.beginPath()
+            ctx.arc(x, y, r, 0, Math.PI * 2)
+            ctx.fillStyle = 'rgb(' + color + ')'
+            ctx.globalAlpha = opacity
+            ctx.fill()
 
-        mat.color.setRGB(...dot.color.map(x => x / 256))
+            const { data } = ctx.getImageData(0, 0, size, size)
+
+            const c = [0, 0, 0]
+            let s = 0
+
+            for (let dx = -r; dx < r; dx++)
+                for (let dy = -r; dy < r; dy++)
+                    if (
+                        dx * dx + dy * dy < r * r &&
+                        x + dx >= 0 &&
+                        y + dy >= 0 &&
+                        x + dx < size &&
+                        y + dy < size
+                    ) {
+                        const k = ((x + dx) * 1 + (y + dy) * size) * 4
+
+                        c[0] += data[k + 0]
+                        c[1] += data[k + 1]
+                        c[2] += data[k + 2]
+                        s++
+                    }
+
+            mat.color.setRGB(c[0] / s / 255, c[1] / s / 255, c[2] / s / 255)
+        }
 
         const geo = new THREE.SphereBufferGeometry(
-            Math.min(dot.r / size, 0.5),
-            Math.ceil(dot.r / 4) + 4,
-            Math.ceil(dot.r / 4) + 4
+            Math.min(r / size, 0.5),
+            Math.ceil(r / 4) + 4,
+            Math.ceil(r / 4) + 4
         )
         const mesh = new THREE.Mesh(geo, mat)
 
@@ -498,7 +545,6 @@ const generatePainting = i => {
     })
 
     // painting as texture
-    const canvas = document.createElement('canvas')
     const texture = new THREE.Texture(canvas)
     {
         texture.needsUpdate = true
@@ -628,8 +674,6 @@ const generateMazeObject = world => {
                 i >= 240
                     ? `hsl(0, 0%, ${40 + Math.min(1, (256 - i) / 4) * 12}%)`
                     : `hsl(0, 0%, ${94 + Math.min(1, i / 100) * 6}%)`
-
-            console.log(i, Math.min(1, (256 - i) / 6))
 
             ctx.fill()
         }
@@ -913,11 +957,11 @@ const generateMazeObject = world => {
         const mesh = new THREE.Mesh(planeGeom, mat)
         mesh.position.z = 0.01
 
-        mesh.scale.set(2, 2, 2)
+        mesh.scale.set(1.8, 1.8, 1.8)
 
         const object = new THREE.Object3D()
 
-        object.position.set(30, 1.2, 30)
+        object.position.set(30, 1.1, 30)
 
         object.rotation.y = 0
 
