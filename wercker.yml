@@ -199,6 +199,8 @@ build-deploy-game:
             cwd: game
             name: build
             code: |
+                apt-get update
+                apt-get install zip
                 chmod +x ./script/build.sh
                 ./script/build.sh
 
