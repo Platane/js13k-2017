@@ -200,7 +200,7 @@ build-deploy-game:
             name: build
             code: |
                 apt-get update
-                apt-get install zip
+                apt-get install zip --y
                 chmod +x ./script/build.sh
                 ./script/build.sh
 
