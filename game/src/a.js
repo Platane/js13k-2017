@@ -203,6 +203,17 @@ const texts = [
 ]
 
 const worldMap =
+    // '                       \n' +
+    // ' #         ##            \n' +
+    // ' #        #        #    \n' +
+    // ' #                #   \n' +
+    // '  #  #            #    \n' +
+    // '  # ###                \n' +
+    // '   # #        #        \n' +
+    // ' #          ##       #  \n' +
+    // '      ##             #    \n' +
+    // '    ##                #   \n'
+
     '                                                                                    \n' +
     '           ###########################                                                   \n' +
     '           #                        ###########################                       \n' +
@@ -329,7 +340,7 @@ const around = [
 const isInside = (grid, x, y) =>
     x >= 0 && x < grid.length && y >= 0 && y < grid[0].length
 
-const isWall = (grid, x, y) => !isInside(grid, x, y) || grid[x][y]
+const isWall = (grid, x, y) => !isInside(grid, x, y) || !!grid[x][y]
 
 const getClosestWall = (p, grid) => {
     const gx = Math.floor(p.x)
@@ -691,6 +702,43 @@ const generateMazeObject = world => {
         wall.map = texture
     }
 
+    // wall aomap
+    {
+        const canvas = document.createElement('canvas')
+        canvas.height = 1
+        canvas.width = 16
+        const ctx = canvas.getContext('2d')
+
+        ctx.fillStyle = '#fff'
+        ctx.fillRect(0, 0, 1, 1)
+
+        ctx.fillStyle = '#000'
+        ctx.fillRect(1, 0, 1, 1)
+
+        for (let i = 16; i--; ) {
+            ctx.fillStyle = `hsl(0, 0%, ${i / 16 * 100}%)`
+            ctx.fillRect(16 - i, 0, 1, 1)
+        }
+
+        // document.body.appendChild(canvas)
+        // canvas.style.position = 'fixed'
+        // canvas.style.zIndex = 99999999
+        // canvas.style.top = 0
+
+        const texture = new THREE.Texture(
+            canvas,
+            THREE.UVMapping,
+            THREE.ClampToEdgeWrapping,
+            THREE.LinearFilter,
+            THREE.LinearFilter
+        )
+        texture.needsUpdate = true
+
+        // wall.map = texture
+        wall.aoMap = texture
+        wall.aoMapIntensity = 0.25
+    }
+
     // floor mat
     const floor = new THREE.MeshLambertMaterial()
     {
@@ -779,7 +827,7 @@ const generateMazeObject = world => {
     {
         const geom = new THREE.PlaneGeometry(w, h)
 
-        geom.faceVertexUvs[2] = geom.faceVertexUvs[1] = geom.faceVertexUvs[0]
+        geom.faceVertexUvs[1] = geom.faceVertexUvs[0]
 
         const mesh = new THREE.Mesh(geom, floor)
         mesh.position.set(w / 2, 0, h / 2)
@@ -792,12 +840,70 @@ const generateMazeObject = world => {
     {
         const geom = new THREE.Geometry()
 
-        geom.faceVertexUvs = [[]]
-
-        const faces = [[], [], [], []]
+        geom.faceVertexUvs = [[], []]
 
         const top = new THREE.Vector2(1, 0)
         const bottom = new THREE.Vector2(0, 0)
+
+        const pushWall = (a, b, shadowA, shadowB, d) => {
+            const n = geom.faces.length
+
+            geom.faceVertexUvs[0][n] = [top, bottom, bottom]
+            geom.faceVertexUvs[0][n + 1] = [top, bottom, top]
+
+            geom.faceVertexUvs[1][n] = [
+                new THREE.Vector2(0, 0),
+                new THREE.Vector2(0, 1),
+                new THREE.Vector2(0, 1),
+            ]
+            geom.faceVertexUvs[1][n + 1] = [
+                new THREE.Vector2(0, 0),
+                new THREE.Vector2(0, 1),
+                new THREE.Vector2(0, 0),
+            ]
+
+            const k = 1 - d * 0.8
+
+            if (shadowB) {
+                geom.faceVertexUvs[1][n][0].x = 1
+                geom.faceVertexUvs[1][n][1].x = 1
+                geom.faceVertexUvs[1][n][2].x = k
+
+                geom.faceVertexUvs[1][n + 1][0].x = 1
+                geom.faceVertexUvs[1][n + 1][1].x = k
+                geom.faceVertexUvs[1][n + 1][2].x = k
+            } else if (shadowA) {
+                geom.faceVertexUvs[1][n][0].x = k
+                geom.faceVertexUvs[1][n][1].x = k
+                geom.faceVertexUvs[1][n][2].x = 1
+
+                geom.faceVertexUvs[1][n + 1][0].x = k
+                geom.faceVertexUvs[1][n + 1][1].x = 1
+                geom.faceVertexUvs[1][n + 1][2].x = 1
+            }
+
+            geom.faces.push(
+                new THREE.Face3(
+                    geom.vertices.length + 0,
+                    geom.vertices.length + 1,
+                    geom.vertices.length + 2
+                ),
+                new THREE.Face3(
+                    geom.vertices.length + 0,
+                    geom.vertices.length + 2,
+                    geom.vertices.length + 3
+                )
+            )
+
+            geom.vertices.push(
+                new THREE.Vector3(b.x, 0, b.y),
+                new THREE.Vector3(b.x, 1, b.y),
+                new THREE.Vector3(a.x, 1, a.y),
+                new THREE.Vector3(a.x, 0, a.y)
+            )
+        }
+
+        const faces = [[], [], [], []]
 
         for (let x = world.length; x--; )
             for (let y = world[0].length; y--; )
@@ -810,6 +916,9 @@ const generateMazeObject = world => {
                             })
 
         for (let i = 0; i < 4; i++) {
+            // {
+            //     const i = 1
+
             const f = faces[i]
             const v = around[i].y ? 'y' : 'x'
             const u = v === 'y' ? 'x' : 'y'
@@ -838,52 +947,45 @@ const generateMazeObject = world => {
                         }
                 }
 
-                const m = Array.from({ length: 4 }, (_, j) => {
-                    const p = new THREE.Vector3(0, 0, 0)
-                    p[v] = anchor + (i > 1 ? 1 : 0)
-                    p[u] = j % 2 ? a : b + 1
+                const A = {}
+                const B = {}
+                A[v] = B[v] = anchor + (i == 0 || i === 1 ? 0 : 1)
+                A[u] = a
+                B[u] = b + 1
 
-                    p.z = p.y
-                    p.y = +(j > 1)
-                    return p
-                })
+                const d = b + 1 - a
 
-                geom.faceVertexUvs[0][geom.faces.length] = [top, top, bottom]
-                geom.faceVertexUvs[0][geom.faces.length + 1] = [
-                    bottom,
-                    bottom,
-                    top,
-                ]
+                let shadowA = false
+                let shadowB = false
 
-                if (i == 3 || i == 0) {
-                    geom.faces.push(
-                        new THREE.Face3(
-                            geom.vertices.length + 1,
-                            geom.vertices.length,
-                            geom.vertices.length + 2
-                        ),
-                        new THREE.Face3(
-                            geom.vertices.length + 2,
-                            geom.vertices.length + 3,
-                            geom.vertices.length + 1
-                        )
-                    )
-                } else {
-                    geom.faces.push(
-                        new THREE.Face3(
-                            geom.vertices.length,
-                            geom.vertices.length + 1,
-                            geom.vertices.length + 2
-                        ),
-                        new THREE.Face3(
-                            geom.vertices.length + 3,
-                            geom.vertices.length + 2,
-                            geom.vertices.length + 1
-                        )
-                    )
+                if (i === 0) {
+                    shadowA = isWall(world, A.x - 1, A.y)
+                    shadowB = isWall(world, B.x, B.y)
+                } else if (i === 1) {
+                    shadowA = isWall(world, A.x, A.y - 1)
+                    shadowB = isWall(world, B.x, B.y)
+                } else if (i === 2) {
+                    shadowA = isWall(world, A.x - 1, A.y - 1)
+                    shadowB = isWall(world, B.x, B.y - 1)
+                } else if (i === 3) {
+                    shadowA = isWall(world, A.x - 1, A.y - 1)
+                    shadowB = isWall(world, B.x - 1, B.y)
                 }
 
-                geom.vertices.push(...m)
+                const pushW =
+                    i == 0 || i === 3
+                        ? pushWall
+                        : (a, b, c, d, e) => pushWall(b, a, d, c, e)
+
+                if (shadowA && shadowB) {
+                    const C = {
+                        x: (A.x + B.x) / 2,
+                        y: (A.y + B.y) / 2,
+                    }
+
+                    pushW(A, C, true, false, d / 2)
+                    pushW(C, B, false, true, d / 2)
+                } else pushW(A, B, shadowA, shadowB, d)
             }
         }
 
