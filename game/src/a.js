@@ -230,9 +230,9 @@ const worldMap =
     '                 #                    ###################  #                                             \n' +
     '                 #                    ##   #       #       #                            \n' +
     '                 #                    ##   r       l       3                             \n' +
-    '                 #                         #       #       #                            \n' +
-    '                 #############   #######       #       #   #                                  \n' +
-    '                          ####   ####  #       l       l   #                            \n' +
+    '                 #                    ##   #       #       #                            \n' +
+    '                 #######################       #       #   #                                  \n' +
+    '                          ###########  #       l       l   #                            \n' +
     '                          #         #  #       #       #   ######                             \n' +
     '                          #         #  #       #       #        #                       \n' +
     '                          r         l  #       l       l   #### #                           \n' +
@@ -674,30 +674,25 @@ const generateMazeObject = world => {
     const wall = new THREE.MeshLambertMaterial()
     {
         const canvas = document.createElement('canvas')
+        const s = 256
         canvas.height = 1
-        canvas.width = 256
+        canvas.width = s
         const ctx = canvas.getContext('2d')
-        for (let i = 256; i--; ) {
-            ctx.beginPath()
-            ctx.rect(i, 0, 1, 1)
 
-            ctx.fillStyle =
-                i >= 240
-                    ? `hsl(0, 0%, ${40 + Math.min(1, (256 - i) / 4) * 12}%)`
-                    : `hsl(0, 0%, ${94 + Math.min(1, i / 100) * 6}%)`
-
-            ctx.fill()
+        for (let i = s; i--; ) {
+            ctx.fillStyle = i / s > 0.06 ? '#fff' : '#888'
+            ctx.fillRect(i, 0, 1, 1)
         }
 
         const texture = new THREE.Texture(
             canvas,
             THREE.UVMapping,
             THREE.ClampToEdgeWrapping,
-            THREE.NearestFilter,
+            THREE.LinearFilter,
             THREE.LinearFilter
+            // THREE.NearestFilter,
         )
         texture.needsUpdate = true
-        texture.repeat.set(1, 1)
 
         wall.map = texture
     }
@@ -705,21 +700,30 @@ const generateMazeObject = world => {
     // wall aomap
     {
         const canvas = document.createElement('canvas')
-        canvas.height = 1
-        canvas.width = 16
+        const s = 128
+        canvas.width = canvas.height = s
+
         const ctx = canvas.getContext('2d')
 
         ctx.fillStyle = '#fff'
-        ctx.fillRect(0, 0, 1, 1)
+        ctx.fillRect(0, 0, s, s)
 
-        ctx.fillStyle = '#000'
-        ctx.fillRect(1, 0, 1, 1)
+        for (let x = s; x--; )
+            for (let y = s; y--; ) {
+                const r = Math.sqrt(x * x + y * y) / Math.sqrt(s * s) / 1.45
 
-        for (let i = 16; i--; ) {
-            ctx.fillStyle = `hsl(0, 0%, ${i / 16 * 100}%)`
-            ctx.fillRect(16 - i, 0, 1, 1)
-        }
+                const ly1 = Math.min(1, Math.max(0, (1 - y / s) * 3))
+                const ly2 = Math.min(1, Math.max(0, y / s * 3))
+                const lr = 1 - r * r
+                const l =
+                    (0.4 + 0.6 * (1 - (1 - ly1) * (1 - ly1))) *
+                    lr *
+                    (0.88 + 0.12 * ly2)
 
+                ctx.fillStyle = `hsl(0, 0%, ${l * 100}%)`
+                ctx.fillRect(x, y, 1, 1)
+            }
+        //
         // document.body.appendChild(canvas)
         // canvas.style.position = 'fixed'
         // canvas.style.zIndex = 99999999
@@ -728,15 +732,17 @@ const generateMazeObject = world => {
         const texture = new THREE.Texture(
             canvas,
             THREE.UVMapping,
-            THREE.ClampToEdgeWrapping,
-            THREE.LinearFilter,
+            THREE.ClampToEdgeWrapping, // not working for aomap ?
+            THREE.NearestFilter,
             THREE.LinearFilter
+            // THREE.LinearFilter,
+            // THREE.LinearFilter
         )
         texture.needsUpdate = true
 
         // wall.map = texture
         wall.aoMap = texture
-        wall.aoMapIntensity = 0.25
+        wall.aoMapIntensity = 0.8
     }
 
     // floor mat
@@ -842,44 +848,47 @@ const generateMazeObject = world => {
 
         geom.faceVertexUvs = [[], []]
 
-        const top = new THREE.Vector2(1, 0)
-        const bottom = new THREE.Vector2(0, 0)
+        const top = new THREE.Vector2(0, 0)
+        const bottom = new THREE.Vector2(1, 0)
+
+        const mapuvs = geom.faceVertexUvs[0]
+        const aouvs = geom.faceVertexUvs[1]
 
         const pushWall = (a, b, shadowA, shadowB, d) => {
             const n = geom.faces.length
 
-            geom.faceVertexUvs[0][n] = [top, bottom, bottom]
-            geom.faceVertexUvs[0][n + 1] = [top, bottom, top]
+            mapuvs[n] = [top, bottom, bottom]
+            mapuvs[n + 1] = [top, bottom, top]
 
-            geom.faceVertexUvs[1][n] = [
-                new THREE.Vector2(0, 0),
-                new THREE.Vector2(0, 1),
-                new THREE.Vector2(0, 1),
+            aouvs[n] = [
+                new THREE.Vector2(0, 0.05),
+                new THREE.Vector2(0, 0.95),
+                new THREE.Vector2(0, 0.95),
             ]
-            geom.faceVertexUvs[1][n + 1] = [
-                new THREE.Vector2(0, 0),
-                new THREE.Vector2(0, 1),
-                new THREE.Vector2(0, 0),
+            aouvs[n + 1] = [
+                new THREE.Vector2(0, 0.05),
+                new THREE.Vector2(0, 0.95),
+                new THREE.Vector2(0, 0.05),
             ]
 
             const k = 1 - d * 0.8
 
             if (shadowB) {
-                geom.faceVertexUvs[1][n][0].x = 1
-                geom.faceVertexUvs[1][n][1].x = 1
-                geom.faceVertexUvs[1][n][2].x = k
+                aouvs[n][0].x = 1
+                aouvs[n][1].x = 1
+                aouvs[n][2].x = k
 
-                geom.faceVertexUvs[1][n + 1][0].x = 1
-                geom.faceVertexUvs[1][n + 1][1].x = k
-                geom.faceVertexUvs[1][n + 1][2].x = k
+                aouvs[n + 1][0].x = 1
+                aouvs[n + 1][1].x = k
+                aouvs[n + 1][2].x = k
             } else if (shadowA) {
-                geom.faceVertexUvs[1][n][0].x = k
-                geom.faceVertexUvs[1][n][1].x = k
-                geom.faceVertexUvs[1][n][2].x = 1
+                aouvs[n][0].x = k
+                aouvs[n][1].x = k
+                aouvs[n][2].x = 1
 
-                geom.faceVertexUvs[1][n + 1][0].x = k
-                geom.faceVertexUvs[1][n + 1][1].x = 1
-                geom.faceVertexUvs[1][n + 1][2].x = 1
+                aouvs[n + 1][0].x = k
+                aouvs[n + 1][1].x = 1
+                aouvs[n + 1][2].x = 1
             }
 
             geom.faces.push(
@@ -1055,15 +1064,34 @@ const generateMazeObject = world => {
 
         const mat = new THREE.MeshLambertMaterial()
         mat.map = texture
+        mat.aoMap = wall.aoMap
+        mat.aoMapIntensity = wall.aoMapIntensity
+
+        const planeGeom = new THREE.PlaneGeometry(2, 2)
+
+        const _x = 1 - 2 * 0.8
+        const top = 0.12
+        const bottom = 0.7
+        planeGeom.faceVertexUvs[1] = [
+            [
+                new THREE.Vector2(_x, bottom),
+                new THREE.Vector2(_x, top),
+                new THREE.Vector2(1, bottom),
+            ],
+            [
+                new THREE.Vector2(_x, top),
+                new THREE.Vector2(1, top),
+                new THREE.Vector2(1, bottom),
+            ],
+        ]
+        planeGeom.uvsNeedUpdate
 
         const mesh = new THREE.Mesh(planeGeom, mat)
-        mesh.position.z = 0.01
-
-        mesh.scale.set(1.8, 1.8, 1.8)
+        mesh.position.z = 0.005
 
         const object = new THREE.Object3D()
 
-        object.position.set(30, 1.1, 30)
+        object.position.set(30, 1.2, 30)
 
         object.rotation.y = 0
 
