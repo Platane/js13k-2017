@@ -749,12 +749,12 @@ const generateMazeObject = world => {
     const floor = new THREE.MeshLambertMaterial()
     {
         const canvas = document.createElement('canvas')
-        canvas.width = 16
+        canvas.width = 16 * 32
         canvas.height = 1
         const ctx = canvas.getContext('2d')
         for (let i = 16; i--; ) {
             ctx.beginPath()
-            ctx.rect(i, 0, 1, 1)
+            ctx.rect(i * 32, 0, 32, 1)
 
             const h = 32 + (0 | (8 * Math.random()))
             const l = 22 + (0 | (20 * Math.random()))
@@ -767,8 +767,10 @@ const generateMazeObject = world => {
             canvas,
             THREE.UVMapping,
             THREE.RepeatWrapping,
-            THREE.NearestFilter,
-            THREE.NearestFilter
+            THREE.LinearFilter,
+            THREE.LinearFilter
+            // THREE.NearestFilter,
+            // THREE.NearestFilter
         )
         texture.needsUpdate = true
         texture.repeat.set(10, 1)
