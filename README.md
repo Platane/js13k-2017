@@ -7,6 +7,8 @@ _My entry for the 13k js 2017_
 
 [play!](https://platane.github.io/js13k-2017)
 
+or go to the [js13k entrie page](http://js13kgames.com/entries/vernissage)
+
 # Gameplay
 
 
