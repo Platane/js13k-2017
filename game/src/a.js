@@ -368,8 +368,16 @@ const tick = () => {
     const { position, direction } = world.tim
     const control = world.control
 
-    position.x += direction.x * control.direction.y * 0.05
-    position.y += direction.y * control.direction.y * 0.05
+    const v = 0.05
+
+    position.x +=
+        (direction.x * control.direction.y +
+            direction.y * control.direction.x) *
+        v
+    position.y +=
+        (direction.y * control.direction.y -
+            direction.x * control.direction.x) *
+        0.05
 
     const closestWall = getClosestWall(position, world.worldGrid)
 
@@ -389,9 +397,35 @@ const tick = () => {
 
 //// component tim
 ////
-document.onkeydown = e => e.which == 32 && (world.control.direction.y = 1)
 
-document.onkeyup = e => e.which == 32 && (world.control.direction.y = 0)
+const down = [0, 0, 0, 0]
+const updateDirection = k => e => {
+    down[
+        {
+            '38': 0,
+            '32': 0,
+            '87': 0,
+
+            '40': 2,
+            '83': 2,
+
+            '37': 1,
+            '65': 1,
+
+            '39': 3,
+            '68': 3,
+        }[e.which]
+    ] = k
+
+    const l = (down[0] | down[2]) & (down[1] | down[3]) ? Math.SQRT1_2 : 1
+
+    world.control.direction.y = (down[0] - down[2]) * l
+    world.control.direction.x = (down[1] - down[3]) * l
+}
+
+document.onkeydown = updateDirection(1)
+
+document.onkeyup = updateDirection(0)
 
 document.ontouchstart = e => (world.control.direction.y = 1)
 
