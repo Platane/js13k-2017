@@ -6,9 +6,13 @@ mkdir -p dist
 
 cp ./src/* ./dist
 
-./node_modules/.bin/babel -o ./dist/a.js ./src/a.js
+ # first pass : mangle all var
+env NODE_ENV=MANGLE_TOP_LEVEL ./node_modules/.bin/babel --plugins= -o ./dist/a.js ./src/a.js
 
-cd src
+ # second pass minify ( I failed to tweak the babelrc to do it in one pass )
+env NODE_ENV=MINIFY ./node_modules/.bin/babel -o ./dist/a.js ./dist/a.js
+
+cd dist
 
 zip ../out.zip ./*
 

@@ -1,4 +1,15 @@
 {
-    "presets": ["flow", "minify"],
-    "plugins": ["transform-object-rest-spread"]
+    "env": {
+        "MANGLE_TOP_LEVEL": {
+            "presets": [],
+            "plugins": [
+                "transform-object-rest-spread",
+                ["minify-mangle-names", { "topLevel": true }]
+            ]
+        },
+        "MINIFY": {
+            "presets": ["minify"],
+            "plugins": []
+        }
+    }
 }

@@ -65,9 +65,7 @@ const displayColorPalette = PARAM => {
     u()
 }
 
-
-
-const printADN = ( tree, param_ ) => {
+const printADN = (tree, param_) => {
     adn = tree.adn
     param = param_
     update()
@@ -80,20 +78,19 @@ const update = () =>
     images &&
     render(
         <div>
-        <List images={images} onClick={printADN} />
-        <FloatingRes adn={adn} param={param}/>
-    </div>,
+            <List images={images} onClick={printADN} />
+            <FloatingRes adn={adn} param={param} />
+        </div>,
         document.body,
         document.body.children[0]
     )
 
-
 const wait = delay => new Promise(resolve => setTimeout(resolve, delay))
 
-// const url = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
-const url = 'https://storage.googleapis.com/platane-imagedot-result/res.json'
+const url = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
+// const url = 'https://storage.googleapis.com/platane-imagedot-result/res.json'
 const loop = async () => {
-    images = (await (await fetch(url)).json())
+    images = await (await fetch(url)).json()
 
     update()
 
