@@ -7,21 +7,23 @@ import { adnEqual } from '../../util/ancestorTree/merge'
 
 import style from './style.css'
 
+const size = 256
+
 export const FloatingRes = ({ adn, param }) =>
     !adn ? null : (
         <div className={style.container}>
             <div className={style.image1}>
-                <Image adn={adn} size={256} param={param} />
+                <Image adn={adn} size={size} param={param} />
             </div>
 
             <div className={style.image2}>
-                <Image2 adn={adn} size={256} param={param} />
+                <Image2 adn={adn} size={size} param={param} />
             </div>
 
             <div className={style.image2}>
                 <Image2
                     adn={unpackADN(param, packADN(param, adn))}
-                    size={256}
+                    size={size}
                     param={param}
                 />
             </div>
@@ -48,5 +50,30 @@ export const FloatingRes = ({ adn, param }) =>
             <textarea className={style.textarea}>
                 {JSON.stringify(param)}
             </textarea>
+
+            <DownloadButton param={param} adn={adn} />
         </div>
     )
+
+class DownloadButton extends Component {
+    onClick = () => {
+        const typedArray = packADN(this.props.param, this.props.adn)
+
+        const file = new Blob([typedArray], {
+            type: 'application/octet-binary',
+            encoding: 'utf8',
+        })
+
+        this.base.href = URL.createObjectURL(file)
+
+        this.base.download = 'adn'
+    }
+
+    render() {
+        return (
+            <a ref={el => (this.el = el)}>
+                <button onClick={this.onClick}>save</button>
+            </a>
+        )
+    }
+}
