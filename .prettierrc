@@ -1,4 +1,8 @@
 {
+  "tabWidth": 4,
+  "useTabs": false,
+  "semi": false,
   "trailingComma": "es5",
-  "semi": false
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false
 }
