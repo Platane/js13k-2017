@@ -36,7 +36,6 @@ for(let b=0;b<256;b+= 50)
     COLOR_PALETTE.push([r,v,b]);
 
 // materials
-const wall = new THREE.MeshPhongMaterial({ color: 0xf8f8f8 })
 const lat = new THREE.MeshPhongMaterial({ color: 0xc8c8c8 })
 const ceiling = new THREE.MeshBasicMaterial({ color: 0x888888 })
 
@@ -224,9 +223,9 @@ const worldMap =
     '     9                                                                 #                \n' +
     '     8     #                            5      r      r       ##########                        \n' +
     '     #     #   ##t#  ##t#   ##t#    #                         #                         \n' +
-    '           #                        #                         #                         \n' +
-    '           #                        #####################  ####                           \n' +
-    '           ####################   #######################  #                             \n' +
+    '     #     #                        #                         #                         \n' +
+    '     #     #                        #####################  ####                           \n' +
+    '     ##########################   #######################  #                             \n' +
     '                 #                    ###################  #                                             \n' +
     '                 #                    ##   #       #       #                            \n' +
     '                 #                    ##   r       l       3                             \n' +
@@ -319,6 +318,8 @@ const world = {
     control: {
         direction: { x: 0, y: 0 },
     },
+
+    tourists: [],
 }
 
 ////////////////////////////
@@ -362,6 +363,111 @@ const getClosestWall = (p, grid) => {
     }, null)
 }
 
+
+// A*
+const getCellKey = (x, y) => x + ':' + y
+
+const getPath = (grid, start, end) => {
+    const openList = [
+        {
+            x: start.x,
+            y: start.y,
+            f: Math.abs(start.x - end.x) + Math.abs(start.y - end.y),
+            p: 0,
+            path:[],
+        },
+    ]
+    const closeList = {}
+
+    while (openList.length) {
+        const next = openList.shift()
+
+        if (next.x === end.x && next.y === end.y) return next.path
+
+        closeList[next.key] = true
+
+        for (let i = 4; i--; ) {
+            const x = next.x + around[i].x
+            const y = next.y + around[i].y
+
+            if (isWall(grid, x, y)) continue
+
+            const p = next.p + 1
+            const f = p + Math.abs(end.x - x) + Math.abs(end.y - y)
+            const path = [...next.path, { x, y }]
+
+            const key = getCellKey(x, y)
+
+            // ignore if it's in closeList
+            if (closeList[key]) continue
+
+            // remove from openList
+            for (let i = openList.length; i--; )
+                if (openList[i].key === key) openList.splice(i, 1)
+
+            // insert in openList ( sorted )
+            let k
+            for (k = 0; k < openList.length && openList[k].f < f; k++);
+
+            openList.splice(i, 0, { x, y, p, f, key, path })
+        }
+
+    }
+
+    return null
+}
+
+const pickNextLocation = (grid, start) => {
+
+    const s = {
+        x: Math.floor(start.x),
+        y: Math.floor(start.y),
+    }
+
+    for (let k = 30; k--; ) {
+        // const end = {
+        //     x: Math.floor(Math.random() * grid.length),
+        //     y: Math.floor(Math.random() * grid[0].length),
+        // }
+        const end = {
+            x: Math.floor((Math.random() - 0.5) * 26+ world.tim.position.y),
+            y: Math.floor((Math.random() - 0.5)* 26 + world.tim.position.x)
+        }
+
+        if ( k < 2 )
+            end.y = end.x = 30
+
+        if ( isWall(grid, end.x, end.y))
+            continue
+
+        const path = getPath(grid, s, end)
+
+        if (path && path.length > 3) return path.map( p => ({ x:p.x+0.5,y:p.y+0.5 }))
+    }
+
+    return [start]
+}
+
+world.tourists = Array.from({ length: 10 }).map( () => {
+    const end = { x:30, y:30 }
+
+    const path = pickNextLocation(world.worldGrid, end)
+
+    const start = path[path.length-1]
+
+    return {
+        position: { x:start.x, y:start.y},
+        direction: { x:0, y:1},
+        path:  pickNextLocation(world.worldGrid, start)
+    }
+})
+
+const distance = ( a,b ) => {
+    const x = a.x - b.x
+    const y = a.y - b.y
+    return Math.sqrt(x*x + y*y)
+}
+
 const tick = () => {
     // make tim walk
 
@@ -389,6 +495,39 @@ const tick = () => {
         position.x -= r * closestWall.dir.x
         position.y -= r * closestWall.dir.y
     }
+
+
+    // make tourists walk
+    world.tourists.forEach( (t,i) => {
+
+        // attraction to target
+
+        if ( t.path[0] && distance( t.path[0], t.position ) < 0.4 )
+            t.path.shift()
+
+        if ( !t.path.length )
+            t.path = pickNextLocation( world.worldGrid, t.position )
+
+        // t.path.slice(0, 3).map( (_,i) => {
+        //
+        // })
+
+        const atx = t.path[0].x - t.position.x
+        const aty = t.path[0].y - t.position.y
+
+        const l = Math.sqrt( atx*atx + aty*aty )
+
+
+        const vx = atx/l
+        const vy = aty/l
+
+        // world.tourists.direction.x = vx
+        // world.tourists.direction.y = vy
+        //
+        t.position.x += vx * 0.02
+        t.position.y += vy * 0.02
+    })
+
 }
 
 ////////////////////////////
@@ -432,15 +571,6 @@ document.ontouchstart = e => (world.control.direction.y = 1)
 document.ontouchend = e => (world.control.direction.y = 0)
 
 AFRAME.registerComponent('tim', {
-    init: function() {
-        {
-            const geom = new THREE.BoxGeometry(0.1, 0.1, 0.1)
-            const mat = new THREE.MeshLambertMaterial({ color: 0x2193ae })
-            const mesh = new THREE.Mesh(geom, mat)
-
-            this.el.object3D.add(mesh)
-        }
-    },
     tick: function() {
         const direction = this.el.children[0].object3D.rotation.y
 
@@ -1174,11 +1304,42 @@ const generateMazeObject = world => {
     return maze
 }
 
+const generateTourists = tourists => {
+    const object = new THREE.Object3D()
+
+    object.add(...tourists.map( () => {
+
+        const geom = new THREE.BoxBufferGeometry(0.2, 0.2, 0.2)
+        const mat = new THREE.MeshBasicMaterial({ color: 0x238ab4 })
+
+        return new THREE.Mesh(geom, mat)
+
+    }))
+
+    const update = () =>
+
+        tourists.forEach( (t,i) => {
+            object.children[i].position.set(t.position.x, 0.1, t.position.y)
+        })
+
+
+
+    update()
+
+    return { update, object }
+}
+
 AFRAME.registerComponent('museum', {
     init: function() {
         const container = this.el.object3D
 
         container.add(generateMazeObject(world.worldGrid))
+
+
+        this.ts = generateTourists( world.tourists )
+        container.add(this.ts.object)
+
+
 
         // 1 mona lisa
         // 2 starry night
@@ -1203,6 +1364,7 @@ AFRAME.registerComponent('museum', {
     },
     tick: function() {
         this.p && this.p.update(world.tim)
+        this.ts.update()
     },
 })
 
