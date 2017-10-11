@@ -1,0 +1,45 @@
+{
+    "name": "13k2017-postmortem",
+    "version": "1.0.0",
+    "dependencies": {
+        "markdown-tocomprehensivedata": "0.1.2",
+        "module-alias": "2.0.1",
+        "preact": "8.2.5",
+        "preact-helmet": "4.0.0-alpha-3",
+        "preact-render-to-string": "3.6.3",
+        "react-propstransition": "^2.0.6",
+        "styled-components": "2.2.1"
+    },
+    "devDependencies": {
+        "babel-cli": "6.26.0",
+        "babel-loader": "7.1.2",
+        "babel-plugin-add-module-exports": "0.2.1",
+        "babel-plugin-css-modules-transform": "1.2.7",
+        "babel-plugin-styled-components": "1.2.1",
+        "babel-plugin-transform-assets-import-to-string": "1.0.1",
+        "babel-plugin-transform-async-to-generator": "6.24.1",
+        "babel-plugin-transform-class-properties": "6.24.1",
+        "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
+        "babel-plugin-transform-object-rest-spread": "6.26.0",
+        "babel-plugin-transform-react-jsx": "6.24.1",
+        "babel-plugin-transform-runtime": "6.23.0",
+        "babel-plugin-transform-string-literal-replace": "1.0.2",
+        "babel-preset-env": "1.6.0",
+        "babel-preset-flow": "6.23.0",
+        "babel-register": "6.26.0",
+        "babel-runtime": "6.26.0",
+        "css-loader": "0.28.7",
+        "file-loader": "1.1.5",
+        "flow-bin": "0.56.0",
+        "flow-typed": "2.2.0",
+        "raw-loader": "0.5.1",
+        "style-loader": "0.19.0",
+        "webpack": "3.6.0",
+        "webpack-dev-server": "2.9.1"
+    },
+    "scripts": {
+        "start": "webpack-dev-server --inline --devtool source-map -d",
+        "test": "env NODE_ENV=test jest --verbose",
+        "build": "env NODE_ENV=production node -e \"require('babel-register');require('./script/build.js')\""
+    }
+}

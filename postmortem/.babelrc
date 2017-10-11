@@ -1,0 +1,46 @@
+{
+    "presets": ["flow"],
+    "plugins": [
+        ["transform-react-jsx", { "pragma": "h" }],
+        "transform-class-properties",
+        "transform-es2015-modules-commonjs",
+        "transform-object-rest-spread",
+        [
+            "styled-components",
+            { "ssr": false, "minify": false, "displayName": true }
+        ]
+    ],
+    "env": {
+        "production": {
+            "presets": [
+                [
+                    "env",
+                    {
+                        "targets": {
+                            "browsers": ["last 2 versions", "safari >= 7"],
+                            "node": "8.6"
+                        },
+                        "loose": true,
+                        "module": false
+                    }
+                ]
+            ],
+            "plugins": [
+                [
+                    "transform-runtime",
+                    {
+                        "helpers": false,
+                        "polyfill": false,
+                        "regenerator": true,
+                        "moduleName": "babel-runtime"
+                    }
+                ],
+                "transform-async-to-generator",
+                [
+                    "styled-components",
+                    { "ssr": true, "minify": true, "displayName": false }
+                ]
+            ]
+        }
+    }
+}
