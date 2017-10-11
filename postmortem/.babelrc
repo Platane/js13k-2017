@@ -36,6 +36,8 @@
                     }
                 ],
                 "transform-async-to-generator",
+                "transform-class-properties",
+                "transform-object-rest-spread",
                 [
                     "styled-components",
                     { "ssr": true, "minify": true, "displayName": false }

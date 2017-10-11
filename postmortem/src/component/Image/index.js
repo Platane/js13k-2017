@@ -68,7 +68,8 @@ export class Image extends Component {
     }
 
     componentDidRender = () => {
-        const image = this.base.querySelector('[data-anchor="loader"]')
+        const image =
+            this.base && this.base.querySelector('[data-anchor="loader"]')
 
         if (image) {
             // test if image is loaded

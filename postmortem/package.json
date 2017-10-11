@@ -39,7 +39,7 @@
     },
     "scripts": {
         "start": "webpack-dev-server --inline --devtool source-map -d",
-        "test": "env NODE_ENV=test jest --verbose",
-        "build": "env NODE_ENV=production node -e \"require('babel-register');require('./script/build.js')\""
+        "build":
+            "rm -rf ./dist && mkdir -p ./dist && env NODE_ENV=production node -e \"require('babel-register');require('./script/build.js')\""
     }
 }
