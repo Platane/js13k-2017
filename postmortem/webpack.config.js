@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const Visualizer = require('webpack-visualizer-plugin')
 
 const production = 'production' === process.env.NODE_ENV
 
@@ -19,7 +20,7 @@ module.exports = {
 
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: '[hash:6].js',
+        filename: production ? '[hash:6].js' : '[name].js',
     },
 
     resolve: {
@@ -56,7 +57,7 @@ module.exports = {
                 test: /\.md?$/,
                 use: [
                     {
-                        loader: 'raw-loader',
+                        loader: './script/markdown-loader',
                     },
                 ],
             },
@@ -76,6 +77,8 @@ module.exports = {
     },
 
     plugins: [
+        new Visualizer(),
+
         !production && new webpack.NamedModulesPlugin(),
 
         new webpack.DefinePlugin(createEnvVarArray()),
