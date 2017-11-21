@@ -1,3 +1,4 @@
+
 Vernissage post mortem
 ====
 
@@ -22,6 +23,41 @@ Then naturaly, I rushed into coding the cool stuffs. Leaving the game design thi
 [Evolution of Mona Lisa](https://rogerjohansson.blog/2008/12/07/genetic-programming-evolution-of-mona-lisa/)
 
 
+## Algorithm
+
+Let's take a look at the algorithm.
+
+It's 
+
+### Overview of genetic Algorithm
+
+Genetic programming is quite amazing. It's fun to explain because it relies on knowledge that every body learn in hight school. 
+
+It's based on darwin evolution theory: Starting for a population of solution, let's mutate a litle the solution at each generation and keep the best ones.
+
+In order to use it we must:
+ - Have a way to determine if a solution is better than another.
+ - Describe the "adn" of a solution, a structure of data of quantified which can be altered.
+ - Explicit how the solution adn mutate, to result in a slightly different solution.
+
+> include refs
+
+
+### data structure
+
+To begin, we must define what is the "gene" of 
+
+
+First there is a preparation phase.
+I manually crop and resize the image down to a 64x64 resolution.
+
+> It will speed up the comparaison phase.
+
+
+
+## Implementation
+
+I started 
 
 ## post thought
 

@@ -4,7 +4,7 @@ import Helmet from 'preact-helmet'
 export const Head = ({}) => (
     <Helmet
         title="My Title"
-        base={{ target: '_blank', href: 'http://mysite.com/' }}
+        base={{ target: '_blank', href: 'http://localhost:8082' }}
         meta={[
             { name: 'description', content: 'Helmet application' },
             { property: 'og:type', content: 'article' },

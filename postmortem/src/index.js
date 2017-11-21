@@ -4,8 +4,12 @@ preact.createElement = preact.h
 preact.PropTypes = { func: {} }
 preact.Children = { only: arr => (Array.isArray(arr) ? arr[0] : arr) }
 
-const App = require('./component/App').App
+const App = require('./component/App').StateFulApp
 
-const content = require('./asset/content/index.md')
+const { contents } = require('./contents')
 
-render(<App content={content} />, document.body, document.body.children[0])
+render(
+    <App contents={contents} path="/" />,
+    document.body,
+    document.body.children[0]
+)

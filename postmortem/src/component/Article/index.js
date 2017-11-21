@@ -1,13 +1,9 @@
 import { h, render, Component } from 'preact'
 
 import { Image as Image_ } from '../Image'
+import { Link } from '../Link'
 
 import styled from 'styled-components'
-
-const Body = styled.div`
-    max-width: 800px;
-    padding: 10px;
-`
 
 const generateImage = url => [
     {
@@ -35,19 +31,34 @@ const component = {
     text: styled.span`
         font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
     `,
-    bold: styled.span`font-weight: bold;`,
-    italic: styled.span`font-style: italic;`,
+    bold: styled.span`
+        font-weight: bold;
+    `,
+    italic: styled.span`
+        font-style: italic;
+    `,
     textBlock: styled.div`
         margin: 20px 0;
         background-color: #eee;
     `,
-    link: styled.a``,
+    codeBlock: styled.pre`
+        margin: 20px 0;
+        background-color: #eee;
+    `,
+    quoteBlock: styled.pre`
+        margin: 20px 0;
+        margin-left: 20px;
+        padding-left: 10px;
+        border-left: solid 2px #888;
+        background-color: #eee;
+    `,
+    link: Link,
     heading: styled.h1`
         margin: 0;
         font-size: ${props =>
             (props.importance == 1 && '24px') ||
-            (props.importance == 2 && '18px') ||
-            '16px'};
+            (props.importance == 2 && '20px') ||
+            '18px'};
         font-weight: ${props => (props.importance < 2 ? 'bold' : 'normal')};
     `,
     image: Image,
@@ -58,13 +69,16 @@ const Tree = ({ type, children, ...rest }) => {
 
     return (
         <C {...rest}>
-            {rest.text || children.map((c, i) => <Tree key={i} {...c} />)}
+            {rest.text ||
+                children.map((c, i) => <Tree key={i} {...rest} {...c} />)}
         </C>
     )
 }
 
-export const Article = ({ content }) => (
+export const Article = ({ content, ...props }) => (
     <Body>
-        <Tree {...content} />
+        <Tree {...props} {...content} />
     </Body>
 )
+
+const Body = styled.div``
