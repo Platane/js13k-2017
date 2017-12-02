@@ -103,11 +103,11 @@ deploy-api:
             name: create bucket
             code: gsutil mb -c STANDARD -l EUROPE-WEST1 -p $( cat project ) gs://platane-image-crusher-lambda-function || echo 1
 
-        - script:
-            name: set bucket cors
-            code: |
-                echo '[{ "origin": ["*"], "method": ["GET"]}]' > cors-json-file.json
-                gsutil cors set cors-json-file.json  -p $( cat project ) gs://platane-imagedot-result
+        # - script:
+        #     name: set bucket cors
+        #     code: |
+        #         echo '[{ "origin": ["*"], "method": ["GET"]}]' > cors-json-file.json
+        #         gsutil cors set cors-json-file.json  -p $( cat project ) gs://platane-imagedot-result
 
         - script:
             name: deploy function get
@@ -146,7 +146,7 @@ deploy-worker:
                 gcloud beta functions describe worker
 
 
-build-front:
+build-image-crusher-ui:
 
     box: node:8.1
 
@@ -170,18 +170,38 @@ build-front:
             name: test
             code: yarn run test
 
-deploy-front:
+        - script:
+            name: prepare
+            code: |
+                mkdir -p gh-pages
+                mv image-crusher-ui/dist gh-pages/image-crusher-ui
+
+build-postmortem:
 
     box: node:8.1
 
     steps:
 
-        - takuma7/gh-pages:
-            token: $GH_TOKEN
-            basedir: image-crusher-ui/dist
+        - script:
+            cwd: postmortem
+            name: install dependencies
+            code: |
+                npm install -g yarn
+                export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
+                HOME=$YARN_CACHE yarn --pure-lockfile
 
+        - script:
+            cwd: postmortem
+            name: build
+            code: yarn run build
 
-build-deploy-game:
+        - script:
+            name: prepare
+            code: |
+                mkdir -p gh-pages
+                mv postmortem/dist gh-pages/postmortem
+
+build-game:
 
     box: node:8.1
 
@@ -205,11 +225,22 @@ build-deploy-game:
                 ./script/build.sh
 
         - script:
-            cwd: game
-            name: copy doc
+            name: prepare
             code: |
-                cp ./doc/* ./dist
+                mkdir -p gh-pages
+                mv ./game/dist/* gh-pages/
 
-        - takuma7/gh-pages:
-            token: $GH_TOKEN
-            basedir: ./game/dist
+
+
+deploy-pages:
+    steps:
+
+    - script:
+        name: prepare
+        code: |
+            mkdir -p gh-pages
+            mv ./screenshot/* gh-pages/
+
+    - takuma7/gh-pages:
+        token: $GH_TOKEN
+        basedir: gh-pages

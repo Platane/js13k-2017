@@ -34,6 +34,7 @@
         "start": "webpack-dev-server --inline --devtool source-map -d",
         "flow-typed": "flow-typed install",
         "test": "env NODE_ENV=test jest --verbose",
-        "build": "env NODE_ENV=production webpack"
+        "build":
+            "env PATHNAME_BASE=image-crusher-ui env NODE_ENV=production webpack"
     }
 }
