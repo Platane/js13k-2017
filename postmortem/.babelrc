@@ -41,6 +41,13 @@
                 [
                     "styled-components",
                     { "ssr": true, "minify": true, "displayName": false }
+                ],
+                [
+                    "transform-assets",
+                    {
+                        "extensions": ["jpg", "jpeg", "png"],
+                        "name": "/static/[hash:8].[ext]"
+                    }
                 ]
             ]
         }

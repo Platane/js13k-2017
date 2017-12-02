@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 export const Link = ({ href, onPathChange, children, ...props }) => (
     <A
-        href={href}
+        href={(process.env.PATHNAME_BASE || '') + href}
         onClick={e => {
             if (onPathChange) {
                 onPathChange(href)

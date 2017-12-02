@@ -6,7 +6,7 @@ const production = 'production' === process.env.NODE_ENV
 
 const createEnvVarArray = () => {
     const o = {}
-    ;['NODE_ENV']
+    ;['NODE_ENV', 'PATHNAME_BASE']
         .filter(name => name in process.env)
         .forEach(name => (o[`process.env.${name}`] = `"${process.env[name]}"`))
 
@@ -63,7 +63,7 @@ module.exports = {
             },
 
             {
-                test: /\.(eot|ttf|woff|otf|woff2|svg|gif|jpg|png)$/,
+                test: /\.(gif|jpg|png)$/,
                 use: [
                     {
                         loader: 'file-loader',
