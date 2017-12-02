@@ -39,6 +39,6 @@
     "scripts": {
         "start": "webpack-dev-server --inline --devtool source-map -d",
         "build":
-            "rm -rf ./dist && mkdir -p ./dist && env PATHNAME_BASE=postmortem env NODE_ENV=production node -e \"require('babel-register');require('./script/build.js')\""
+            "rm -rf ./dist && mkdir -p ./dist && env PATHNAME_BASE=postmortem/ env NODE_ENV=production node -e \"require('babel-register');require('./script/build.js')\""
     }
 }

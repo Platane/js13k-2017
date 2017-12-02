@@ -41,8 +41,7 @@ const run = async () => {
     // generate static assets
     const stats = await promisify(webpack)(require('../webpack.config'))
 
-    const appFileName =
-        (process.env.PATHNAME_BASE || '') + stats.compilation.chunks[0].files[0]
+    const appFileName = stats.compilation.chunks[0].files[0]
 
     // generate static markup
     const { App } = require('../src/component/App')
