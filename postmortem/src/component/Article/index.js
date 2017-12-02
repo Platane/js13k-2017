@@ -28,8 +28,10 @@ const Image = ({ src, alt }) => (
 )
 
 const component = {
-    text: styled.span`
+    text: styled.p`
         font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+        font-size: 20px;
+        line-height: 1.3em;
     `,
     bold: styled.span`
         font-weight: bold;
@@ -39,13 +41,13 @@ const component = {
     `,
     textBlock: styled.div`
         margin: 20px 0;
-        background-color: #eee;
     `,
     codeBlock: styled.pre`
+        padding: 10px 0;
         margin: 20px 0;
         background-color: #eee;
     `,
-    quoteBlock: styled.pre`
+    quoteBlock: styled.div`
         margin: 20px 0;
         margin-left: 20px;
         padding-left: 10px;
@@ -55,16 +57,20 @@ const component = {
     link: Link,
     heading: styled.h1`
         margin: 0;
-        font-size: ${props =>
-            (props.importance == 1 && '24px') ||
-            (props.importance == 2 && '20px') ||
-            '18px'};
-        font-weight: ${props => (props.importance < 2 ? 'bold' : 'normal')};
+        p {
+            font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans',
+                Geneva, Arial, sans-serif;
+            font-size: ${props =>
+                (props.importance == 1 && '26px') ||
+                (props.importance == 2 && '24px') ||
+                '22px'};
+            font-weight: ${props => (props.importance < 2 ? 'bold' : 'normal')};
+        }
     `,
     image: Image,
 }
 
-const Tree = ({ type, children, ...rest }) => {
+const Tree = ({ type, children, title, meta, ...rest }) => {
     const C = component[type] || 'div'
 
     return (
