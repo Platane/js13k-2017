@@ -37,8 +37,8 @@
         "webpack-visualizer-plugin": "0.1.11"
     },
     "scripts": {
-        "start": "webpack-dev-server --inline --devtool source-map -d",
+        "start": " webpack-dev-server --inline --devtool source-map -d",
         "build":
-            "rm -rf ./dist && mkdir -p ./dist && env PATHNAME_BASE=postmortem/ env NODE_ENV=production node -e \"require('babel-register');require('./script/build.js')\""
+            "rm -rf ./dist && mkdir -p ./dist && env PATHNAME_BASE=/js13k-2017/postmortem/ env NODE_ENV=production node -e \"require('babel-register');require('./script/build.js')\""
     }
 }

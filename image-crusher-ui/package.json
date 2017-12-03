@@ -35,6 +35,6 @@
         "flow-typed": "flow-typed install",
         "test": "env NODE_ENV=test jest --verbose",
         "build":
-            "env PATHNAME_BASE=image-crusher-ui/ env NODE_ENV=production webpack"
+            "env PATHNAME_BASE=/js13k-2017/image-crusher-ui/ env NODE_ENV=production webpack"
     }
 }
