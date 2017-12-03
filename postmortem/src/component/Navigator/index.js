@@ -6,10 +6,19 @@ export type Props = {
     onPathChange: (path: String) => void,
 }
 
-export const pushPath = (path: string) =>
-    history.pushState({}, '', window.location.origin + path)
+const PATHNAME_BASE = (process.env.PATHNAME_BASE || '/')
+    .split('/')
+    .filter(Boolean)
+    .join('/')
 
-export const getPath = () => window.location.pathname
+export const pushPath = (path: string) =>
+    history.pushState({}, '', window.location.origin + PATHNAME_BASE + path)
+
+export const getPath = () => {
+    const p = window.location.pathname.split('/').filter(Boolean)
+    if (p[0] === PATHNAME_BASE) p.shift()
+    return p.join('/')
+}
 
 export class Navigator extends Component {
     static defaultProps = {
