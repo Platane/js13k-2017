@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const Visualizer = require('webpack-visualizer-plugin')
+const WebpackAssetsManifest = require('webpack-assets-manifest')
 
 const production = 'production' === process.env.NODE_ENV
 
@@ -79,6 +80,10 @@ module.exports = {
 
     plugins: [
         new Visualizer(),
+
+        new WebpackAssetsManifest({
+            output: path.resolve(__dirname, './dist', 'assetManifest.json'),
+        }),
 
         !production && new webpack.NamedModulesPlugin(),
 

@@ -41,7 +41,9 @@ const run = async () => {
     // generate static assets
     const stats = await promisify(webpack)(require('../webpack.config'))
 
-    const appFileName = stats.compilation.chunks[0].files[0]
+    const appFileName =
+        (process.env.PATHNAME_BASE || '/') +
+        stats.compilation.chunks[0].files[0]
 
     // generate static markup
     const { App } = require('../src/component/App')
@@ -58,7 +60,12 @@ const run = async () => {
         const html = [
             '<!doctype html>',
             '<html lang="en">',
-            `<head>${head.title.toString()}${head.meta.toString()}${head.link.toString()}${style}</head>`,
+            `<head>`,
+            head.title.toString(),
+            head.meta.toString(),
+            head.link.toString(),
+            style,
+            `</head>`,
             `<body>${app}</body>`,
             `<script src="${appFileName}"></script>`,
             '</html>',

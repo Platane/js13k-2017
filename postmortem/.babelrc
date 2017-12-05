@@ -46,7 +46,7 @@
                     "transform-assets",
                     {
                         "extensions": ["jpg", "jpeg", "png"],
-                        "name": "/static/[hash:8].[ext]"
+                        "name": "/js13k-2017/postmortem/[hash:8].[ext]"
                     }
                 ]
             ]
