@@ -25,6 +25,8 @@ const getContent = () => {
     }
 }
 
+const assetManifest = require('../dist/assetManifest.json')
+
 const run = async () => {
     // mokey patch preact
     preact.createElement = preact.h
@@ -38,12 +40,8 @@ const run = async () => {
     // load content
     const content = getContent()
 
-    // generate static assets
-    const stats = await promisify(webpack)(require('../webpack.config'))
-
     const appFileName =
-        (process.env.PATHNAME_BASE || '/') +
-        stats.compilation.chunks[0].files[0]
+        (process.env.PATHNAME_BASE || '/') + assetManifest['app.js']
 
     // generate static markup
     const { App } = require('../src/component/App')

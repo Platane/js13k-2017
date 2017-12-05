@@ -41,6 +41,16 @@
                 [
                     "styled-components",
                     { "ssr": true, "minify": true, "displayName": false }
+                ]
+            ]
+        },
+        "ssr": {
+            "plugins": [
+                "transform-class-properties",
+                "transform-object-rest-spread",
+                [
+                    "styled-components",
+                    { "ssr": true, "minify": true, "displayName": false }
                 ],
                 [
                     "transform-assets",

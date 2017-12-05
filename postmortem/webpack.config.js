@@ -22,7 +22,6 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist'),
         filename: production ? '[hash:6].js' : '[name].js',
-        publicPath: process.env.PATHNAME_BASE || '/',
     },
 
     resolve: {
@@ -70,7 +69,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[hash:6].[ext]',
+                            name: '[hash:8].[ext]',
                         },
                     },
                 ],
