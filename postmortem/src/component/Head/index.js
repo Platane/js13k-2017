@@ -1,24 +1,19 @@
 import { h, Component } from 'preact'
 import Helmet from 'preact-helmet'
 
-export const Head = ({}) => (
+// base={{ target: '_blank', href: 'http://localhost:8082' }}
+export const Head = ({ content }) => (
     <Helmet
-        title="My Title"
-        base={{ target: '_blank', href: 'http://localhost:8082' }}
+        title={`${content.title}`}
         meta={[
-            { name: 'description', content: 'Helmet application' },
+            { charset: 'UTF-8' },
+            { name: 'description', content: 'Post mortem on a 13kjs entrie' },
             { property: 'og:type', content: 'article' },
         ]}
         link={[
-            { rel: 'canonical', href: 'http://mysite.com/example' },
             {
-                rel: 'apple-touch-icon',
-                href: 'http://mysite.com/img/apple-touch-icon-57x57.png',
-            },
-            {
-                rel: 'apple-touch-icon',
-                sizes: '72x72',
-                href: 'http://mysite.com/img/apple-touch-icon-72x72.png',
+                rel: 'canonical',
+                href: 'https://platane.github.io/js13k-2017/postmortem',
             },
         ]}
     />

@@ -6,7 +6,7 @@ export default C =>
 
         constructor(props) {
             super(props)
-            this.state = { path: props.path || '/' }
+            this.state = { path: this.props.path || '/' }
         }
 
         setPath = path =>

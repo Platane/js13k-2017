@@ -21,7 +21,8 @@ module.exports = {
 
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: production ? '[hash:6].js' : '[name].js',
+        filename: production ? '[hash:8].js' : '[name].js',
+        publicPath: process.env.PATHNAME_BASE || '/',
     },
 
     resolve: {

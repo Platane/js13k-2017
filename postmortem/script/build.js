@@ -10,7 +10,7 @@ import { promisify } from 'util'
 
 const loadContentAsJson = url => parse(fs.readFileSync(url).toString())
 
-const getContent = () => {
+const getContents = () => {
     const formatUrl = filename =>
         path.resolve(__dirname, '../src/asset/content/', filename)
 
@@ -37,19 +37,19 @@ const run = async () => {
     moduleAlias.addAlias('react', 'preact')
     moduleAlias.addAlias('react-dom', 'preact')
 
-    // load content
-    const content = getContent()
+    // load contents
+    const contents = getContents()
 
     const appFileName =
         (process.env.PATHNAME_BASE || '/') + assetManifest['app.js']
 
     // generate static markup
-    const { App } = require('../src/component/App')
+    const App = require('../src/component/App').StateFulApp
     const { ServerStyleSheet } = require('styled-components')
 
     const renderPage = path => {
         const sheet = new ServerStyleSheet()
-        const app = render(<App content={content} path={path} />)
+        const app = render(<App contents={contents} path={path} />)
         const style = sheet.getStyleTags()
 
         const head = Helmet.rewind()
@@ -73,14 +73,14 @@ const run = async () => {
     }
 
     // render and write the pages
-    Object.keys(content).forEach(url =>
+    Object.keys(contents).forEach(url =>
         fs.writeFileSync(
             path.resolve(
                 __dirname,
                 '../dist',
                 (url === '/' ? 'index' : url.slice(1)) + '.html'
             ),
-            renderPage()
+            renderPage(url)
         )
     )
 }
