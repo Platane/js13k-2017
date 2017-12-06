@@ -88,8 +88,8 @@ const update = () =>
 
 const wait = delay => new Promise(resolve => setTimeout(resolve, delay))
 
-const url = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
-// const url = 'https://storage.googleapis.com/platane-imagedot-result/res.json'
+// const url = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
+const url = 'https://storage.googleapis.com/platane-imagedot-result/res.json'
 const loop = async () => {
     images = await (await fetch(url)).json()
 
