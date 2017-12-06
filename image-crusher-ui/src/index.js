@@ -87,14 +87,34 @@ const update = () =>
 
 const wait = delay => new Promise(resolve => setTimeout(resolve, delay))
 
-const url = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
-// const url = 'https://storage.googleapis.com/platane-imagedot-result/res.json'
+// const url = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
+const url = 'https://storage.googleapis.com/platane-imagedot-result/res.json'
 const loop = async () => {
     images = await (await fetch(url)).json()
 
+    // const getDeepest = x =>
+    //     x.children.reduce((max, c) => Math.max(max, getDeepest(c)), 0) + 1
+    //
+    // const elegate = x => {
+    //     const bestChildren = x.children.reduce(
+    //         (best, c) => (!best || getDeepest(best) < getDeepest(c) ? c : best),
+    //         null
+    //     )
+    //
+    //     const children = bestChildren ? [bestChildren] : []
+    //
+    //     children.push(
+    //         ...x.children.filter(x => x !== bestChildren && Math.random() > 0.8)
+    //     )
+    //
+    //     return { ...x, children: children.map(elegate) }
+    // }
+    //
+    // images = images.map(x => ({ ...x, ancestorTree: elegate(x.ancestorTree) }))
+
     update()
 
-    await wait(5000)
+    // await wait(5000)
 
     loop()
 }
