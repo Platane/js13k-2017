@@ -115,11 +115,17 @@ deploy-api:
                 gcloud beta functions deploy get --local-path ./image-crusher-api/dist/get --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe get
 
+        # - script:
+        #     name: deploy function create
+        #     code: |
+        #         gcloud beta functions deploy create --local-path ./image-crusher-api/dist/create --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+        #         gcloud beta functions describe create
+
         - script:
-            name: deploy function create
+            name: deploy function publishToStorage
             code: |
-                gcloud beta functions deploy create --local-path ./image-crusher-api/dist/create --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
-                gcloud beta functions describe create
+                gcloud beta functions deploy publishToStorage --local-path ./image-crusher-api/dist/publishToStorage --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+                gcloud beta functions describe publishToStorage
 
 
 deploy-worker:

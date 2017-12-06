@@ -4,7 +4,8 @@
     "author": "platane <me@platane.me>",
     "license": "MIT",
     "dependencies": {
-        "@google-cloud/datastore": "1.1.0"
+        "@google-cloud/datastore": "1.1.0",
+        "@google-cloud/storage": "1.5.1"
     },
     "devDependencies": {
         "babel-cli": "6.26.0",
@@ -26,7 +27,8 @@
     },
     "scripts": {
         "flow-typed": "flow-typed install",
-        "build": "rm -rf lib && babel --out-dir ./lib --ignore '**/__tests__/' ./src",
+        "build":
+            "rm -rf lib && babel --out-dir ./lib --ignore '**/__tests__/' ./src",
         "test": "jest"
     },
     "jest": {
