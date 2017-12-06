@@ -1,0 +1,14 @@
+[ignore]
+.*/node_modules/.*
+.*/dist/.*
+.*/webpack.config.babel.js
+.*/webpack.config.js
+
+[include]
+
+[libs]
+flow-typed
+
+[options]
+all=true
+emoji=false

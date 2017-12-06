@@ -13,7 +13,11 @@ export const App = ({ content, path, onPathChange }) =>
     cssReset() || (
         <Container>
             <Head />
-            <Navigator path={path} onPathChange={onPathChange} />
+            <Navigator
+                path={path}
+                onPathChange={onPathChange}
+                basePath={process.env.PATHNAME_BASE || '/'}
+            />
             <Body>
                 <Header />
                 <Content>
