@@ -1,29 +1,19 @@
 import { config } from '../config'
-import connectDataStore from '@google-cloud/datastore'
 import connectStorage from '@google-cloud/storage'
 
-import { parseImage } from '../util/dataStore/parse'
+import { run as get } from '../get'
 
 export const run = async () => {
-    const c = {
+    const storage = connectStorage({
         projectId: config.googleCloudPlatform.project_id,
         credentials: config.googleCloudPlatform,
-    }
+    })
 
-    const datastore = connectDataStore(c)
-    const storage = connectStorage(c)
-
-    const query = datastore.createQuery('image')
-
-    const [images, _] = await datastore.runQuery(query)
-
-    const content = JSON.stringify(images.map(parseImage))
-
+    // prepare bucket
     const [bucket, __] = await storage.bucket('platane-imagedot-result').get({
         autoCreate: true,
         regional: true,
         location: 'europe-west1',
-        nearline: true,
     })
 
     // set bucket cors
@@ -40,6 +30,7 @@ export const run = async () => {
 
     // create the file
     const file = bucket.file('res.json')
+    const content = JSON.stringify(await get())
 
     await file.save(content, {
         gzip: true,
