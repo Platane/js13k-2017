@@ -9,7 +9,9 @@ import image_src from '../../asset/image/header.jpg'
 export const Header = () => (
     <Body>
         <Ratio />
-        <Image src={image_src} alt="header" />
+        <ImageW>
+            <Image src={image_src} alt="article header" />
+        </ImageW>
     </Body>
 )
 
@@ -22,10 +24,22 @@ const Ratio = styled.div`
     min-height: 200px;
     max-height: 400px;
 `
-const Image = styled(Image_)`
+const ImageW = styled.div`
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+`
+const Image = styled(Image_)`
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    object-fit: cover;
+    object-position: center;
 `
