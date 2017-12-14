@@ -1,12 +1,18 @@
 import preact, { h } from 'preact'
 import render from 'preact-render-to-string'
 import { parse } from 'markdown-tocomprehensivedata'
-import { toString } from 'markdown-tocomprehensivedata/lib/utils'
 import Helmet from 'preact-helmet'
 import fs from 'fs'
 import path from 'path'
 import webpack from 'webpack'
 import { promisify } from 'util'
+import { extractCritical } from 'emotion-server'
+
+const moduleAlias = require('module-alias')
+moduleAlias.addAlias('react', 'preact')
+moduleAlias.addAlias('react-dom', 'preact')
+
+const App = require('../src/component/App').StateFulApp
 
 const loadContentAsJson = url => parse(fs.readFileSync(url).toString())
 
@@ -28,15 +34,6 @@ const getContents = () => {
 const assetManifest = require('../dist/assetManifest.json')
 
 const run = async () => {
-    // mokey patch preact
-    preact.createElement = preact.h
-    preact.PropTypes = { func: {} }
-    preact.Children = { only: arr => (Array.isArray(arr) ? arr[0] : arr) }
-
-    const moduleAlias = require('module-alias')
-    moduleAlias.addAlias('react', 'preact')
-    moduleAlias.addAlias('react-dom', 'preact')
-
     // load contents
     const contents = getContents()
 
@@ -44,32 +41,29 @@ const run = async () => {
         (process.env.PATHNAME_BASE || '/') + assetManifest['app.js']
 
     // generate static markup
-    const App = require('../src/component/App').StateFulApp
-    const { ServerStyleSheet } = require('styled-components')
 
     const renderPage = path => {
-        const sheet = new ServerStyleSheet()
-        const app = render(<App contents={contents} path={path} />)
-        const style = sheet.getStyleTags()
+        const { html, ids, css } = extractCritical(
+            render(<App contents={contents} path={path} />)
+        )
 
         const head = Helmet.rewind()
 
         // generate the whole html page
-        const html = [
+        return [
             '<!doctype html>',
             '<html lang="en">',
             `<head>`,
             head.title.toString(),
             head.meta.toString(),
             head.link.toString(),
-            style,
+            `<style>${css}</style>`,
             `</head>`,
-            `<body>${app}</body>`,
+            `<body>${html}</body>`,
             `<script src="${appFileName}"></script>`,
+            `<script>window.__emotion_ids=[${ids.join(',')}]</script>`,
             '</html>',
         ].join('')
-
-        return html
     }
 
     // render and write the pages

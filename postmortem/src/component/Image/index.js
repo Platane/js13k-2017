@@ -1,6 +1,6 @@
 import { h, render, Component } from 'preact'
 
-import styled from 'styled-components'
+import styled from 'preact-emotion'
 
 // export const Image = styled.div`
 //     background-repeat: no-repeat;

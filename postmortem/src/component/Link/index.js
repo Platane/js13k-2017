@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import styled from 'styled-components'
+import styled from 'preact-emotion'
 
 const PATH_BASE = process.env.PATHNAME_BASE || '/'
 

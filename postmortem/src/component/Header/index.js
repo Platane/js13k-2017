@@ -3,7 +3,7 @@ import { h, render, Component } from 'preact'
 import { Image as Image_ } from '../Image'
 import { Link } from '../Link'
 
-import styled from 'styled-components'
+import styled from 'preact-emotion'
 import image_src from '../../asset/image/header.jpg'
 
 export const Header = () => (

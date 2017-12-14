@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import styled from 'styled-components'
+import styled from 'preact-emotion'
 
 import cssReset from '../_abstract/cssReset'
 

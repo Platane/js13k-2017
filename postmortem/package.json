@@ -2,16 +2,19 @@
     "name": "13k2017-postmortem",
     "version": "1.0.0",
     "dependencies": {
+        "emotion": "8.0.12",
+        "emotion-server": "8.0.12",
         "module-alias": "2.0.3",
         "preact": "8.2.7",
+        "preact-emotion": "8.0.12",
         "preact-helmet": "4.0.0-alpha-3",
-        "styled-components": "2.2.4"
+        "prop-types": "15.6.0"
     },
     "devDependencies": {
         "babel-cli": "6.26.0",
         "babel-loader": "7.1.2",
         "babel-plugin-add-module-exports": "0.2.1",
-        "babel-plugin-styled-components": "1.3.0",
+        "babel-plugin-emotion": "8.0.12",
         "babel-plugin-transform-assets": "0.2.0",
         "babel-plugin-transform-assets-import-to-string": "1.0.1",
         "babel-plugin-transform-async-to-generator": "6.24.1",
@@ -37,7 +40,7 @@
         "webpack-visualizer-plugin": "0.1.11"
     },
     "scripts": {
-        "start": " webpack-dev-server --inline --devtool source-map -d",
+        "start": "webpack-dev-server --inline --devtool source-map -d",
         "build":
             "rm -rf ./dist && mkdir -p ./dist && env PATHNAME_BASE=/js13k-2017/postmortem/ env NODE_ENV=production webpack && env NODE_ENV=ssr env PATHNAME_BASE=/js13k-2017/postmortem/ node -e \"require('babel-register');require('./script/build.js')\""
     }

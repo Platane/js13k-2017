@@ -1,12 +1,8 @@
 import preact, { h, render } from 'preact'
 
-preact.createElement = preact.h
-preact.PropTypes = { func: {} }
-preact.Children = { only: arr => (Array.isArray(arr) ? arr[0] : arr) }
+import { StateFulApp as App } from './component/App'
 
-const App = require('./component/App').StateFulApp
-
-const { contents } = require('./contents')
+import { contents } from './contents'
 
 render(
     <App contents={contents} path="/" />,

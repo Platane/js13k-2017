@@ -2,9 +2,9 @@ import { h, render, Component } from 'preact'
 
 import { Link } from '../Link'
 
-import styled from 'styled-components'
+import styled from 'preact-emotion'
 
-const articles = ['original-idea-and-gameplay', 'image-processing']
+const articles = ['original-idea-and-gameplay', 'image-processing', 'graphics']
 
 export const ArticleFooter = ({ path }) => {
     if (path === '/') return null

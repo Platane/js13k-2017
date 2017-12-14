@@ -3,7 +3,7 @@ import { h, render, Component } from 'preact'
 import { Image as Image_ } from '../Image'
 import { Link } from '../Link'
 import { images } from '../../images'
-import styled from 'styled-components'
+import styled from 'preact-emotion'
 
 const Image = ({ src, alt }) => (
     <Image_

@@ -1,17 +1,22 @@
-import { injectGlobal } from 'styled-components'
+import { injectGlobal, hydrate } from 'preact-emotion'
 
-export default () => injectGlobal`
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+export default () => {
+    if (typeof window !== 'undefined' && window.__emotion_ids)
+        hydrate(window.__emotion_ids)
 
-  html {
-  }
+    injectGlobal`
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
 
-  body {
-    position: relative;
-    margin: 0;
+      html {
+      }
+
+      body {
+        position: relative;
+        margin: 0;
+    }
+    `
 }
-`
