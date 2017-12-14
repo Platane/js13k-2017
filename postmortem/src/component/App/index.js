@@ -14,7 +14,7 @@ import injectState from './hoc.state'
 export const App = ({ content, path, onPathChange }) =>
     cssReset() || (
         <Container>
-            <Head content={content} />
+            <Head content={content} path={path} />
             <Navigator
                 path={path}
                 onPathChange={onPathChange}
