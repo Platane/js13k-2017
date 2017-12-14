@@ -22,6 +22,7 @@ const getContents = () => {
 
     return {
         '/': loadContentAsJson(formatUrl('summary.md')),
+        '/graphics': loadContentAsJson(formatUrl('graphics.md')),
         '/image-processing': loadContentAsJson(
             formatUrl('image-processing.md')
         ),
