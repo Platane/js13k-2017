@@ -7,14 +7,48 @@ import styled from 'styled-components'
 
 const Image = ({ src, alt }) => (
     <Image_
-        style={{ maxHeight: '400px', maxWidth: '90%', flexShrink: 1, margin: '10px' }}
+        style={{
+            maxHeight: '400px',
+            maxWidth: '90%',
+            flexShrink: 1,
+            margin: '10px',
+        }}
         alt={alt}
         src={images[src] || src}
     />
 )
 
+const Heading = ({ importance, children }) => (
+    <Heading_
+        id={((children[0] && children[0].attributes.text) || '')
+            .toLowerCase()
+            .trim()
+            .replace(/ +/g, '-')}
+        importance={importance}
+    >
+        {children}
+    </Heading_>
+)
+
+const Heading_ = styled.h2`
+    margin: 0;
+    margin-top: ${props =>
+        (props.importance == 1 && '50px') ||
+        (props.importance == 2 && '40px') ||
+        '4px'};
+    span {
+        font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans',
+            Geneva, Arial, sans-serif;
+        font-size: ${props =>
+            (props.importance == 1 && '40px') ||
+            (props.importance == 2 && '28px') ||
+            '22px'};
+        font-weight: ${props => (props.importance <= 2 ? 'bold' : 'normal')};
+    }
+`
+
 const component = {
-    text: styled.p`
+    text: styled.span`
         font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
         font-size: 18px;
         line-height: 1.3em;
@@ -26,7 +60,7 @@ const component = {
     italic: styled.span`
         font-style: italic;
     `,
-    textBlock: styled.div`
+    textBlock: styled.p`
         margin: 12px 0;
     `,
     imageGroup: styled.div`
@@ -47,27 +81,15 @@ const component = {
         padding-left: 10px;
         border-left: solid 2px #888;
         background-color: #eee;
-
     `,
     list: styled.ul`
-
-        & > *{
+        & > * {
             display: list-item;
+            margin: 8px 0;
         }
     `,
     link: Link,
-    heading: styled.h1`
-        margin: 0;
-        p {
-            font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans',
-                Geneva, Arial, sans-serif;
-            font-size: ${props =>
-                (props.importance == 1 && '26px') ||
-                (props.importance == 2 && '24px') ||
-                '22px'};
-            font-weight: ${props => (props.importance < 2 ? 'bold' : 'normal')};
-        }
-    `,
+    heading: Heading,
     image: Image,
 }
 
@@ -84,8 +106,15 @@ const Tree = ({ type, children, title, meta, ...rest }) => {
 
 export const Article = ({ content, ...props }) => (
     <Body>
+        <Title>{content.title}</Title>
         <Tree {...props} {...content} />
     </Body>
 )
 
+const Title = styled.h1`
+    font-family: helvetica, sans-serif;
+    font-size: 60px;
+    letter-spacing: 2px;
+    font-weight: bold;
+`
 const Body = styled.div``

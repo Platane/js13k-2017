@@ -5,6 +5,8 @@ import cssReset from '../_abstract/cssReset'
 
 import { Head } from '../Head'
 import { Header } from '../Header'
+import { Footer } from '../Footer'
+import { ArticleFooter } from '../ArticleFooter'
 import { Navigator } from '../Navigator'
 import { Article } from '../Article'
 import injectState from './hoc.state'
@@ -23,6 +25,8 @@ export const App = ({ content, path, onPathChange }) =>
                 <Content>
                     <Article content={content} onPathChange={onPathChange} />
                 </Content>
+                <ArticleFooter path={path} />
+                <Footer />
             </Body>
         </Container>
     )
@@ -32,7 +36,7 @@ const Container = styled.div``
 const Body = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
     background-color: #fff;
 `
 
