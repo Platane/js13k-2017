@@ -112,19 +112,19 @@ deploy-api:
         - script:
             name: deploy function get
             code: |
-                gcloud beta functions deploy get --local-path ./image-crusher-api/dist/get --memory=512MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+                gcloud beta functions deploy get --source ./image-crusher-api/dist/get --memory=512MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe get
 
         # - script:
         #     name: deploy function create
         #     code: |
-        #         gcloud beta functions deploy create --local-path ./image-crusher-api/dist/create --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+        #         gcloud beta functions deploy create --source ./image-crusher-api/dist/create --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
         #         gcloud beta functions describe create
 
         - script:
             name: deploy function publishToStorage
             code: |
-                gcloud beta functions deploy publishToStorage --local-path ./image-crusher-api/dist/publishToStorage --memory=1GB --timeout 180s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+                gcloud beta functions deploy publishToStorage --source ./image-crusher-api/dist/publishToStorage --memory=1GB --timeout 180s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe publishToStorage
 
 
@@ -148,7 +148,7 @@ deploy-worker:
         - script:
             name: deploy function worker
             code: |
-                gcloud beta functions deploy worker --local-path ./image-crusher-worker/dist/worker --memory=1GB --timeout 540s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+                gcloud beta functions deploy worker --source ./image-crusher-worker/dist/worker --memory=1GB --timeout 540s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe worker
 
 
