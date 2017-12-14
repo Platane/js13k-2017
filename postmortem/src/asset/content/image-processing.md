@@ -10,7 +10,7 @@ I add in mind a demo I saw some times ago:
 
 It uses polygons to approximate the image. I wanted to use disk instead for aesthetic reasons. At the price of a less precise approximation.
 
-Such algorithm already exists : [Mona Lisa approximated with 150 circles](https://www.youtube.com/watch?v=rGt3iMAJVT8). Although is this case, the [autor](https://github.com/handcraftsman) did not prodive much implementation details.
+Such algorithm already exists : [Mona Lisa approximated with 150 circles](https://www.youtube.com/watch?v=rGt3iMAJVT8). Although is this case, the [author](https://github.com/handcraftsman) did not provide much implementation details.
 
 
 
@@ -32,7 +32,7 @@ Let's take a look inside and figure out how it is working.
 
 Genetic programming is quite amazing. It's fun to explain because it relies on knowledge that everybody learn in hight school.
 
-It's based on darwin evolution theory: Starting for a population of solution, let's mutate a litle the solution at each generation and keep the best ones.
+It's based on Darwin's evolution theory: Starting for a population of solution, let's mutate a little the solution at each generation and keep the best ones.
 
 In order to use it we must:
 
@@ -51,11 +51,11 @@ For our case, the gene will be an array of disks, each of theses disks have
 - a radius
 - a color
 
-Given a certain solution exprimed with this data structure, we can draw the image solution.
+Given a certain solution expressed with this data structure, we can draw the image solution.
 
 And from there, we can compute the "fitness" which describe how good the solution is.
 
-In our case, the fitness will be derivated from the difference between the target image and the image solution.
+In our case, the fitness will be derived from the difference between the target image and the image solution.
 
 # Implementation
 
@@ -69,8 +69,8 @@ Here I compute the color distance for each pixel of the image. And sum the error
 
 The distance is a simple euclidian distance in the rbg space.
 
-> We may argue that using a distance which respect the eye spec will be more relevant. ( the human eye tends to dicern easily distance between brigth colors than dark ones, or something like that )
-> I actually tried and did not had pretinent results.
+> We may argue that using a distance which respect the eye spec will be more relevant. ( the human eye tends to discern easily distance between bright colors than dark ones, or something like that )
+> I actually tried and did not had pertinent results with hsl space.
 
 ## 2. How the gene mutate
 
@@ -78,7 +78,7 @@ Is the mutated gene close to the original ( soft mutation ), or is quite differe
 
 This is a hard question, too close to the original and you may fall into local maximum, too far and you may never converge.
 
-One technic derivated from "simulated annealing" is to make hard mutation at start to explore the solution space, and as the generation goes, soften them to refine.
+One technique derived from "simulated annealing" is to make hard mutation at start to explore the solution space, and as the generation goes, soften them to refine.
 
 ![wikipedia illustration of simulated annealing](https://upload.wikimedia.org/wikipedia/commons/d/d5/Hill_Climbing_with_Simulated_Annealing.gif)
 
@@ -100,11 +100,11 @@ And the soft one either:
 
 ## 3. How two genes are combined
 
-In a classic genetic algorithm, one way to generate a solution at the N+1 generation is to take two solutions from the N generation and combined them together. However it did not makes much sense in our case and I decide to discard this mecanism.
+In a classic genetic algorithm, one way to generate a solution at the N+1 generation is to take two solutions from the N generation and combined them together. However it did not makes much sense in our case and I decide to discard this mechanism.
 
 As such, the only way to generate a new solution is by mutation.
 
-## 4. How gene pool is groomed
+## 4. How the gene pool is groomed
 
 Should we keep only the better solutions ? How many "bad" solution should we keep ?
 
@@ -114,19 +114,19 @@ In our case, the state of the art I found tends to keep only one solution in the
 
 I tries myself to use a larger genetic pool, without success.
 
-I implemented a solution with a single element in the gene pool. At each generation, the mutation is either better and used, or worst and discarded. This simplify greatly the algorithm, altought it's not really a genetic algorithm anymore, but something more like hill climbing algorithm.
+I implemented a solution with a single element in the gene pool. At each generation, the mutation is either better and used, or worst and discarded. This simplify greatly the algorithm, although it's not really a genetic algorithm anymore, but something more like hill climbing algorithm.
 
 > Maybe I should have not give up on the genetic aspect this fast.
 
 ## 5. Incremental solution
 
-Some algorith I have found use a clever trick. They start with 8 disks, converge to a best solution, then add 8 another disk then converge, ect ...
+Some algorithm I have found use a clever trick. They start with 8 disks, converge to a best solution, then add 8 another disk then converge, ect ...
 
 ![incremental solutions](chain.png)
 
 I had better results with this methods. And I got a way to monitor the progress.
 
-Better, I used it to paralelize the algorithm :
+Better, I used it to parallelize the algorithm :
 
 - starting from a blank solution, converge to a good solution with 8 disks
 - repeat to have N solution with 8 disks
@@ -144,7 +144,7 @@ We have a solution which allows parallelization, let's spend some money on a big
 
 I use a redis cache to store the common solution, and spawn several machine in google compute engine to do the job.
 
-> while lamba calculus seems to be fit here, it is not as the computation take some minuntes, and will likely hit the lambda timeout.
+> while lamba calculus solutions ( aws lambda, gcp Function ... ) seems to fit here, they are not. The computation take some minutes, and will likely hit the timeout before end.
 
 The flow is :
 
@@ -168,7 +168,7 @@ We are not done yet!
 
 Remember the goal is to reduce the size of the asset to the minimum. Using JSON file is certainly not an option.
 
-First, one thing I did not tell you is that the disk params are quantified:
+First, one thing I did not tell you is that the disk parameters are quantified:
 
 - the position is on a 64x64 grid
 - the color is contained in a palette of 256 elements
@@ -183,7 +183,7 @@ So one disk can be encoded as bit array :
     position        color    radius  opacity
 ```
 
-Which can be concated to represent the whole disk array.
+Which can be concatenated to represent the whole disk array.
 
 ## Binary data in Js
 
@@ -197,4 +197,4 @@ To read it, I use
 ```
 fetch(fileUrl).then(res => res.arrayBuffer())
 ```
-then it's a simple parsing to retreive the original data.
+then it's a simple parsing to retrieve the original data.

@@ -6,9 +6,9 @@ The theme was announced on august the 13th: **"LOST"**. I started to assemble th
 
 I had this idea to push the limit of the 13k, adding as much as graphical content as possible. Something somehow coupled with the control offered by a VR based game.
 
-It matured in something which takes place in a museum. Which will allow me to fit a lot of paintings in a big map if I succeed in minifing assets, or fallback to some rooms with a few paintings if not.
+It matured in something which takes place in a museum. Which will allow me to fit a lot of paintings in a big map if I succeed in minifying assets, or fallback to some rooms with a few paintings if not.
 
-Then naturaly, I rushed into coding the cool stuffs. Leaving the game design things for later :)
+Then naturally, I rushed into coding the cool stuffs. Leaving the game design things for later :)
 
 # Image Crushing
 
@@ -16,14 +16,14 @@ In order to fit as much possible painting as possible, I used an algorithm to ap
 
 I tried several settings, to minimize the number of disk while keeping the image recognizable.
 
-The results are impresive ! With a few disk ( ~40 ) one should still recognize the painting.
+The results are impressive ! With a few disk ( ~40 ) one should still recognize the painting.
 
 ![input](monalisa-64x64.png)
 ![output](monalisa-crushed-64x64.jpg)
 
 _Mona Lisa, down to 40 circle of color is still recognizable_
 
-I guess using widly known paintings helped. It's amazing that just by seeing the color palette, one can already guess what the painting is.
+I guess using widely known paintings helped. It's amazing that just by seeing the color palette, one can already guess what the painting is.
 
 Let's leave aside the technical of asset minification for a while. I will explain it deeper in a [second post](/image-processing).
 
@@ -52,16 +52,16 @@ Other actions are completed by just looking to things.
 
 Obviously, when someone say maze all I heard is procedural generation.
 
-The earlier version did generate the maze. But It was frustrating to play because of the lack of open space, the asymetrical room and the long corridor. Toping with the painting spawning at difficult to access locations and it was a nightmare.
+The earlier version did generate the maze. But It was frustrating to play because of the lack of open space, the asymmetrical room and the long corridor. Toping with the painting spawning at difficult to access locations and it was a nightmare.
 
-It might have been possible to have a nice generated map, but I realised I will take a huge amount of time. Of which I was already running low.
+It might have been possible to have a nice generated map, but I realized I will take a huge amount of time. Of which I was already running low.
 
-Instead, I decided to draw the map by hand in ascii art. I carefully place the most recognizable paintings first, in relatively closed area to guide the player at the begining.
+Instead, I decided to draw the map by hand in ascii art. I carefully place the most recognizable paintings first, in relatively closed area to guide the player at the beginning.
 
 ![ascii world](ascii-world.jpg)
 
 _The museum map, represented in ascii_
 
-Well not carefully enougth I guess. I think a lot of peoples miss the point from the begining. Unfortunatelly, I did not have time for play testing session and submit a kind of confusing version of my game.
+Well not carefully enough I guess. I think a lot of peoples miss the point from the beginning. Unfortunately, I did not have time for play testing session and submit a kind of confusing version of my game.
 
 > I reworked some area a little since.
