@@ -5,9 +5,13 @@ Vernissage
 
 _My entry for the 13k js 2017_
 
-[play!](https://platane.github.io/js13k-2017)
+__[play!](https://platane.github.io/js13k-2017)__
 
 or go to the [js13k entry page](http://js13kgames.com/entries/vernissage)
+
+or read the __[postmortem](https://platane.github.io/js13k-2017/postmortem/)__
+
+or look at the [awesome tool](https://platane.github.io/js13k-2017/image-crusher-ui/) I wrote to produce the low res paintings
 
 # Gameplay
 
