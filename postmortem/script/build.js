@@ -61,7 +61,9 @@ const run = async () => {
             `</head>`,
             `<body>${html}</body>`,
             `<script src="${appFileName}"></script>`,
-            `<script>window.__emotion_ids=[${ids.join(',')}]</script>`,
+            `<script>window.__emotion_ids=[${ids
+                .map(x => `'${x}'`)
+                .join(',')}]</script>`,
             '</html>',
         ].join('')
     }
