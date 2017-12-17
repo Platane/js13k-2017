@@ -4,7 +4,7 @@ This part described how I manage to crush images into a handful of bit, and stil
 
 # Inspiration
 
-I add in mind a demo I saw some times ago:
+I had in mind a demo I saw some times ago:
 
 [Evolution of Mona Lisa by Roger Johansson](https://rogerjohansson.blog/2008/12/07/genetic-programming-evolution-of-mona-lisa/)
 
