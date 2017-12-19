@@ -1,9 +1,10 @@
 const readBody = request =>
-    new Promise(resolve => {
+    new Promise((resolve, reject) => {
         let buffer = ''
 
-        request.on('data', x => (buffer += x))
+        request.on('data', x => (buffer += x) && console.log(buffer))
         request.on('end', () => resolve(buffer))
+        request.on('error', reject)
     })
 
 const safeParseJSON = x => {
@@ -20,12 +21,24 @@ export const wrap = run => async (req, res) => {
         res.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
         res.set('Access-Control-Allow-Headers', 'Authorization,Content-Type')
 
+        console.log(req.method)
+
+        console.log(req.body, req.data)
+        console.log(req)
+
+        if (req.method.toUpperCase() === 'OPTIONS') return res.send()
+
         const body = safeParseJSON(await readBody(req))
 
-        res.writeHead(200)
-        res.send(await run(body, req))
+        console.log(body)
+
+        const x = await run(body, req)
+
+        res.statusCode = 200
+        res.send(x)
     } catch (err) {
-        res.writeHead(500, err.toString())
-        res.send(err)
+        console.log(error)
+        res.statusCode = 500
+        res.send(err && err.toString())
     }
 }

@@ -9,6 +9,8 @@ const protect = next => (data, req) => {
         ''
     ).replace('Bearer ', '')
 
+    console.log(token)
+
     const hash = crypto
         .createHash('sha256')
         .update(token)
@@ -32,7 +34,7 @@ const handler = async (data, req) => {
         key: datastore.key(['image']),
         method: 'insert',
         excludeFromIndexes: ['target', 'PARAM', 'ancestorTree'],
-        data: formatImage(data),
+        data: { ...formatImage(data), insert_date: Date.now() },
     })
 }
 
