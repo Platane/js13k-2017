@@ -203,55 +203,44 @@ const texts = [
 ]
 
 const worldMap =
-    // '                       \n' +
-    // ' #         ##            \n' +
-    // ' #        #        #    \n' +
-    // ' #                #   \n' +
-    // '  #  #            #    \n' +
-    // '  # ###                \n' +
-    // '   # #        #        \n' +
-    // ' #          ##       #  \n' +
-    // '      ##             #    \n' +
-    // '    ##                #   \n'
-
-    '                                                                                    \n' +
-    '           ###########################                                                   \n' +
-    '           #                        ###########################                       \n' +
-    '           #                        #                         ##########                        \n' +
-    '     #######   ##b#  ##6#   ##b#    #                         #        #                \n' +
-    '     #     #                            r      r      4       #####    #                    \n' +
-    '     7                                                                 #               \n' +
-    '     9                                                                 #                \n' +
-    '     8     #                            5      r      r       ##########                        \n' +
-    '     #     #   ##t#  ##t#   ##t#    #                         #                         \n' +
-    '           #                        #                         #                         \n' +
-    '           #                        #####################  ####                           \n' +
-    '           ####################   #######################  #                             \n' +
-    '                 #                    ###################  #                                             \n' +
-    '                 #                    ##   #       #       #                            \n' +
-    '                 #                    ##   r       l       3                             \n' +
-    '                 #                    ##   #       #       #                            \n' +
-    '                 #######################       #       #   #                                  \n' +
-    '                          ###########  #       l       l   #                            \n' +
-    '                          #         #  #       #       #   ######                             \n' +
-    '                          #         #  #       #       #        #                       \n' +
-    '                          r         l  #       l       l   #### #                           \n' +
-    '                          #         ####       #       #   #### #                           \n' +
-    '                          #    1           2       #       #### #                        \n' +
-    '                          #         ####   r       l       #### #                            \n' +
-    '                          r         l  #   #       #       #### #                          \n' +
-    '                          #         #  ################ ####### #                                          \n' +
-    '                          #         ###################         #                                \n' +
-    '                          #### ##################################                             \n' +
-    '                             #   #                                                      \n' +
-    '                             #   #                                                         \n' +
-    '                             #####                                                      \n' +
-    '                                                                                        \n' +
-    '                                                                                         \n' +
-    '                                                                                         \n' +
-    '                                                                                         \n' +
-    '                                                                                         \n' +
-    '                                                                                         \n' +
+    '                                                                        \n' +
+    '          ###########################                                   \n' +
+    '          #   ####  ####   ####    ############################         \n' +
+    '          #   #b##  #6##   #w##    #                          ##########\n' +
+    '    #######                        #                          #        #\n' +
+    '    #     #                            f      c      4        #####    #\n' +
+    '    #                                                                  #\n' +
+    '    #                                                                  #\n' +
+    '    #     #                            5      a      g        ##########\n' +
+    '    #     #                        #                          #         \n' +
+    '    #     #   #8##  ####   #9##    #                          #         \n' +
+    '    #     #   ####  ####   ####    ######################  ####         \n' +
+    '    #     ###############################################  #            \n' +
+    '    #                                 ###################  #            \n' +
+    '    ##############                    ##   #       #       #            \n' +
+    '                 #                    ##   r       h       3            \n' +
+    '                 #                    ##   #       #       #            \n' +
+    '                 #######################       #       #   #            \n' +
+    '                          ###########  #       #       d   #            \n' +
+    '                          #         #  #       #       #   ######       \n' +
+    '                          #         #  #       #       #        #       \n' +
+    '                          k         j  #       7       e   #### #       \n' +
+    '                          #         ####       #       #   #### #       \n' +
+    '                          #    1           2       #       #### #       \n' +
+    '                          #         ####   r       i       #### #       \n' +
+    '                          #         #  #   #       #       #### #       \n' +
+    '                          #         #  ################ ####### #       \n' +
+    '                          #         ###################         #       \n' +
+    '                          #### ##################################       \n' +
+    '                             #   #                                      \n' +
+    '                             #   #                                      \n' +
+    '                             #####                                      \n' +
+    '                                                                        \n' +
+    '                                                                        \n' +
+    '                                                                        \n' +
+    '                                                                        \n' +
+    '                                                                        \n' +
+    '                                                                        \n' +
     '                                                                                           '
 
 const getCell = x => {
@@ -282,24 +271,68 @@ const getCell = x => {
 
         // 7 chamber
         case '7':
-            return [7, null, null, null]
+            return [null, null, 7, null]
 
         // 8 keith
         case '8':
-            return [8, null, null, null]
+            return [null, null, null, 8]
 
         // 9 mondrian
         case '9':
-            return [9, null, null, null]
+            return [null, null, null, 9]
+
+        // a magritte
+        case 'a':
+            return [10, null, null, null]
+
+        // b lishtentien
+        case 'b':
+            return [null, 11, null, null]
+
+        // c tamara de lempicka
+        case 'c':
+            return [12, null, null, null]
+
+        // d desper
+        case 'd':
+            return [null, null, 13, null]
+
+        // e american gothic
+        case 'e':
+            return [null, null, 14, null]
+
+        // f manet
+        case 'f':
+            return [15, null, null, null]
+
+        // g hockney
+        case 'g':
+            return [16, null, null, null]
+
+        // h naissance du monde
+        case 'h':
+            return [null, null, 17, null]
+
+        // i jeune fille à la perle
+        case 'i':
+            return [null, null, 18, null]
+
+        // j raboteur de parquet
+        case 'j':
+            return [null, null, 19, null]
+
+        // k turner
+        case 'k':
+            return [20, null, null, null]
 
         case 'l':
-            return [null, null, Math.floor(Math.random() * 10) + 20, null]
+            return [null, null, Math.floor(Math.random() * 10) + 21, null]
         case 't':
-            return [null, null, null, Math.floor(Math.random() * 10) + 20]
+            return [null, null, null, Math.floor(Math.random() * 10) + 21]
         case 'r':
-            return [Math.floor(Math.random() * 10) + 20, null, null, null]
-        case 'b':
-            return [null, Math.floor(Math.random() * 10) + 20, null, null]
+            return [Math.floor(Math.random() * 10) + 21, null, null, null]
+        case 'w':
+            return [null, Math.floor(Math.random() * 10) + 21, null, null]
 
         default:
             return [null, null, null, null]
@@ -1189,9 +1222,20 @@ AFRAME.registerComponent('museum', {
         // 7 chamber
         // 8 keith
         // 9 mondrian
+        // a magritte
+        // b lishtentien
+        // c tamara de lempicka
+        // d desper
+        // e american gothic
+        // f manet
+        // g hockney
+        // h naissance du monde
+        // i jeune fille à la perle
+        // j raboteur de parquet
+        // k turner
 
         Promise.all(
-            '126345789'
+            '126345789abcdefghijk'
                 .split('')
                 .map((x, i) =>
                     readPainting(x).then(p => (paintings[i + 1] = p))
