@@ -118,7 +118,7 @@ deploy-api:
         - script:
             name: deploy function publishToStorage
             code: |
-                gcloud beta functions deploy publishToStorage --source ./image-crusher-api/dist/publishToStorage --memory=1GB --timeout 180s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+                gcloud beta functions deploy publishToStorage --source ./image-crusher-api/dist/publishToStorage --memory=512MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe publishToStorage
 
 

@@ -2,5 +2,5 @@ import { config as googleCloudPlatform } from './googleCloudPlatform'
 
 export const config = {
     googleCloudPlatform,
-    secret: '213',
+    secret: process.env.SECRET,
 }
