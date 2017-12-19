@@ -234,14 +234,7 @@ const worldMap =
     '                          #### ##################################       \n' +
     '                             #   #                                      \n' +
     '                             #   #                                      \n' +
-    '                             #####                                      \n' +
-    '                                                                        \n' +
-    '                                                                        \n' +
-    '                                                                        \n' +
-    '                                                                        \n' +
-    '                                                                        \n' +
-    '                                                                        \n' +
-    '                                                                                           '
+    '                             #####                                      '
 
 const getCell = x => {
     switch (x) {
@@ -994,9 +987,6 @@ const generateMazeObject = world => {
                             })
 
         for (let i = 0; i < 4; i++) {
-            // {
-            //     const i = 1
-
             const f = faces[i]
             const v = around[i].y ? 'y' : 'x'
             const u = v === 'y' ? 'x' : 'y'
@@ -1077,26 +1067,6 @@ const generateMazeObject = world => {
         mesh.scale.set(1, 2.8, 1)
         maze.add(mesh)
     }
-
-    // {
-    //     const geom = new THREE.BoxBufferGeometry(1, 0.2, 1)
-    //     const geomlat = new THREE.BoxBufferGeometry(1.01, 0.2, 1.01)
-    //
-    //     for (let x = world.length; x--; )
-    //         for (let y = world[0].length; y--; )
-    //             if (world[x][y]) {
-    //                 const mesh = new THREE.Mesh(geom, wall)
-    //                 mesh.position.set(x + 0.5, 0.8, y + 0.5)
-    //
-    //                 mesh.castShadow = true
-    //                 mesh.receiveShadow = false
-    //                 maze.add(mesh)
-    //
-    //                 const mesh2 = new THREE.Mesh(geomlat, lat)
-    //                 mesh2.position.set(x + 0.5, 0.05, y + 0.5)
-    //                 maze.add(mesh2)
-    //             }
-    // }
 
     // ceiling
     {
