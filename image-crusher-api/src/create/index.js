@@ -1,6 +1,7 @@
 import { config } from '../config'
 import connectDataStore from '@google-cloud/datastore'
 import { formatImage } from '../util/dataStore/parse'
+const crypto = require('crypto')
 
 const protect = next => (data, req) => {
     const token = (
