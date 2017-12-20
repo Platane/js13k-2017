@@ -10,15 +10,12 @@ const protect = next => (data, req) => {
         ''
     ).replace('Bearer ', '')
 
-    console.log(token)
-
     const hash = crypto
         .createHash('sha256')
         .update(token)
         .digest('base64')
 
     console.log(token, hash, config.secret)
-    console.log(data)
 
     if (hash !== config.secret) throw new Error('unauthorized')
 
