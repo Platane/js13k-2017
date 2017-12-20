@@ -66,6 +66,56 @@ require('preact/devtools')
 //     u()
 // }
 
+{
+    const create = image => async () => {
+        const data = {
+            target: canvasToRImage(image),
+            ancestorTree: {
+                adn: [],
+                fitness: 999999999999,
+                children: [],
+            },
+            PARAM,
+        }
+
+        const token = window.prompt(
+            'you are about to create a new image, enter your password, or cancel'
+        )
+
+        const url =
+            'https://us-central1-imagedot-179509.cloudfunctions.net/create'
+
+        const fetchParam = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify(data),
+        }
+
+        await fetch(url, fetchParam)
+
+        window.alert('created')
+
+        loop()
+    }
+
+    const t = document.createElement('input')
+    t.type = 'file'
+    t.onchange = async e => {
+        const image = normalizeImage(
+            PARAM.SIZE,
+            await loadFileAsImage(e.target.files[0])
+        )
+
+        image.onclick = create(image)
+
+        document.body.appendChild(image)
+    }
+    document.body.appendChild(t)
+}
+
 const printADN = (tree, param_) => {
     adn = tree.adn
     param = param_
