@@ -4,10 +4,28 @@ import { Image } from '../ImageFromAdn'
 import { packADN, unpackADN } from '../../util/pack'
 import { encode, decode } from '../../util/pack/encode'
 import { adnEqual } from '../../util/ancestorTree/merge'
+import * as PARAM from '../../param'
 
 import style from './style.css'
 
 const size = 256
+
+const equals = (a, b) => {
+    if (Array.isArray(a))
+        return (
+            Array.isArray(b) &&
+            a.length === b.length &&
+            a.every((_, i) => equals(a[i], b[i]))
+        )
+
+    if (typeof a === 'object' && a)
+        return (
+            Object.keys(a).length === Object.keys(b).length &&
+            Object.keys(a).every((_, i) => equals(a[i], b[i]))
+        )
+
+    return a === b
+}
 
 export const FloatingRes = ({ adn, param, close }) =>
     !adn ? null : (
@@ -43,6 +61,12 @@ export const FloatingRes = ({ adn, param, close }) =>
                 )
                     ? 'encode ok'
                     : 'encode not ok'}
+            </div>
+
+            <div>
+                {equals(param, PARAM)
+                    ? 'standard param ok'
+                    : 'standard param not ok'}
             </div>
 
             <textarea className={style.textarea}>
