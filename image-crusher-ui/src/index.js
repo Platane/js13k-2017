@@ -136,4 +136,4 @@ const loop = () =>
         .then(() => wait(5000))
         .then(loop)
 
-reload(url_dynamic).then(loop)
+reload(url_fast).then(loop)
