@@ -126,7 +126,7 @@ const url_fast =
     'https://storage.googleapis.com/platane-imagedot-result/res.json'
 
 const reload = url =>
-    fetch(url_fast)
+    fetch(url)
         .then(res => res.json())
         .then(x => (images = x))
         .then(update)
@@ -136,4 +136,4 @@ const loop = () =>
         .then(() => wait(5000))
         .then(loop)
 
-reload(url_fast).then(loop)
+reload(url_dynamic).then(loop)
