@@ -6,6 +6,9 @@
 
     top: 6px;
     right: 6px;
+
+    box-shadow: -20px 36px 40px -20px rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
 }
 .image1,
 .image2 {
@@ -15,4 +18,24 @@
 }
 
 .textarea {
+    width: 120px;
+    margin: 4px;
+    height: 50px;
+}
+.header {
+    display: flex;
+    flex-direction: row;
+}
+.close {
+    margin-left: auto;
+    padding: 10px;
+    cursor: pointer;
+}
+.download {
+    width: 100%;
+    display: block;
+}
+.downloadButton {
+    width: 100%;
+    padding: 10px 0;
 }

@@ -27,7 +27,7 @@ const SIZE = 50
 const transform = ({ x, y }) =>
     `translate3d(${Mx + x * (SIZE + Mx)}px,${My + y * (SIZE + My)}px,0)`
 
-export const AncestorTree = ({ ancestorTree, param, onClick }) => {
+export const AncestorTree = ({ ancestorTree, param, onSelectAdn }) => {
     const pos = computePosition(ancestorTree)
     const ids = computeId(ancestorTree)
 
@@ -73,7 +73,7 @@ export const AncestorTree = ({ ancestorTree, param, onClick }) => {
                 <div
                     key={ids.get(tree)}
                     className={style.node}
-                    onClick={() => onClick(tree, param)}
+                    onClick={() => onSelectAdn(tree.adn, param)}
                     style={{
                         transform: transform(pos.get(tree)),
                     }}

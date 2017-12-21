@@ -19,8 +19,7 @@ import { encode } from './util/pack/encode'
 
 import * as PARAM from './param'
 
-import { List } from './component/List'
-import { FloatingRes } from './component/FloatingRes'
+import { App } from './component/App'
 import { h, render } from 'preact'
 require('preact/devtools')
 
@@ -98,7 +97,7 @@ require('preact/devtools')
 
         window.alert('created')
 
-        loop()
+        reload(url_dynamic)
     }
 
     const t = document.createElement('input')
@@ -116,62 +115,25 @@ require('preact/devtools')
     document.body.appendChild(t)
 }
 
-const printADN = (tree, param_) => {
-    adn = tree.adn
-    param = param_
-    update()
-}
-
 let images
-let adn
-let param
 const update = () =>
-    images &&
-    render(
-        <div>
-            <List images={images} onClick={printADN} />
-            <FloatingRes adn={adn} param={param} />
-        </div>,
-        document.body,
-        document.body.children[0]
-    )
+    render(<App images={images} />, document.body, document.body.children[0])
 
 const wait = delay => new Promise(resolve => setTimeout(resolve, delay))
 
 const url_dynamic = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
 const url_fast =
     'https://storage.googleapis.com/platane-imagedot-result/res.json'
-const loop = async () => {
-    images = await (await fetch(url_fast)).json()
 
-    // const getDeepest = x =>
-    //     x.children.reduce((max, c) => Math.max(max, getDeepest(c)), 0) + 1
-    //
-    // const elegate = x => {
-    //     const bestChildren = x.children.reduce(
-    //         (best, c) => (!best || getDeepest(best) < getDeepest(c) ? c : best),
-    //         null
-    //     )
-    //
-    //     const children = bestChildren ? [bestChildren] : []
-    //
-    //     children.push(
-    //         ...x.children.filter(x => x !== bestChildren && Math.random() > 0.8)
-    //     )
-    //
-    //     return { ...x, children: children.map(elegate) }
-    // }
-    //
-    // images = images.map(x => ({ ...x, ancestorTree: elegate(x.ancestorTree) }))
+const reload = url =>
+    fetch(url_fast)
+        .then(res => res.json())
+        .then(x => (images = x))
+        .then(update)
 
-    update()
+const loop = () =>
+    reload(url_dynamic)
+        .then(() => wait(5000))
+        .then(loop)
 
-    images = await (await fetch(url_dynamic)).json()
-
-    update()
-
-    // await wait(5000)
-
-    // loop()
-}
-loop()
+reload(url_fast).then(loop)

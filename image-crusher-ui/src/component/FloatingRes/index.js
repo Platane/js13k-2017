@@ -9,15 +9,17 @@ import style from './style.css'
 
 const size = 256
 
-export const FloatingRes = ({ adn, param }) =>
+export const FloatingRes = ({ adn, param, close }) =>
     !adn ? null : (
         <div className={style.container}>
-            <div className={style.image1}>
-                <Image adn={adn} size={size} param={param} />
+            <div className={style.header}>
+                <div className={style.close} onClick={close}>
+                    ×
+                </div>
             </div>
 
-            <div className={style.image2}>
-                <Image2 adn={adn} size={size} param={param} />
+            <div className={style.image1}>
+                <Image adn={adn} size={size} param={param} />
             </div>
 
             <div className={style.image2}>
@@ -71,8 +73,10 @@ class DownloadButton extends Component {
 
     render() {
         return (
-            <a ref={el => (this.el = el)}>
-                <button onClick={this.onClick}>save</button>
+            <a ref={el => (this.el = el)} className={style.download}>
+                <button className={style.downloadButton} onClick={this.onClick}>
+                    save
+                </button>
             </a>
         )
     }

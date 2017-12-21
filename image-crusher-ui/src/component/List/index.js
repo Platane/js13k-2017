@@ -1,19 +1,29 @@
 import { h, Component } from 'preact'
 import { AncestorTree } from '../AncestorTree'
 import { RImage } from '../RImage'
+import { count, getBestFitness, getDepth } from '../../util/ancestorTree/stats'
 
 import style from './style.css'
 
-export const List = ({ images, onClick }) => (
+const toDigit = n => x => {
+    let [a, d] = x.toString().split('.')
+
+    d = d || ''
+
+    d = (d + '0'.repeat(n)).slice(0, n)
+
+    return `${a}.${d}`
+}
+
+export const List = ({ images, onSelectImage }) => (
     <div className={style.container}>
-        {images.map(({ ancestorTree, PARAM, target }, i) => (
-            <div className={style.item} key={i}>
+        {images.map(({ id, ancestorTree, PARAM, target }, i) => (
+            <div
+                className={style.item}
+                key={i}
+                onClick={() => onSelectImage(id)}
+            >
                 <RImage param={PARAM} size={64} rImage={target} />
-                <AncestorTree
-                    param={PARAM}
-                    ancestorTree={ancestorTree}
-                    onClick={onClick}
-                />
             </div>
         ))}
     </div>
