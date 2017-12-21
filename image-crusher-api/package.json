@@ -22,9 +22,6 @@
         "flow-typed": "2.1.5",
         "jest": "21.0.2"
     },
-    "engines": {
-        "node": "6.11.x"
-    },
     "scripts": {
         "flow-typed": "flow-typed install",
         "build":
