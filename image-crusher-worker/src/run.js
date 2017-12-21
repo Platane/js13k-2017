@@ -30,6 +30,7 @@ export const run = async () => {
     const [images, _] = await datastore.runQuery(query)
 
     // pick the one with the less node
+    const u = Math.min(images.length - 1, Math.floor(Math.random() * 8))
     const { target, PARAM, ancestorTree, key, n } = images
         .map(image => {
             const x = parseImage(image)
@@ -40,7 +41,7 @@ export const run = async () => {
                 key: image[datastore.KEY],
             }
         })
-        .sort((a, b) => (a.n > b.n ? 1 : -1))[0]
+        .sort((a, b) => (a.n > b.n ? 1 : -1))[u]
 
     console.log('pick the image', key.path)
 
