@@ -12,5 +12,5 @@ export const run = async () => {
 
     const [images, _] = await datastore.runQuery(query)
 
-    return images.map(parseImage)
+    return images.map(x => ({ ...parseImage(x), id: x[datastore.KEY].id }))
 }
