@@ -2,9 +2,7 @@ import { formatImage, parseImage } from '../util/dataStore/parse'
 import { withDB } from '../middleware/withDB'
 import { ADNtoRImage } from 'common/adn/ADNtoRImage'
 import { getFitness } from 'common/rImage/getFitness'
-
-const getNodeById = (tree, id) =>
-    tree.id === id ? tree : tree.children.find(t => getNodeById(t, id))
+import { getNodeById } from 'common/ancestorTree/stats'
 
 const getNodeScore = tree => tree.fitness
 
