@@ -24,3 +24,10 @@ cp -r lib/* dist/create/
 cp -r node_modules dist/create/node_modules
 cp package.json dist/create/package.json
 echo "exports.run = require('./util/functionWrapper').wrap(require('./create').run)" >> dist/create/index.js
+
+# build pushSolution function
+mkdir dist/pushSolution
+cp -r lib/* dist/pushSolution/
+cp -r node_modules dist/pushSolution/node_modules
+cp package.json dist/pushSolution/package.json
+echo "exports.run = require('./util/functionWrapper').wrap(require('./pushSolution').run)" >> dist/pushSolution/index.js
