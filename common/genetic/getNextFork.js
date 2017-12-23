@@ -19,14 +19,14 @@ export const getNextFork = (tree: AncestorTree): AncestorTree => {
     const layers = Array.from({ length: N_layer }, (_, i) =>
         extractNDepth(tree, i)
     )
-        .map(arr => (arr.length < HORIZONTAL_TRIAL ? null : arr))
+        .map((arr, i) => (i > 0 && arr.length < HORIZONTAL_TRIAL ? null : arr))
         .filter(Boolean)
 
     const layer = sort(layers[randFibo(layers.length)])
 
     // chose an item in this layer
     // the solution is chosen randomly between the 5 better
-    const n = Math.min(5, layer.length * 0.4)
+    const n = Math.min(5, Math.floor(layer.length * 0.4))
     const k = randInt(n)
 
     return layer[k]
