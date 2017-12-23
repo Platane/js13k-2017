@@ -1,4 +1,4 @@
-import type { AncestorTree } from '../../../type'
+import type { AncestorTree } from 'type'
 
 type Tree = { children: Tree[] }
 

@@ -14,7 +14,7 @@ export const getAll = (tree: AncestorTree) =>
 
 export const getBestFitLeafs = (tree: AncestorTree, n: number = 1) =>
     getAll(tree)
-        .sort((a, b) => (a.fitness < b.fitness ? -1 : 1))
+        .sort((a, b) => (a.fitness < b.fitness ? 1 : -1))
         .slice(0, n)
 
 export const count = (tree: AncestorTree) =>

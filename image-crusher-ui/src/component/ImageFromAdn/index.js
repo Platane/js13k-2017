@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
-import { ADNtoRImage } from '../../genetic/ADNtoRImage'
-import { adnEqual } from '../../util/ancestorTree/merge'
+import { ADNtoRImage } from 'common/adn/ADNtoRImage'
+import { adnEqual } from 'common/adn/equal'
 import { RImage } from '../RImage'
 
 export class Image extends Component {

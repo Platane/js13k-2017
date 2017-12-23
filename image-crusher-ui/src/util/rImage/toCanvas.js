@@ -1,4 +1,4 @@
-import type { RImage } from '../../type'
+import type { RImage } from 'type'
 
 export const canvasToRImage = canvas => {
     const ctx = canvas.getContext('2d')

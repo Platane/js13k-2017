@@ -1,7 +1,7 @@
 import { h, Component } from 'preact'
 import { AncestorTree } from '../AncestorTree'
 import { RImage } from '../RImage'
-import { count, getBestFitness, getDepth } from '../../util/ancestorTree/stats'
+import { count, getBestFitness, getDepth } from 'common/ancestorTree/stats'
 
 import style from './style.css'
 

@@ -1,0 +1,11 @@
+{
+    "name": "13k2017-image-crusher-common",
+    "version": "1.0.0",
+    "dependencies": {},
+    "devDependencies": {
+        "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
+        "babel-plugin-transform-object-rest-spread": "6.26.0",
+        "babel-preset-flow": "6.23.0",
+        "flow-bin": "0.54.1"
+    }
+}

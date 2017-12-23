@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 import { Image } from '../ImageFromAdn'
-import { getBestFitLeafs } from '../../util/ancestorTree/stats'
+import { getBestFitLeafs } from 'common/ancestorTree/stats'
 import style from './style.css'
 
 export const BestImages = ({ image, n, onSelectAdn }) => (

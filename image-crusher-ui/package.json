@@ -1,12 +1,15 @@
 {
-    "name": "13k2017-image-crusher",
+    "name": "13k2017-image-crusher-ui",
     "version": "1.0.0",
-    "dependencies": {},
+    "dependencies": {
+        "preact": "8.2.5"
+    },
     "devDependencies": {
         "babel-cli": "6.26.0",
         "babel-loader": "7.1.2",
         "babel-plugin-add-module-exports": "0.2.1",
         "babel-plugin-css-modules-transform": "1.2.7",
+        "babel-plugin-module-resolver": "3.0.0",
         "babel-plugin-transform-assets-import-to-string": "1.0.1",
         "babel-plugin-transform-async-to-generator": "6.24.1",
         "babel-plugin-transform-class-properties": "6.24.1",
@@ -24,7 +27,6 @@
         "flow-bin": "0.54.1",
         "flow-typed": "2.1.5",
         "jest": "20.0.4",
-        "preact": "8.2.5",
         "raw-loader": "0.5.1",
         "style-loader": "0.18.2",
         "webpack": "3.6.0",
@@ -35,6 +37,6 @@
         "flow-typed": "flow-typed install",
         "test": "env NODE_ENV=test jest --verbose",
         "build":
-            "env PATHNAME_BASE=/js13k-2017/image-crusher-ui/ env NODE_ENV=production webpack"
+            "cp -r ../common ./src && rm -f ./src/common/.babelrc && env PATHNAME_BASE=/js13k-2017/image-crusher-ui/ env NODE_ENV=production webpack"
     }
 }

@@ -10,14 +10,9 @@ import {
     rImageToCanvas,
 } from './util/rImage/toCanvas'
 
-import { drawCircle } from './util/rImage/draw'
-import { diff } from './util/rImage/diff'
-import { colorDistance } from './util/color'
+import { packADN } from 'common/adn/pack'
 
-import { packADN } from './util/pack'
-import { encode } from './util/pack/encode'
-
-import * as PARAM from './param'
+import * as PARAM from 'common/param'
 
 import { App } from './component/App'
 import { h, render } from 'preact'

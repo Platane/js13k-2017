@@ -1,6 +1,16 @@
 {
     "presets": ["flow"],
     "plugins": [
+        [
+            "module-resolver",
+            {
+                "alias": {
+                    "~": "./src",
+                    "types": "../common/types",
+                    "common": "../common"
+                }
+            }
+        ],
         ["transform-react-jsx", { "pragma": "h" }],
         "transform-class-properties",
         "transform-es2015-modules-commonjs",
@@ -21,6 +31,16 @@
                 ]
             ],
             "plugins": [
+                [
+                    "module-resolver",
+                    {
+                        "alias": {
+                            "~": "./src",
+                            "types": "./src/common/types",
+                            "common": "./src/common"
+                        }
+                    }
+                ],
                 [
                     "transform-runtime",
                     {

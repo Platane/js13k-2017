@@ -1,7 +1,7 @@
 import { h, Component } from 'preact'
 import { rImageToCanvas } from '../../util/rImage/toCanvas'
-import { adnEqual } from '../../util/ancestorTree/merge'
-import { request, cancel } from '../../util/raf'
+import { adnEqual } from 'common/adn/equal'
+import { request, cancel } from 'common/util/raf'
 
 export class RImage extends Component {
     shouldComponentUpdate(nextProps) {

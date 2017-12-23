@@ -1,8 +1,8 @@
 import { h } from 'preact'
 import { FloatingRes } from '../FloatingRes'
-import { List } from '../List'
 import { AncestorTree } from '../AncestorTree'
 import { BestImages } from '../BestImages'
+import { List } from '../List'
 import withState from './hoc.state'
 
 const App_ = ({

@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { request, cancel } from '../../../util/raf'
+import { request, cancel } from 'common/util/raf'
 
 export class Arcs extends Component {
     shouldComponentUpdate(nextProps) {
