@@ -45,3 +45,15 @@ export const rImageToCanvas = (SIZE: number, a: RImage, canvas) => {
 
     return canvas
 }
+
+export const rImageFToCanvas = (a: RImage, canvas) => {
+    if (!canvas) canvas = document.createElement('canvas')
+
+    const s = (canvas.width = canvas.height = Math.sqrt(a.length / 4))
+
+    const ctx = canvas.getContext('2d')
+
+    ctx.putImageData(new ImageData(new Uint8ClampedArray(a), s, s), 0, 0)
+
+    return canvas
+}
