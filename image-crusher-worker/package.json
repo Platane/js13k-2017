@@ -25,6 +25,8 @@
     },
     "scripts": {
         "flow-typed": "flow-typed install",
+        "test":
+            "cp -r ../common ./src && rm -f ./src/common/.babelrc && env NODE_ENV=TEST jest",
         "build":
             "cp -r ../common ./src && rm -f ./src/common/.babelrc && rm -rf lib && env NODE_ENV=PRODUCTION babel --out-dir ./lib --ignore '**/__tests__/' ./src",
         "start": "node lib/cli.js"
