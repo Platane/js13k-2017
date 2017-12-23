@@ -1,4 +1,4 @@
-import type { AncestorTree, ADN, Dot } from '../../type'
+import type { AncestorTree } from '../../type'
 
 export const getDepth = (tree: AncestorTree) =>
     tree.children.reduce((max, tree) => Math.max(max, getDepth(tree)), 0) + 1
@@ -19,3 +19,9 @@ export const getBestFitLeafs = (tree: AncestorTree, n: number = 1) =>
 
 export const count = (tree: AncestorTree) =>
     tree.children.reduce((sum, tree) => sum + count(tree), 0) + 1
+
+export const getNodeById = (
+    tree: AncestorTree,
+    id: String
+): AncestorTree | null =>
+    tree.id === id ? tree : tree.children.find(t => getNodeById(t, id))
