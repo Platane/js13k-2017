@@ -32,6 +32,7 @@ export const mutateUntilConvergence = (param, target, initAdn) => {
         if (fitness_ > fitness) {
             fitness = fitness_
             adn = adn_
+            rt = rt_
 
             unchanged_since = 0
         } else unchanged_since++
