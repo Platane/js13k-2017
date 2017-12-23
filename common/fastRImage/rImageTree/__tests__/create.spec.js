@@ -37,3 +37,27 @@ it('adn with colored cetred dot, should get fitness between 0 and 1 with blank c
     expect(fitness).toBeGreaterThan(0)
     expect(fitness).toBeLessThan(1)
 })
+
+it('adn with gradually colored image, should get increasing with blank colored target', () => {
+    const adn = [
+        { r: 8, color: 56, opacity: 3, x: 0, y: 0 },
+        { r: 8, color: 56, opacity: 3, x: size, y: size },
+        { r: 8, color: 56, opacity: 3, x: size, y: 0 },
+        { r: 8, color: 56, opacity: 3, x: 0, y: size },
+    ]
+
+    const fitness = Array.from({ length: adn.length + 1 }).map((_, i) =>
+        getFitness(targetColor, create(param, adn.slice(0, i)).rImage)
+    )
+
+    console.log(fitness)
+
+    fitness.forEach(
+        (_, i) => i > 0 && expect(fitness[i - 1]).toBeLessThan(fitness[i])
+    )
+
+    // const delta = fitness[1] - fitness[0]
+    // fitness.forEach(
+    //     (_, i) => i > 0 && expect(fitness[i] - fitness[i - 1]).toBe(delta)
+    // )
+})
