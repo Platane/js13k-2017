@@ -1,5 +1,5 @@
-import { getLimit } from '../../config/param'
-import type { ADN, AncestorTree } from '../../type'
+import { getLimit } from './config'
+import type { ADN, AncestorTree } from 'type'
 
 export const mutateUntilConvergence = async (
     mutateHard: (adn: ADN) => ADN,
@@ -18,7 +18,7 @@ export const mutateUntilConvergence = async (
 
         const fitness = getFitness(adn)
 
-        if (fitness < best.fitness) {
+        if (fitness > best.fitness) {
             best.fitness = fitness
             best.adn = adn
 

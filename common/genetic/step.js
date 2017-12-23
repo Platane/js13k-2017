@@ -1,7 +1,6 @@
 import { mutateUntilConvergence } from './mutateUntilConvergence'
 import { getNextFork } from './getNextFork'
-
-import type { Param, ADN, AncestorTree } from '../../type'
+import type { ADN, AncestorTree } from 'type'
 
 export const step = async (
     mutateHard: (adn: ADN) => ADN,
@@ -10,21 +9,14 @@ export const step = async (
     addGene: (adn: ADN) => ADN | null,
     ancestorTree: AncestorTree
 ): Promise<AncestorTree> => {
-    let adn, nextFork
-    let k = 100
+    const parent = getNextFork(ancestorTree)
 
-    while (!adn || !nextFork) {
-        nextFork = getNextFork(ancestorTree)
-
-        adn = addGene(nextFork.adn)
-
-        if (k-- < 0) throw new Error('can not find suitable fork')
-    }
+    const adn = addGene(nextFork.adn)
 
     // return ancestorTree
     const node = { adn, fitness: getFitness(adn), children: [] }
 
-    nextFork.children.push(node)
+    parent.children.push(node)
 
     await mutateUntilConvergence(mutateHard, mutateSoft, getFitness, node)
 

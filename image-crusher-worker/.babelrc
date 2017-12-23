@@ -2,6 +2,16 @@
     "presets": ["flow"],
 
     "plugins": [
+        [
+            "module-resolver",
+            {
+                "alias": {
+                    "~": "./src",
+                    "types": "../common/types",
+                    "common": "../common"
+                }
+            }
+        ],
         "transform-class-properties",
         "transform-es2015-modules-commonjs",
         "transform-object-rest-spread",
@@ -9,8 +19,19 @@
     ],
 
     "env": {
-        "ASYNC_POLYFILL": {
-            "plugins": ["transform-async-to-generator"]
+        "PRODUCTION": {
+            "plugins": [
+                [
+                    "module-resolver",
+                    {
+                        "alias": {
+                            "~": "./src",
+                            "types": "./src/common/types",
+                            "common": "./src/common"
+                        }
+                    }
+                ]
+            ]
         }
     }
 }

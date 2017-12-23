@@ -29,7 +29,6 @@ export type Param = {
     N_CIRCLE: number,
 
     HORIZONTAL_TRIAL: number,
-    CONVERGED_WHEN_UNCHANGED_SINCE: number,
     N_FORK: number,
     N_BATCH: number,
     GENE_BATCH: number,
