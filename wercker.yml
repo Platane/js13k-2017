@@ -106,8 +106,14 @@ deploy-api:
         - script:
             name: deploy function get
             code: |
-                gcloud beta functions deploy get --source ./image-crusher-api/dist/get --memory=512MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+                gcloud beta functions deploy get --source ./image-crusher-api/dist/get --memory=128MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe get
+
+        - script:
+            name: deploy function getJob
+            code: |
+                gcloud beta functions deploy getJob --source ./image-crusher-api/dist/getJob --memory=256MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
+                gcloud beta functions describe getJob
 
         - script:
             name: deploy function create

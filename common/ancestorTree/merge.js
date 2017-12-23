@@ -1,6 +1,6 @@
 import { equal } from '../adn/equal'
 
-import type { AncestorTree } from '../../type'
+import type { AncestorTree } from '../type'
 
 export const mergeAncestorTree = (
     a: AncestorTree,

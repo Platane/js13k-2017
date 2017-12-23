@@ -1,4 +1,4 @@
-import type { Color, RImage } from '../../type'
+import type { Color, RImage } from '../type'
 
 export const diff = (
     colorError: (a: Color, b: Color) => number,

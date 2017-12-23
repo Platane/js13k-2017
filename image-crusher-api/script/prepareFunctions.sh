@@ -11,6 +11,13 @@ cp -r node_modules dist/get/node_modules
 cp package.json dist/get/package.json
 echo "exports.run = require('./util/functionWrapper').wrap(require('./get').run)" >> dist/get/index.js
 
+# build getJob function
+mkdir dist/getJob
+cp -r lib/* dist/getJob/
+cp -r node_modules dist/getJob/node_modules
+cp package.json dist/getJob/package.json
+echo "exports.run = require('./util/functionWrapper').wrap(require('./getJob').run)" >> dist/getJob/index.js
+
 # publishToStorage  function
 mkdir dist/publishToStorage
 cp -r lib/* dist/publishToStorage/

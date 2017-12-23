@@ -1,5 +1,5 @@
 import { blendColor } from '../color'
-import type { RImage, Color } from '../../type'
+import type { RImage, Color } from '../type'
 
 export const createBlank = (SIZE: number): RImage =>
     clear(Array.from({ length: SIZE * SIZE * 3 }))

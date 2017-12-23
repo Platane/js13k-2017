@@ -1,4 +1,4 @@
-import type { AncestorTree } from '../../type'
+import type { AncestorTree } from '../type'
 
 export const getDepth = (tree: AncestorTree) =>
     tree.children.reduce((max, tree) => Math.max(max, getDepth(tree)), 0) + 1
