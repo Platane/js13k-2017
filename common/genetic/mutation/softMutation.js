@@ -1,4 +1,4 @@
-import { colorDistance } from 'common/color'
+import { colorDistance } from '../../color'
 import { clamp, randInt, pickInArray } from '../../util/math'
 import type { ADN, Dot, Param } from 'type'
 
