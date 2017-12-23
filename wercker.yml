@@ -16,12 +16,12 @@ build-api:
         - script:
             cwd: image-crusher-api
             name: build
-            code: env NODE_ENV=ASYNC_POLYFILL yarn run build
+            code: yarn build
 
         - script:
             cwd: image-crusher-api
             name: test
-            code: env NODE_ENV=ASYNC_POLYFILL yarn run test
+            code: yarn test
 
         - script:
             cwd: image-crusher-api

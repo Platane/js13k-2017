@@ -10,7 +10,7 @@ export const run = async () => {
     })
 
     // prepare bucket
-    const [bucket, __] = await storage.bucket('platane-imagedot-result').get({
+    const [bucket, __] = await storage.bucket(config.publishBucketName).get({
         autoCreate: true,
         regional: true,
         location: 'europe-west1',
@@ -37,5 +37,7 @@ export const run = async () => {
         public: true,
     })
 
-    return file.name
+    return `https://storage.googleapis.com/${config.publishBucketName}/${
+        file.name
+    }`
 }
