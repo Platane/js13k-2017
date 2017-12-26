@@ -60,6 +60,11 @@ build-worker:
             name: build
             code: yarn run build
 
+        - script:
+            cwd: image-crusher-worker
+            name: benchmark
+            code: node -e "require('./lib/__benchmark__/index.js')"
+
         # - script:
         #     cwd: image-crusher-worker
         #     name: test
