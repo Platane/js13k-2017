@@ -131,6 +131,12 @@ deploy-api:
                 gcloud beta functions deploy publishToStorage --source ./image-crusher-api/dist/publishToStorage --memory=512MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-http
                 gcloud beta functions describe publishToStorage
 
+        - script:
+            name: deploy function migration
+            code: |
+                gcloud beta functions deploy migration --source ./image-crusher-api/dist/migration --memory=512MB --timeout 120s --entry-point run --stage-bucket platane-image-crusher-lambda-function --trigger-topic notopic
+                gcloud beta functions describe migration
+
 
 deploy-worker:
 

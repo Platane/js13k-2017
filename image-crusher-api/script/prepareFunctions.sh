@@ -38,3 +38,10 @@ cp -r lib/* dist/pushSolution/
 cp -r node_modules dist/pushSolution/node_modules
 cp package.json dist/pushSolution/package.json
 echo "exports.run = require('./util/functionWrapper').wrap(require('./pushSolution').run)" >> dist/pushSolution/index.js
+
+# build migration function
+mkdir dist/migration
+cp -r lib/* dist/migration/
+cp -r node_modules dist/migration/node_modules
+cp package.json dist/migration/package.json
+echo "exports.run = require('./migration')" >> dist/migration/index.js
