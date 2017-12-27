@@ -15,7 +15,7 @@ const prune = (ancestorTree, max_children) => {
 
     return {
         ...ancestorTree,
-        children: c.map(x => prune(x.t)),
+        children: c.map(x => prune(x.t, max_children)),
     }
 }
 
