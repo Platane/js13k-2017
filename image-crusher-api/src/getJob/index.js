@@ -16,9 +16,6 @@ const pickImage = (images: { ancestorTree: AncestorTree }): * =>
     ]
 
 export const handler = async (_, { db }) => {
-    // const query = db.createQuery('image')
-    // const [images, __] = await db.runQuery(query)
-
     const images = await db.get(db.key(['image', 5083289484263424]))
 
     const image = pickImage(
@@ -31,8 +28,8 @@ export const handler = async (_, { db }) => {
         imageId: image.id,
         parent: {
             id: parent.id,
-            fitness: parent.fitness,
             adn: parent.adn,
+            fitness: parent.fitness,
         },
         PARAM: image.PARAM,
         target: image.target,

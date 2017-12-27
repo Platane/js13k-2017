@@ -2,11 +2,11 @@ import { formatImage, parseImage } from '../util/dataStore/parse'
 import { withDB } from '../middleware/withDB'
 import { ADNtoRImage } from 'common/adn/ADNtoRImage'
 import { getFitness } from 'common/rImage/getFitness'
-import { getNodeById } from 'common/ancestorTree/stats'
+import { getNodeById } from 'common/ancestorTree/read'
 
 const getNodeScore = tree => tree.fitness
 
-const prune = (ancestorTree, max_children) => ({
+const prune2 = (ancestorTree, max_children) => ({
     ...ancestorTree,
 
     children: ancestorTree.children
@@ -15,6 +15,7 @@ const prune = (ancestorTree, max_children) => ({
         .slice(0, max_children)
         .map(x => prune(x, max_children)),
 })
+const prune = x => x
 
 const genId = () =>
     Math.random()

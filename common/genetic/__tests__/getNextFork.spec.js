@@ -1,12 +1,12 @@
 import { getNextFork } from '../getNextFork'
-import { extractByDepth } from '../../ancestorTree/stats'
+import { extractByDepth } from '../../ancestorTree/read'
 
 const id = () => Math.random().toString()
 
 it(`should produce a pyramid shaped tree`, () => {
     const a = { id: id(), children: [] }
 
-    for (let k = 12000; k--; ) {
+    for (let k = 1000; k--; ) {
         const next = getNextFork(a)
 
         next.children.push({ id: id(), children: [] })

@@ -1,6 +1,6 @@
 import { HORIZONTAL_TRIAL, N_CIRCLE, GENE_BATCH } from './config'
 import { randomWithDistribution, randInt } from '../util/math'
-import { extractByDepth } from '../ancestorTree/stats'
+import { extractByDepth } from '../ancestorTree/read'
 import type { AncestorTree } from 'type'
 
 const extractNDepth = (tree: AncestorTree, n: number): AncestorTree[] =>
