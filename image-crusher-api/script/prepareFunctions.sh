@@ -44,4 +44,4 @@ mkdir dist/migration
 cp -r lib/* dist/migration/
 cp -r node_modules dist/migration/node_modules
 cp package.json dist/migration/package.json
-echo "exports.run = require('./migration')" >> dist/migration/index.js
+echo "exports.run = require('./migration').run" >> dist/migration/index.js
