@@ -10,13 +10,19 @@ export const randInt = (max: number, min: number = 0) =>
 export const clamp = (min: number, max: number, x: number) =>
     Math.min(max, Math.max(min, x))
 
-// random function with fibonacci distribution
-export const randFibo = n => {
-    const p = [1, 1]
+export const randomWithDistribution = (distribution: number[]) => {
+    const sum = distribution.reduce((sum, x) => sum + x, 0)
 
-    for (let k = 2; k <= n; k++) p[k] = p[k - 1] + p[k - 2]
+    const u = [distribution[0] / sum]
+    for (let i = 1; i < distribution.length; i++)
+        u[i] = u[i - 1] + distribution[i] / sum
 
-    const u = Math.random() * p[n]
+    return () => {
+        const r = Math.random()
+        let k = 0
 
-    for (let k = 1; k <= n; k++) if (u <= p[k]) return k - 1
+        for (; u[k] < r; k++);
+
+        return k
+    }
 }

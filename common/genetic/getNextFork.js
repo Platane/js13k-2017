@@ -1,5 +1,5 @@
 import { HORIZONTAL_TRIAL, N_CIRCLE, GENE_BATCH } from './config'
-import { randFibo, randInt } from '../util/math'
+import { randomWithDistribution, randInt } from '../util/math'
 import type { AncestorTree } from 'type'
 
 const extractNDepth = (tree: AncestorTree, n: number): AncestorTree[] =>
@@ -7,22 +7,40 @@ const extractNDepth = (tree: AncestorTree, n: number): AncestorTree[] =>
         ? [tree]
         : [].concat(...tree.children.map(x => extractNDepth(x, n - 1)))
 
+const extractByDepth = (
+    tree: AncestorTree,
+    n: number = 0,
+    acc = []
+): AncestorTree[][] => {
+    ;(acc[n] = acc[n] || []).push(tree)
+
+    tree.children.forEach(t => extractByDepth(t, n + 1, acc))
+
+    return acc
+}
+
+const f = n => (n == 0 && 1) || (n == 1 && 1) || f(n - 1) + f(n - 2)
+
 const sort = arr => arr.sort((a, b) => (a.fitness < b.fitness ? 1 : -1))
 
 export const getNextFork = (tree: AncestorTree): AncestorTree => {
-    const path = []
-
-    const N_layer = Math.ceil(N_CIRCLE / GENE_BATCH)
-
     // format the tree as a list on layer
     // a layer is a list of all solution at the depth N
-    const layers = Array.from({ length: N_layer }, (_, i) =>
-        extractNDepth(tree, i)
-    )
-        .map((arr, i) => (i > 0 && arr.length < HORIZONTAL_TRIAL ? null : arr))
-        .filter(Boolean)
+    const layers = extractByDepth(tree)
 
-    const layer = sort(layers[randFibo(layers.length)])
+    // the N+1 layer is available once the previous one has enougth trial
+    if (
+        layers[layers.length - 1].length > HORIZONTAL_TRIAL ||
+        layers.length === 1
+    )
+        layers.push([])
+
+    const distribution = layers.map((arr, i) => f(i + 2) / (arr.length + 1))
+    distribution[0] = 0
+
+    const a = randomWithDistribution(distribution)() - 1
+
+    const layer = sort(layers[a])
 
     // chose an item in this layer
     // the solution is chosen randomly between the 5 better
