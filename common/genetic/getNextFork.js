@@ -1,23 +1,12 @@
 import { HORIZONTAL_TRIAL, N_CIRCLE, GENE_BATCH } from './config'
 import { randomWithDistribution, randInt } from '../util/math'
+import { extractByDepth } from '../ancestorTree/stats'
 import type { AncestorTree } from 'type'
 
 const extractNDepth = (tree: AncestorTree, n: number): AncestorTree[] =>
     n == 0
         ? [tree]
         : [].concat(...tree.children.map(x => extractNDepth(x, n - 1)))
-
-const extractByDepth = (
-    tree: AncestorTree,
-    n: number = 0,
-    acc = []
-): AncestorTree[][] => {
-    ;(acc[n] = acc[n] || []).push(tree)
-
-    tree.children.forEach(t => extractByDepth(t, n + 1, acc))
-
-    return acc
-}
 
 const f = n => (n == 0 && 1) || (n == 1 && 1) || f(n - 1) + f(n - 2)
 
@@ -28,10 +17,14 @@ export const getNextFork = (tree: AncestorTree): AncestorTree => {
     // a layer is a list of all solution at the depth N
     const layers = extractByDepth(tree)
 
+    const N = Math.ceil(N_CIRCLE / GENE_BATCH) + 1
+
     // the N+1 layer is available once the previous one has enougth trial
+    if (layers.length === 1) layers.push([])
+
     if (
-        layers[layers.length - 1].length > HORIZONTAL_TRIAL ||
-        layers.length === 1
+        layers[layers.length - 1].length > HORIZONTAL_TRIAL &&
+        layers.length < N
     )
         layers.push([])
 

@@ -25,3 +25,15 @@ export const getNodeById = (
     id: String
 ): AncestorTree | null =>
     tree.id === id ? tree : tree.children.find(t => getNodeById(t, id))
+
+export const extractByDepth = (
+    tree: AncestorTree,
+    n: number = 0,
+    acc = []
+): AncestorTree[][] => {
+    ;(acc[n] = acc[n] || []).push(tree)
+
+    tree.children.forEach(t => extractByDepth(t, n + 1, acc))
+
+    return acc
+}
