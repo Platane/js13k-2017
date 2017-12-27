@@ -28,8 +28,11 @@ export const getNextFork = (tree: AncestorTree): AncestorTree => {
     )
         layers.push([])
 
-    const distribution = layers.map((arr, i) => f(i + 2) / (arr.length + 1))
+    let distribution = layers.map(
+        (arr, i) => f(i + 2) * f(i + 2) / (arr.length + 1)
+    )
     distribution[0] = 0
+    distribution = distribution.map(x => x * x)
 
     const a = randomWithDistribution(distribution)() - 1
 

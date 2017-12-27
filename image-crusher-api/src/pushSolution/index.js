@@ -3,19 +3,21 @@ import { withDB } from '../middleware/withDB'
 import { ADNtoRImage } from 'common/adn/ADNtoRImage'
 import { getFitness } from 'common/rImage/getFitness'
 import { getNodeById } from 'common/ancestorTree/read'
+import { getBestFitness } from 'common/ancestorTree/stats'
 
 const getNodeScore = tree => tree.fitness
 
-const prune2 = (ancestorTree, max_children) => ({
-    ...ancestorTree,
-
-    children: ancestorTree.children
-        .slice()
-        .sort((a, b) => (a.fitness < b.fitness ? 1 : -1))
+const prune = (ancestorTree, max_children) => {
+    const c = ancestorTree.children
+        .map(t => ({ f: getBestFitness(t), t }))
+        .sort((a, b) => (a.f < b.f ? 1 : -1))
         .slice(0, max_children)
-        .map(x => prune(x, max_children)),
-})
-const prune = x => x
+
+    return {
+        ...ancestorTree,
+        children: c.map(x => prune(x.t)),
+    }
+}
 
 const genId = () =>
     Math.random()
@@ -51,7 +53,7 @@ const handler = async (data, { db }) => {
 
     const newImage = {
         ...image,
-        ancestorTree: prune(image.ancestorTree),
+        ancestorTree: prune(image.ancestorTree, 5),
     }
 
     await db.update({
