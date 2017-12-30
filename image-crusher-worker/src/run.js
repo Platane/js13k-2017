@@ -46,7 +46,7 @@ export const mutateUntilConvergence = (param, target, initAdn) => {
     return adn
 }
 
-export const run = async ({ onStart, onEnd }) => {
+export const run = async ({ onStart, onEnd } = {}) => {
     const x = await (await fetch(endPoint + '/getJob')).json()
 
     const { imageId, PARAM, target, parent } = x

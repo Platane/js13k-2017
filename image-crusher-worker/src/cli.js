@@ -1,19 +1,20 @@
 const run = require('./run').run
 
-const stats = []
+let start
+
+const onStart = () => {
+    start = Date.now()
+}
+
+const onEnd = ({ adn }) => {
+    console.log(`finished a ${adn.length} in ${Date.now() - start}ms`)
+}
+
+const o = { onStart, onEnd }
 
 const loop = async () => {
-    console.log(
-        'stats',
-        stats.length &&
-            Math.round(stats.reduce((s, x) => s + x, 0) / stats.length),
-        'ms average'
-    )
-
-    const start = Date.now()
-
     try {
-        await run()
+        await run(o)
 
         stats.push(Date.now() - start)
     } catch (err) {
@@ -22,5 +23,7 @@ const loop = async () => {
 
     loop()
 }
+
+console.log('starting worker ...')
 
 loop()
