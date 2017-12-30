@@ -1,18 +1,10 @@
 .container {
-    position: fixed;
+    display: flex;
+    flex-direction: row;
     background-color: #f3f3f3;
-    border: solid 1px #aaa;
-    padding: 6px;
-
-    top: 6px;
-    right: 6px;
 }
-.image1,
-.image2 {
-    width: 256px;
-    height: 256px;
-    margin-bottom: 6px;
-}
-
-.textarea {
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }

@@ -15,9 +15,8 @@ const Row = ({ PARAM, parent, target, adn }) => (
 
 export const History = ({ history }) => (
     <div className={style.container}>
-        {history
-            .slice(0, 10)
-            .reverse()
-            .map(({ id, ...data }) => <Row key={id} {...data} />)}
+        <div className={style.list}>
+            {history.map(({ id, ...data }) => <Row key={id} {...data} />)}
+        </div>
     </div>
 )

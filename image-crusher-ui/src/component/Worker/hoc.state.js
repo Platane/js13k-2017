@@ -22,7 +22,7 @@ export default C =>
 
             this._workers.terminate()
             this._workers = null
-            this.setState({ running: false })
+            this.setState({ history: [], workers: {}, running: false })
         }
 
         render() {

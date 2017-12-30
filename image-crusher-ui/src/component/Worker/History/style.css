@@ -1,5 +1,15 @@
 .container {
+    overflow-y: scroll;
+    max-height: 300px;
 }
-.item {
+.list {
+    display: flex;
+    flex-direction: column;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     margin: 4px;
 }
