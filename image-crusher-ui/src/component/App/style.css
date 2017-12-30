@@ -1,18 +1,5 @@
-.container {
+.footer {
     position: fixed;
-    background-color: #f3f3f3;
-    border: solid 1px #aaa;
-    padding: 6px;
-
-    top: 6px;
-    right: 6px;
-}
-.image1,
-.image2 {
-    width: 256px;
-    height: 256px;
-    margin-bottom: 6px;
-}
-
-.textarea {
+    bottom: 0;
+    right: 0;
 }

@@ -2,7 +2,6 @@ import { mutateHard } from 'common/genetic/mutation/hardMutation'
 import { mutateSoft } from 'common/genetic/mutation/softMutation'
 import { addGene } from 'common/genetic/mutation/addGene'
 import * as rTree from 'common/fastRImage/rImageTree'
-import * as rImage from 'common/fastRImage/rImage'
 import { getFitness } from 'common/fastRImage/rImage/diff'
 import { getLimit } from 'common/genetic/config'
 import fetch from 'node-fetch'
@@ -47,12 +46,12 @@ export const mutateUntilConvergence = (param, target, initAdn) => {
     return adn
 }
 
-export const run = async () => {
+export const run = async ({ onStart, onEnd }) => {
     const x = await (await fetch(endPoint + '/getJob')).json()
 
     const { imageId, PARAM, target, parent } = x
 
-    console.log(`select image ${imageId}, start computing`)
+    if (onStart) onStart(x)
 
     const adn = mutateUntilConvergence(
         PARAM,
@@ -60,7 +59,7 @@ export const run = async () => {
         addGene(PARAM, parent.adn)
     )
 
-    console.log('end compute')
+    if (onEnd) onEnd({ ...x, adn })
 
     await fetch(endPoint + '/pushSolution', {
         method: 'POST',

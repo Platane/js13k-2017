@@ -16,6 +16,7 @@ const createEnvVarArray = () => {
 module.exports = {
     entry: {
         app: ['./src/index.js', './src/index.html'],
+        worker: './src/worker/run',
     },
 
     output: {
@@ -64,18 +65,6 @@ module.exports = {
                         },
                     ],
                 }),
-            },
-
-            {
-                test: /\.(eot|ttf|woff|otf|woff2|svg|gif|jpg|png|adn)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[hash:6].[ext]',
-                        },
-                    },
-                ],
             },
         ],
     },

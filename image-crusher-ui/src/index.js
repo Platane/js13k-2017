@@ -110,7 +110,7 @@ require('preact/devtools')
     document.body.appendChild(t)
 }
 
-let images
+let images = []
 const update = () =>
     render(<App images={images} />, document.body, document.body.children[0])
 
@@ -131,4 +131,5 @@ const loop = () =>
         .then(() => wait(5000))
         .then(loop)
 
+update()
 reload(url_fast).then(loop)

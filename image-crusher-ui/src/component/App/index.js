@@ -3,7 +3,9 @@ import { FloatingRes } from '../FloatingRes'
 import { AncestorTree } from '../AncestorTree'
 import { BestImages } from '../BestImages'
 import { List } from '../List'
+import { Worker } from '../Worker'
 import withState from './hoc.state'
+import style from './style.css'
 
 const App_ = ({
     images,
@@ -29,6 +31,10 @@ const App_ = ({
         {selectedAdn && (
             <FloatingRes {...selectedAdn} close={() => onSelectAdn()} />
         )}
+
+        <div className={style.footer}>
+            <Worker />
+        </div>
     </div>
 )
 

@@ -2,6 +2,7 @@
     "name": "13k2017-image-crusher-ui",
     "version": "1.0.0",
     "dependencies": {
+        "node-fetch": "1.7.3",
         "preact": "8.2.5"
     },
     "devDependencies": {
@@ -23,7 +24,7 @@
         "babel-runtime": "6.26.0",
         "css-loader": "0.28.7",
         "extract-text-webpack-plugin": "3.0.0",
-        "file-loader": "0.11.2",
+        "file-loader": "1.1.6",
         "flow-bin": "0.54.1",
         "flow-typed": "2.1.5",
         "jest": "20.0.4",
@@ -37,6 +38,6 @@
         "flow-typed": "flow-typed install",
         "test": "env NODE_ENV=test jest --verbose",
         "build":
-            "cp -r ../common ./src && rm -f ./src/common/.babelrc && env PATHNAME_BASE=/js13k-2017/image-crusher-ui/ env NODE_ENV=production webpack"
+            "cp -r ../image-crusher-worker/src ./src/_worker && cp -r ../common ./src && rm -f ./src/common/.babelrc && env PATHNAME_BASE=/js13k-2017/image-crusher-ui/ env NODE_ENV=production webpack"
     }
 }
