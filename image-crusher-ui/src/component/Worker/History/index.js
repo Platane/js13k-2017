@@ -18,6 +18,6 @@ export const History = ({ history }) => (
         {history
             .slice(0, 10)
             .reverse()
-            .map((r, i) => <Row key={r.parent.id + r.workerId} {...r} />)}
+            .map(({ id, ...data }) => <Row key={id} {...data} />)}
     </div>
 )
