@@ -23,7 +23,7 @@ export const handler = async (_, { db }) => {
     // const images = await db.get(db.key(['image', 5083289484263424]))
 
     const image = pickImage(
-        images.slice(0, 10).map(x => ({ ...parseImage(x), id: x[db.KEY].id }))
+        images.map(x => ({ ...parseImage(x), id: x[db.KEY].id }))
     )
 
     const parent = getNextFork(image.ancestorTree)
