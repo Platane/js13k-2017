@@ -1235,4 +1235,36 @@ window.onload = () => {
 
     // renderer.shadowMap.enabled = true;
     // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    document.getElementById('m').onclick = () =>
+        navigator.getUserMedia(
+            { audio: 1 },
+            stream => {
+                // pipe the microphone input to a script node
+
+                const audioContext = new AudioContext()
+
+                const scriptNode = audioContext.createScriptProcessor(
+                    4096,
+                    1,
+                    1
+                )
+
+                audioContext.createMediaStreamSource(stream).connect(scriptNode)
+
+                // before the script node is connected to a desitination, it is un-active
+                // active it
+                // /!\ this behavior is for chrome only, in firefox the onaudioprocess is call even with no destination node
+                scriptNode.connect(audioContext.destination)
+
+                scriptNode.onaudioprocess = audioProcessingEvent => {
+                    const pic = Math.max(
+                        ...audioProcessingEvent.inputBuffer.getChannelData(0)
+                    )
+
+                    world.control.direction.y = pic > 0.16 ? 1 : 0
+                }
+            },
+            _ => _
+        )
 }
