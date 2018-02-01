@@ -118,7 +118,7 @@ const hslToRgb = (h, s, l) => {
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]
 }
 
-const paintings = Array.from({ length: 30 }, () => {
+const paintings = Array.from({ length: 34 }, () => {
     const hues = [Math.random(), Math.random()]
 
     return Array.from({ length: 30 }, (_, i) => ({
