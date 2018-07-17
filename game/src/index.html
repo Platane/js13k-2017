@@ -1,14 +1,13 @@
 <!DOCTYPE html><html><head><meta charset="utf-8">
-<script src="aframe-v0.7.0.min.js"></script>
+<script src="aframe-v0.8.0.min.js"></script>
 <script src="a.js"></script>
 </head>
 <body>
-<a-scene >
+<a-scene background="color: #c8dbec" >
     <a-entity museum></a-entity>
     <a-entity tim>
         <a-camera wasd-controls-enabled="false" reverse-mouse-drag="false" user-height="0"></a-camera>
     </a-entity>
-    <a-sky color="#c8dbec"></a-sky>
     <a-light type="ambient" color="#aaa" groundColor="#fff"></a-light>
     <a-light type="point" position="-32 3 -5" rotation="0 0 0" color="#4e5157"></a-light>
     <a-light type="point" position="50 3 80" rotation="0 0 0" color="#63584f"></a-light>

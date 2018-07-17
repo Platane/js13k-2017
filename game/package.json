@@ -2,17 +2,18 @@
     "name": "13k2017-game",
     "version": "1.1.0",
     "dependencies": {
-        "aframe": "0.7.1"
+        "aframe": "0.8.2"
     },
     "devDependencies": {
         "babel-cli": "6.26.0",
-        "babel-loader": "7.1.2",
-        "babel-minify": "0.3.0",
+        "babel-loader": "7.1.5",
+        "babel-minify": "0.4.3",
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-preset-flow": "6.23.0",
-        "flow-typed": "2.3.0",
-        "webpack": "3.10.0",
-        "webpack-dev-server": "2.11.1"
+        "flow-typed": "2.5.1",
+        "webpack": "4.16.1",
+        "webpack-cli": "3.0.8",
+        "webpack-dev-server": "3.1.4"
     },
     "scripts": {
         "start": "webpack-dev-server --inline --devtool source-map -d",
