@@ -1,0 +1,25 @@
+export type Point = { x: number; y: number }
+
+export type PaintingSpot = {
+    paintingId: string
+    orientation:
+        | { x: 1; y: 0 }
+        | { x: -1; y: 0 }
+        | { x: 0; y: 1 }
+        | { x: 0; y: -1 }
+}
+
+export type Museum = {
+    origin: Point
+
+    grid: boolean[][]
+
+    paintings: PaintingSpot[]
+}
+
+export type Camera = {
+    a: number
+    t: Point
+}
+
+export type Tool = "camera" | "wall"

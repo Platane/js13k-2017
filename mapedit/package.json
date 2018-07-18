@@ -1,0 +1,44 @@
+{
+    "name": "13k2017-mapedit",
+    "version": "0.0.1",
+    "dependencies": {
+        "emotion": "9.2.6",
+        "emotion-server": "9.2.6",
+        "preact": "8.2.9",
+        "preact-compat": "3.18.0",
+        "preact-emotion": "9.2.6",
+        "preact-redux": "2.0.3",
+        "prop-types": "15.6.2",
+        "react": "16.4.1",
+        "react-emotion": "9.2.6",
+        "react-redux": "5.0.7"
+    },
+    "devDependencies": {
+        "@babel/cli": "7.0.0-beta.54",
+        "@babel/core": "7.0.0-beta.54",
+        "@babel/node": "7.0.0-beta.54",
+        "@babel/plugin-proposal-class-properties": "7.0.0-beta.54",
+        "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.54",
+        "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.54",
+        "@babel/preset-env": "7.0.0-beta.54",
+        "@babel/preset-react": "7.0.0-beta.54",
+        "@babel/preset-typescript": "7.0.0-beta.54",
+        "@types/react": "16.4.6",
+        "@types/react-dom": "16.0.6",
+        "@types/react-redux": "6.0.4",
+        "@types/redux": "3.6.0",
+        "babel-loader": "8.0.0-beta.3",
+        "babel-plugin-module-resolver": "3.1.1",
+        "babel-plugin-transform-assets": "1.0.2",
+        "file-loader": "1.1.11",
+        "typescript": "2.9.2",
+        "webpack": "4.16.1",
+        "webpack-assets-manifest": "3.0.1",
+        "webpack-cli": "3.1.0",
+        "webpack-dev-server": "3.1.4"
+    },
+    "scripts": {
+        "start": "webpack-dev-server --mode development --config ./script/webpack.config.js",
+        "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production webpack --mode production --config ./script/webpack.config.js --json > dist/stats.json && NODE_ENV=build babel-node ./script/build/index.js"
+    }
+}
