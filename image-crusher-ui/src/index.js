@@ -89,8 +89,8 @@ require('preact/devtools')
         }
 
         await fetch(url, fetchParam)
-
-        window.alert('created')
+            .then(err => window.alert("created"))
+            .catch(err => window.alert("wrong password, or whatever"))
 
         reload(url_dynamic)
     }
