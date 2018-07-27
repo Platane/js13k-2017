@@ -32,14 +32,14 @@ const drawGrid = (ctx, camera) => {
     }
 }
 
-const drawWall = (ctx, camera, museum) => {
+const drawWall = (ctx, camera, { grid, origin: o }) => {
     const p = toScreen(camera)
 
     ctx.fillStyle = "#eee"
 
-    for (let y = museum.grid.length; y--; )
-        for (let x = museum.grid[y].length; x--; ) {
-            const a = p({ x, y })
+    for (let y = grid.length; y--; )
+        for (let x = grid[y].length; x--; ) {
+            const a = p({ x: x + o.x, y: y + o.y })
 
             ctx.beginPath()
             ctx.rect(a.x, a.y, camera.a, camera.a)
@@ -48,10 +48,10 @@ const drawWall = (ctx, camera, museum) => {
 
     ctx.fillStyle = "#ccc"
 
-    for (let y = museum.grid.length; y--; )
-        for (let x = museum.grid[y].length; x--; )
-            if (museum.grid[y][x]) {
-                const a = p({ x, y })
+    for (let y = grid.length; y--; )
+        for (let x = grid[y].length; x--; )
+            if (grid[y][x]) {
+                const a = p({ x: x + o.x, y: y + o.y })
 
                 ctx.beginPath()
                 ctx.rect(a.x, a.y, camera.a, camera.a)

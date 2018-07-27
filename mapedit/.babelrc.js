@@ -22,17 +22,8 @@ if (process.env.NODE_ENV === "production") {
     presets.push("@babel/preset-env")
 }
 
-if (process.env.NODE_ENV === "build") {
-    plugins.push(
-        [
-            "babel-plugin-transform-assets",
-            {
-                extensions: ["jpg", "jpeg", "png", "gif"],
-                name: "[hash:8].[ext]",
-            },
-        ]
-        // "@babel/plugin-transform-modules-commonjs"
-    )
+if (process.env.NODE_ENV === "test") {
+    plugins.push("@babel/plugin-transform-modules-commonjs")
 }
 
 module.exports = { plugins, presets }
