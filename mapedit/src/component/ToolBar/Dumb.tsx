@@ -6,7 +6,13 @@ const m = {}
 const createClickHandler = (setTool, tool) =>
     (m[tool] = m[tool] || (() => setTool(tool)))
 
-export const ToolBar = ({ availableTools, currentTool, setTool }) => (
+export const ToolBar = ({
+    availableTools,
+    currentTool,
+    setTool,
+    undo,
+    redo,
+}) => (
     <Container>
         {availableTools.map(tool => (
             <ButtonTool
@@ -16,6 +22,11 @@ export const ToolBar = ({ availableTools, currentTool, setTool }) => (
                 {tool}
             </ButtonTool>
         ))}
+
+        <div style={{ margin: "20px" }} />
+
+        <ButtonTool onClick={undo}>{"<"}</ButtonTool>
+        <ButtonTool onClick={redo}>{">"}</ButtonTool>
     </Container>
 )
 

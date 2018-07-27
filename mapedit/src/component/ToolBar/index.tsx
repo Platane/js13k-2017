@@ -3,7 +3,7 @@ import { ToolBar as Dumb } from "./Dumb"
 
 import { selectCurrentTool } from "../../store/selector/currentTool"
 
-import { setTool } from "../../store/action"
+import { setTool, undo, redo } from "../../store/action"
 
 const injectState = connect(
     state => ({
@@ -13,6 +13,8 @@ const injectState = connect(
     }),
     {
         setTool,
+        undo,
+        redo,
     }
 )
 

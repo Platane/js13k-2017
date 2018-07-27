@@ -26,13 +26,13 @@ export const endDrag = (pointer: Point) => ({
     pointer,
 })
 
-type ActionCreator =
-    | typeof setTool
-    | typeof startDrag
-    | typeof moveDrag
-    | typeof endDrag
+export const undo = () => ({
+    type: "undo",
+})
 
-// export type Action = ReturnType<ActionCreator>
+export const redo = () => ({
+    type: "redo",
+})
 
 export type Action =
     | {
@@ -56,3 +56,22 @@ export type Action =
           type: "ui:drag:end"
           pointer: Point
       }
+    | {
+          type: "undo"
+      }
+    | {
+          type: "redo"
+      }
+
+//
+//
+// type ActionCreator =
+//     | typeof setTool
+//     | typeof mouseWheel
+//     | typeof startDrag
+//     | typeof moveDrag
+//     | typeof endDrag
+//     | typeof undo
+//     | typeof redo
+//
+// export type Action = ReturnType<ActionCreator>
