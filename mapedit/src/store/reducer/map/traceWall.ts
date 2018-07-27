@@ -7,17 +7,11 @@ export const reduce = (state: State, action: Action): State => {
     if (state.tool !== "tracewall") return state
 
     switch (action.type) {
-        case "ui:drag:start": {
-            const pointerScreenAnchor = toScreen(state.camera)(action.pointer)
-
+        case "ui:drag:start":
             return {
                 ...state,
-                uidragstate: {
-                    cameraAnchor: state.camera.t,
-                    pointerScreenAnchor,
-                },
+                dragTraceWall: true,
             }
-        }
 
         case "ui:drag:move":
             const cell = {
@@ -25,13 +19,13 @@ export const reduce = (state: State, action: Action): State => {
                 y: Math.floor(action.pointer.y),
             }
 
-            const museum = placeWall(state.museum, cell)
+            const museum = placeWall(state.museum, cell, true)
 
             if (museum !== state.museum) return { ...state, museum }
             break
 
         case "ui:drag:end":
-            return { ...state, uidragstate: {} }
+            return { ...state, dragTraceWall: null }
     }
 
     return state

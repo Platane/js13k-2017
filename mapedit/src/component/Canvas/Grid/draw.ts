@@ -36,7 +36,7 @@ const drawGrid = (ctx, camera) => {
 const drawWall = (ctx, camera, { grid, origin: o }) => {
     const p = toScreen(camera)
 
-    ctx.fillStyle = "#eee"
+    ctx.fillStyle = "#f8f8f8"
 
     for (let y = grid.length; y--; )
         for (let x = grid[y].length; x--; ) {
