@@ -1,5 +1,5 @@
-import { Museum, Point } from "../../../../type"
 import { setCells, readCell } from "./set"
+import { Museum, Point } from "../../type"
 
 export const rectWall = (
     museum: Museum,
