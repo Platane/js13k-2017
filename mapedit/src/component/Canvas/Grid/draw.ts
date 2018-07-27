@@ -7,8 +7,9 @@ const drawGrid = (ctx, camera) => {
     const l = 1000
 
     for (let k = -l; k <= l; k++) {
-        ctx.lineStyle = "#333"
-        ctx.lineWith = 0.1
+        ctx.strokeStyle = "#888"
+        ctx.strokeWidth = 0.1
+        ctx.lineWith = 1
 
         {
             const a = p({ x: l, y: k })

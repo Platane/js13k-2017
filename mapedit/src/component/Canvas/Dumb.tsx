@@ -34,6 +34,12 @@ export class Canvas extends Component {
         this.props.endDrag(pointer)
     }
 
+    wheel = event => {
+        event.preventDefault()
+        const pointer = this.getPointer(event)
+        this.props.mouseWheel(event.deltaY > 0 ? 1 : -1, pointer)
+    }
+
     componentDidMount() {
         document.body.addEventListener("mouseup", this.up)
         document.body.addEventListener("mousemove", this.move)
@@ -41,7 +47,11 @@ export class Canvas extends Component {
 
     render() {
         return (
-            <div onMouseDown={this.down} style={{ position: "relative" }}>
+            <div
+                onMouseDown={this.down}
+                onWheel={this.wheel}
+                style={{ position: "relative" }}
+            >
                 <Grid {...this.props} />
             </div>
         )

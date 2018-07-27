@@ -4,7 +4,7 @@ import { Canvas as Dumb } from "./Dumb"
 import { selectCamera } from "../../store/selector/camera"
 import { selectMuseum } from "../../store/selector/museum"
 
-import { selectTool, startDrag, moveDrag, endDrag } from "../../store/action"
+import { mouseWheel, startDrag, moveDrag, endDrag } from "../../store/action"
 
 const injectState = connect(
     state => ({
@@ -13,7 +13,7 @@ const injectState = connect(
         museum: selectMuseum(state),
     }),
     {
-        selectTool,
+        mouseWheel,
         startDrag,
         moveDrag,
         endDrag,

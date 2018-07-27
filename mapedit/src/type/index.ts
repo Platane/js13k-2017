@@ -22,4 +22,4 @@ export type Camera = {
     t: Point
 }
 
-export type Tool = "camera" | "tracewall"
+export type Tool = "camera" | "tracewall" | "rectwall"
