@@ -10,6 +10,18 @@ export type State = {
 
     tool: Tool
 
+    historyRedoStack: {
+        label: string
+        museum: Museum
+    }[]
+
+    historyUndoStack: {
+        label: string
+        museum: Museum
+    }[]
+
+    historyCache: Museum | null
+
     dragCamera: { cameraAnchor: Point; pointerScreenAnchor: Point } | null
     dragTraceWall: true | null
     dragRectWall: { originalMuseum: Museum; A: Point } | null
@@ -28,6 +40,10 @@ export const defaultState: State = {
     },
 
     tool: "camera",
+
+    historyCache: null,
+    historyRedoStack: [],
+    historyUndoStack: [],
 
     dragCamera: null,
     dragTraceWall: null,
