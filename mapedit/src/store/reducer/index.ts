@@ -10,7 +10,9 @@ export type State = {
 
     tool: Tool
 
-    uidragstate: { cameraAnchor: Point; pointerScreenAnchor: Point } | {}
+    dragCamera: { cameraAnchor: Point; pointerScreenAnchor: Point } | null
+    dragTraceWall: true | null
+    dragRectWall: { originalMuseum: Museum; A: Point } | null
 }
 
 export const defaultState: State = {
@@ -27,7 +29,9 @@ export const defaultState: State = {
 
     tool: "camera",
 
-    uidragstate: {},
+    dragCamera: null,
+    dragTraceWall: null,
+    dragRectWall: null,
 }
 
 export const reduce = composeReducer(reduceMap, reduceTool)

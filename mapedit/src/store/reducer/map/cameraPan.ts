@@ -11,7 +11,7 @@ export const reduce = (state: State, action: Action): State => {
 
             return {
                 ...state,
-                uidragstate: {
+                dragCamera: {
                     cameraAnchor: state.camera.t,
                     pointerScreenAnchor,
                 },
@@ -19,10 +19,10 @@ export const reduce = (state: State, action: Action): State => {
         }
 
         case "ui:drag:move":
-            if ("cameraAnchor" in state.uidragstate) {
+            if (state.dragCamera) {
                 const camera = state.camera
 
-                const { cameraAnchor, pointerScreenAnchor } = state.uidragstate
+                const { cameraAnchor, pointerScreenAnchor } = state.dragCamera
 
                 const pointerScreen = toScreen(camera)(action.pointer)
 
@@ -44,7 +44,7 @@ export const reduce = (state: State, action: Action): State => {
             break
 
         case "ui:drag:end":
-            return { ...state, uidragstate: {} }
+            return { ...state, dragCamera: null }
     }
 
     return state

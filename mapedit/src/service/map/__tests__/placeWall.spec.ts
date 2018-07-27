@@ -10,7 +10,7 @@ test("placeWall", t => {
         paintings: [],
     }
 
-    const m1 = placeWall(m, { x: -2, y: -1 })
+    const m1 = placeWall(m, { x: -2, y: -1 }, true)
 
     t.assert(readCell(m1, { x: -2, y: -1 }), "should have set the point")
 
