@@ -1,7 +1,6 @@
-import { Camera, Museum, Point, Tool } from "../../type"
-import { Action } from "../action"
-import { fromScreen, toScreen } from "../../service/camera"
-import { placeWall } from "./map/mutate/placeWall"
+import { Camera, Museum, Point, Tool } from "../../../type"
+import { Action } from "../../action"
+import { toScreen } from "../../../service/camera"
 
 export type State = {
     camera: Camera
@@ -32,7 +31,7 @@ export const defaultState: State = {
         paintings: [],
     },
 
-    tool: "tracewall",
+    tool: "camera",
 
     uidragstate: {},
 }
@@ -75,14 +74,25 @@ export const reduce = (state: State, action: Action): State => {
             }
 
             if (state.uidragstate.cameraAnchor && state.tool === "tracewall") {
-                const cell = {
-                    x: Math.floor(action.pointer.x),
-                    y: Math.floor(action.pointer.y),
+                const camera = state.camera
+
+                const { cameraAnchor, pointerScreenAnchor } = state.uidragstate
+
+                const pointerScreen = toScreen(camera)(action.pointer)
+
+                const t = {
+                    x:
+                        cameraAnchor.x -
+                        (pointerScreen.x - pointerScreenAnchor.x) / camera.a,
+                    y:
+                        cameraAnchor.y -
+                        (pointerScreen.y - pointerScreenAnchor.y) / camera.a,
                 }
 
-                const museum = placeWall(state.museum, cell)
-
-                if (museum !== state.museum) return { ...state, museum }
+                return {
+                    ...state,
+                    camera: { ...state.camera, t },
+                }
             }
             break
 

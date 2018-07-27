@@ -27,10 +27,13 @@
         "@types/react-dom": "16.0.6",
         "@types/react-redux": "6.0.4",
         "@types/redux": "3.6.0",
+        "@types/tape": "4.2.32",
         "babel-loader": "8.0.0-beta.3",
         "babel-plugin-module-resolver": "3.1.1",
         "babel-plugin-transform-assets": "1.0.2",
         "file-loader": "1.1.11",
+        "tap-spec": "5.0.0",
+        "tape": "4.9.1",
         "typescript": "2.9.2",
         "webpack": "4.16.1",
         "webpack-assets-manifest": "3.0.1",
@@ -38,7 +41,11 @@
         "webpack-dev-server": "3.1.4"
     },
     "scripts": {
-        "start": "webpack-dev-server --mode development --config ./script/webpack.config.js",
-        "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production webpack --mode production --config ./script/webpack.config.js --json > dist/stats.json && NODE_ENV=build babel-node ./script/build/index.js"
+        "start":
+            "webpack-dev-server --mode development --config ./script/webpack.config.js",
+        "build":
+            "rm -rf ./dist && mkdir ./dist && NODE_ENV=production webpack --mode production --config ./script/webpack.config.js --json > dist/stats.json",
+        "test":
+            "NODE_ENV=test babel-node --extensions \".ts\" ./src/__tests__/index.ts | tap-spec"
     }
 }
