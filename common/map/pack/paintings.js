@@ -1,10 +1,10 @@
 import { packADN, unpackADN } from "../../adn/pack"
 
 const orientations = [
+    { x: 0, y: 1 },
     { x: 1, y: 0 },
+    { x: 0, y: -1 },
     { x: -1, y: 0 },
-    { y: 1, x: 0 },
-    { y: -1, x: 0 },
 ]
 const getOrientationKey = ({ x, y }) =>
     orientations.findIndex(o => o.x === x && o.y === y)

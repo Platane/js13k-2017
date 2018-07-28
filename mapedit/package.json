@@ -43,7 +43,7 @@
     },
     "scripts": {
         "prepare":
-            "rm -rf src/lib && mkdir -p src/lib/common && cp -r ../common/rImage src/lib/common/rImage && cp -r ../common/adn src/lib/common/adn && cp -r ../common/ancestorTree src/lib/common/ancestorTree",
+            "rm -rf src/lib && mkdir -p src/lib/common && cp -r ../common/map src/lib/common/map && cp -r ../common/rImage src/lib/common/rImage && cp -r ../common/adn src/lib/common/adn && cp -r ../common/ancestorTree src/lib/common/ancestorTree && cp ../common/param.js src/lib/common/param.js",
         "start":
             "yarn prepare && webpack-dev-server --mode development --config ./script/webpack.config.js",
         "build":

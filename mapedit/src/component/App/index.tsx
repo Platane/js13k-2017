@@ -1,9 +1,10 @@
-import React from "react"
-import { withCssReset } from "../_abstract/cssReset"
-import { Canvas } from "../Canvas"
-import { PaintingList } from "../PaintingList"
-import { ToolBar } from "../ToolBar"
-import styled from "react-emotion"
+import React from 'react'
+import { withCssReset } from '../_abstract/cssReset'
+import { Canvas } from '../Canvas'
+import { PaintingList } from '../PaintingList'
+import { SaveButton } from '../SaveButton'
+import { ToolBar } from '../ToolBar'
+import styled from 'react-emotion'
 
 const App_ = props => (
     <Container>
@@ -16,6 +17,10 @@ const App_ = props => (
         <PaintingListContainer>
             <PaintingList />
         </PaintingListContainer>
+
+        <SaveButtonContainer>
+            <SaveButton />
+        </SaveButtonContainer>
     </Container>
 )
 
@@ -33,6 +38,12 @@ const PaintingListContainer = styled.div`
     bottom: 0;
     top: 0;
     right: 100px;
+`
+const SaveButtonContainer = styled.div`
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+    right: 0px;
 `
 
 export const App = withCssReset(App_)

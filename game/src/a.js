@@ -2,7 +2,6 @@
 /// Params /////////////////
 ////////////////////////////
 
-const rand = arr => arr[Math.floor(arr.length * Math.random())]
 
 // painting param
 const SIZE = 64
@@ -12,18 +11,20 @@ const RADIUS_AVAILABLE = [
     3,
     4,
     5,
+
     6,
     7,
     8,
     10,
+
     12,
     14,
     16,
     18,
+
     22,
     26,
     30,
-    36,
     40,
 ]
 
@@ -32,7 +33,7 @@ const COLOR_PALETTE = []
 // prettier-ignore
 for(let r=0;r<256;r+= 50)
 for(let v=0;v<256;v+= 50)
-for(let b=0;b<256;b+= 50)
+for(let b=0;b<256;b+= 42)
     COLOR_PALETTE.push([r,v,b]);
 
 // materials
@@ -92,253 +93,59 @@ const unpackADN = buffer => {
     return adn
 }
 
-const readPainting = path =>
-    fetch(path)
-        .then(x => x.arrayBuffer())
-        .then(x => unpackADN(new Uint8Array(x)))
 
-const hslToRgb = (h, s, l) => {
-    let r, g, b
 
-    const hue2rgb = (p, q, t) => {
-        if (t < 0) t += 1
-        if (t > 1) t -= 1
-        if (t < 1 / 6) return p + (q - p) * 6 * t
-        if (t < 1 / 2) return q
-        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
-        return p
-    }
+const unpackPaintings = (paintingLength, buffer) =>
+    Array.from({
+        length: buffer.length / paintingLength,
+    }).map((_, i) => {
+        const [x, y, k] = buffer.slice(paintingLength * i)
 
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
-    const p = 2 * l - q
-    r = hue2rgb(p, q, h + 1 / 3)
-    g = hue2rgb(p, q, h)
-    b = hue2rgb(p, q, h - 1 / 3)
+        const adn = unpackADN(
+            buffer.slice(paintingLength * i + 3, paintingLength * (i + 1))
+        )
 
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)]
+        return {
+            x,y,k,
+            adn,
+        }
+    })
+
+const unpackGrid = (w, h, buffer) => {
+    const grid = Array.from({ length: w }).map(() => Array.from({ length: h }))
+
+    for (let y = h; y--; )
+        for (let x = w; x--; )
+            grid[x][y] = !!readNumber(y * w + x, y * w + x + 1, buffer)
+
+    return grid
 }
 
-const paintings = Array.from({ length: 34 }, () => {
-    const hues = [Math.random(), Math.random()]
+const loadingMap = fetch("./map")
+    .then(x => x.arrayBuffer())
+    .then(x => {
 
-    return Array.from({ length: 30 }, (_, i) => ({
-        // x: 10,
-        // y: 10,
-        // r: 10,
-        // color: [255, 0, 0],
-        // opacity: 1,
-        r: Math.floor(Math.random() * 30) + 10,
-        x: Math.floor(Math.random() * 64),
-        y: Math.floor(Math.random() * 64),
-        color: hslToRgb(
-            hues[+(i > 15)],
-            Math.random() * 0.5,
-            Math.random() * 0.6 + 0.2
-        ),
-        opacity: Math.random(),
-    }))
-})
+        const buffer = new Uint8Array(x)
 
-// for (let i = 30; i--; )
-//     paintings[i] = [
-//         { x: 10, y: 3, r: 3, color: [125, 0, 0], opacity: 1 },
-//         { x: 50, y: 10, r: 10, color: [255, 255, 0], opacity: 1 },
-//         { x: 30, y: 30, r: 10, color: [255, 0, 255], opacity: 1 },
-//     ]
+        const [width, height, paintingLength] = buffer
+
+        const gridLength = Math.ceil((height * width) / 8)
+
+        world.worldGrid = unpackGrid(width, height, buffer.slice(3, 3 + gridLength))
+
+        world.paintings = unpackPaintings(
+            paintingLength,
+            buffer.slice(3 + gridLength)
+        )
+    })
+
 
 let step = 1
 
-const texts = [
-    [
-        ['Oups, you are lost in a museum'],
-        [],
-        ['Find your way out!'],
-        [],
-        ['First stop:'],
-        ['Find "La Joconde"'],
-    ],
-    [
-        ['Good!'],
-        [],
-        ['Next:'],
-        ['Find "Starry nigth"'],
-        ['by Van Gogh'],
-        ['in the room to your'],
-        ['left'],
-    ],
-    [
-        ['Nice!'],
-        [],
-        ['Next stop:'],
-        ['"The creation '],
-        ['of Adam"'],
-        ['by Michelangelo'],
-        ['further in this room'],
-    ],
-    [
-        ['Great!'],
-        [],
-        ['Find "Scream"'],
-        ['by Munch'],
-        ['in the room to your'],
-        ['right'],
-    ],
-    [
-        ['OK!'],
-        [],
-        ['Next:'],
-        ['"The Great Wave"'],
-        ['by Hokusai'],
-        ['in this room'],
-    ],
-    [
-        ['Nice!'],
-        [],
-        ['Next:'],
-        ['"La liberté"'],
-        ['by Delacroix'],
-        ['in the next room'],
-    ],
-    [['Nice!'], [], ["it's 12h30"], ['no more time'], ["let's say you win"]],
-]
-
-const worldMap =
-    '                                                                        \n' +
-    '          ###########################                                   \n' +
-    '          #   ####  ####   ####    ############################         \n' +
-    '          #   #b##  #6##   #w##    #                          ##########\n' +
-    '    #######                        #                          #        #\n' +
-    '    #     #                            f      c      4        #####    #\n' +
-    '    #                                                                  #\n' +
-    '    #                                                                  #\n' +
-    '    #     #                            5      a      g        ##########\n' +
-    '    #     #                        #                          #         \n' +
-    '    #     #   #8##  ####   #9##    #                          #         \n' +
-    '    #     #   ####  ####   ####    ######################  ####         \n' +
-    '    #     ###############################################  #            \n' +
-    '    #                                 ###################  #            \n' +
-    '    ##############                    ##   #       #       #            \n' +
-    '                 #                    ##   r       h       3            \n' +
-    '                 #                    ##   #       #       #            \n' +
-    '                 #######################       #       #   #            \n' +
-    '                          ###########  #       #       d   #            \n' +
-    '                          #         #  #       #       #   ######       \n' +
-    '                          #         #  #       #       #        #       \n' +
-    '                          k         j  #       7       e   #### #       \n' +
-    '                          #         ####       #       #   #### #       \n' +
-    '                          #    1           2       #       #### #       \n' +
-    '                          #         ####   r       i       #### #       \n' +
-    '                          #         #  #   #       #       #### #       \n' +
-    '                          #         #  ################ ####### #       \n' +
-    '                          #         ###################         #       \n' +
-    '                          #### ##################################       \n' +
-    '                             #   #                                      \n' +
-    '                             #   #                                      \n' +
-    '                             #####                                      '
-
-const getCell = x => {
-    switch (x) {
-        // mona lisa
-        case '1':
-            return [null, 1, null, null]
-
-        /// starry night
-        case '2':
-            return [null, null, 2, null]
-
-        //  michelangelo
-        case '3':
-            return [null, null, 3, null]
-
-        // scream
-        case '4':
-            return [4, null, null, null]
-
-        // the great wave
-        case '5':
-            return [5, null, null, null]
-
-        // delacroix
-        case '6':
-            return [null, 6, null, null]
-
-        // 7 chamber
-        case '7':
-            return [null, null, 7, null]
-
-        // 8 keith
-        case '8':
-            return [null, null, null, 8]
-
-        // 9 mondrian
-        case '9':
-            return [null, null, null, 9]
-
-        // a magritte
-        case 'a':
-            return [10, null, null, null]
-
-        // b lishtentien
-        case 'b':
-            return [null, 11, null, null]
-
-        // c tamara de lempicka
-        case 'c':
-            return [12, null, null, null]
-
-        // d desper
-        case 'd':
-            return [null, null, 13, null]
-
-        // e american gothic
-        case 'e':
-            return [null, null, 14, null]
-
-        // f manet
-        case 'f':
-            return [15, null, null, null]
-
-        // g hockney
-        case 'g':
-            return [16, null, null, null]
-
-        // h naissance du monde
-        case 'h':
-            return [null, null, 17, null]
-
-        // i jeune fille à la perle
-        case 'i':
-            return [null, null, 18, null]
-
-        // j raboteur de parquet
-        case 'j':
-            return [null, null, 19, null]
-
-        // k turner
-        case 'k':
-            return [20, null, null, null]
-
-        case 'l':
-            return [null, null, Math.floor(Math.random() * 10) + 21, null]
-        case 't':
-            return [null, null, null, Math.floor(Math.random() * 10) + 21]
-        case 'r':
-            return [Math.floor(Math.random() * 10) + 21, null, null, null]
-        case 'w':
-            return [null, Math.floor(Math.random() * 10) + 21, null, null]
-
-        default:
-            return [null, null, null, null]
-    }
-}
-
 const world = {
-    worldGrid: worldMap
-        .split('\n')
-        .map(line => line.split('').map(c => (c === ' ' ? 0 : getCell(c)))),
 
     tim: {
-        position: { x: 30.5, y: 31.5 },
+        position: { x: 0.5, y: 1.5 },
         direction: { x: 0, y: 1 },
     },
 
@@ -555,13 +362,11 @@ const draw = (canvas, size, painting, text, k, t) => {
     }
 }
 
-const generatePainting = i => {
+const generatePainting = (dots, i, text) => {
     const size = 64
 
     const object = new THREE.Object3D()
 
-    const painting = paintings[i]
-    const text = texts[i]
     const canvas = document.createElement('canvas')
 
     const l = 512
@@ -571,7 +376,7 @@ const generatePainting = i => {
     ctx.fillRect(0, 0, size, size)
 
     // paint drop
-    painting.forEach(({ r, opacity, color, x, y }, i) => {
+    dots.forEach(({ r, opacity, color, x, y }, i) => {
         const mat = new THREE.MeshLambertMaterial()
         {
             ctx.beginPath()
@@ -645,11 +450,11 @@ const generatePainting = i => {
         if (i == step && k > 0.9) step++
 
         if (k > 0 || Math.abs(k - ex_k) > 0.1 || (ex_k > 0 && k == 0)) {
-            draw(canvas, size, painting, text, (ex_k = k), t)
+            draw(canvas, size, dots, text, (ex_k = k), t)
             texture.needsUpdate = true
 
-            painting.forEach((dot, i) => {
-                const u = getU(painting.length, i, k)
+            dots.forEach((dot, i) => {
+                const u = getU(dots.length, i, k)
                 const d = getDisplacement(dot.x / size, dot.y / size, u, t)
 
                 object.children[i].visible = u > 0
@@ -670,34 +475,35 @@ const generatePainting = i => {
     return { object, update, t: 0 }
 }
 
-const generatePaintings = worldGrid => {
+const generatePaintings = paintings => {
     const p = []
 
     const object = new THREE.Object3D()
 
-    for (let x = 0; x < worldGrid.length; x++)
-        for (let y = 0; y < worldGrid[0].length; y++)
-            for (let k = 0; worldGrid[x][y] && k < 4; k++)
-                if (worldGrid[x][y][k]) {
-                    const u = generatePainting(worldGrid[x][y][k])
+    paintings.forEach( (pa,i) => {
 
-                    p.push(u)
+        const u = generatePainting(pa.adn, i, [])
 
-                    const a = around[k]
+        p.push(u)
 
-                    const l = 0.6 + 0.35 * Math.random()
+        const a = around[pa.k]
 
-                    u.object.scale.set(l, l, l)
-                    u.object.position.set(
-                        x + 0.5 + a.x * 0.505,
-                        1,
-                        y + 0.5 + a.y * 0.505
-                    )
+        const l = 0.6 + 0.35 * Math.random()
 
-                    u.object.rotation.y = Math.PI / 2 * k
+        u.object.scale.set(l, l, l)
+        u.object.position.set(
+            pa.x + 0.5 + a.x * 0.51,
+            1,
+            pa.y + 0.5 + a.y * 0.51
+        )
 
-                    object.add(u.object)
-                }
+        u.object.rotation.y = Math.PI / 2 * pa.k
+
+        object.add(u.object)
+
+    })
+
+
 
     let t = 0
     let prev_direction = { x: 0, y: 0 }
@@ -1070,73 +876,73 @@ const generateMazeObject = world => {
 
     // ceiling
     {
-        const geom = new THREE.PlaneBufferGeometry(0.06, h)
+        const geom = new THREE.PlaneBufferGeometry(0.06, h * 2)
 
         for (let x = 0; x < world.length; x += 3) {
             const mesh = new THREE.Mesh(geom, ceiling)
 
             mesh.rotation.x = Math.PI / 2
-            mesh.position.set(x + 0.03, 4.5, h / 2)
+            mesh.position.set(x + 0.03, 4.5, h/2)
 
             maze.add(mesh)
         }
     }
 
     // intro text
-    {
-        const canvas = document.createElement('canvas')
-        canvas.height = canvas.width = 512
-        const ctx = canvas.getContext('2d')
-        ctx.fillStyle = '#fff'
-        ctx.fillRect(0, 0, 512, 512)
-
-        texts[0].forEach((t, i) => {
-            ctx.fillStyle = '#333'
-            ctx.font = '30px Helvetica'
-            ctx.fillText(t, 50, i * 40 + 100)
-        })
-
-        const texture = new THREE.Texture(canvas)
-        texture.needsUpdate = true
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-        texture.repeat.set(1, 1)
-
-        const mat = new THREE.MeshLambertMaterial()
-        mat.map = texture
-        mat.aoMap = wall.aoMap
-        mat.aoMapIntensity = wall.aoMapIntensity
-
-        const planeGeom = new THREE.PlaneGeometry(2, 2)
-
-        const _x = 1 - 2 * 0.8
-        const top = 0.12
-        const bottom = 0.7
-        planeGeom.faceVertexUvs[1] = [
-            [
-                new THREE.Vector2(_x, bottom),
-                new THREE.Vector2(_x, top),
-                new THREE.Vector2(1, bottom),
-            ],
-            [
-                new THREE.Vector2(_x, top),
-                new THREE.Vector2(1, top),
-                new THREE.Vector2(1, bottom),
-            ],
-        ]
-        planeGeom.uvsNeedUpdate
-
-        const mesh = new THREE.Mesh(planeGeom, mat)
-        mesh.position.z = 0.005
-
-        const object = new THREE.Object3D()
-
-        object.position.set(30, 1.2, 30)
-
-        object.rotation.y = 0
-
-        object.add(mesh)
-        maze.add(object)
-    }
+    // {
+    //     const canvas = document.createElement('canvas')
+    //     canvas.height = canvas.width = 512
+    //     const ctx = canvas.getContext('2d')
+    //     ctx.fillStyle = '#fff'
+    //     ctx.fillRect(0, 0, 512, 512)
+    //
+    //     texts[0].forEach((t, i) => {
+    //         ctx.fillStyle = '#333'
+    //         ctx.font = '30px Helvetica'
+    //         ctx.fillText(t, 50, i * 40 + 100)
+    //     })
+    //
+    //     const texture = new THREE.Texture(canvas)
+    //     texture.needsUpdate = true
+    //     texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+    //     texture.repeat.set(1, 1)
+    //
+    //     const mat = new THREE.MeshLambertMaterial()
+    //     mat.map = texture
+    //     mat.aoMap = wall.aoMap
+    //     mat.aoMapIntensity = wall.aoMapIntensity
+    //
+    //     const planeGeom = new THREE.PlaneGeometry(2, 2)
+    //
+    //     const _x = 1 - 2 * 0.8
+    //     const top = 0.12
+    //     const bottom = 0.7
+    //     planeGeom.faceVertexUvs[1] = [
+    //         [
+    //             new THREE.Vector2(_x, bottom),
+    //             new THREE.Vector2(_x, top),
+    //             new THREE.Vector2(1, bottom),
+    //         ],
+    //         [
+    //             new THREE.Vector2(_x, top),
+    //             new THREE.Vector2(1, top),
+    //             new THREE.Vector2(1, bottom),
+    //         ],
+    //     ]
+    //     planeGeom.uvsNeedUpdate
+    //
+    //     const mesh = new THREE.Mesh(planeGeom, mat)
+    //     mesh.position.z = 0.005
+    //
+    //     const object = new THREE.Object3D()
+    //
+    //     object.position.set(30, 1.2, 30)
+    //
+    //     object.rotation.y = 0
+    //
+    //     object.add(mesh)
+    //     maze.add(object)
+    // }
 
     {
         // const light = new THREE.SpotLight(0xffffff);
@@ -1181,37 +987,12 @@ AFRAME.registerComponent('museum', {
     init: function() {
         const container = this.el.object3D
 
-        container.add(generateMazeObject(world.worldGrid))
+        loadingMap.then( () => {
 
-        // 1 mona lisa
-        // 2 starry night
-        // 3 munch
-        // 4 great wave
-        // 5 delacroix
-        // 6 michelangelo
-        // 7 chamber
-        // 8 keith
-        // 9 mondrian
-        // a magritte
-        // b lishtentien
-        // c tamara de lempicka
-        // d desper
-        // e american gothic
-        // f manet
-        // g hockney
-        // h naissance du monde
-        // i jeune fille à la perle
-        // j raboteur de parquet
-        // k turner
+            container.add(generateMazeObject(world.worldGrid))
 
-        Promise.all(
-            '126345789abcdefghijk'
-                .split('')
-                .map((x, i) =>
-                    readPainting(x).then(p => (paintings[i + 1] = p))
-                )
-        ).then(() => {
-            this.p = generatePaintings(world.worldGrid)
+
+            this.p = generatePaintings(world.paintings)
             container.add(this.p.object)
         })
     },
