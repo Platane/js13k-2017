@@ -48,5 +48,3 @@ export const expandGrid = (museum: Museum, min: Point, max: Point) => {
         grid,
     }
 }
-
-export const reduceGrid = (museum: Museum) => museum
