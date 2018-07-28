@@ -1,5 +1,5 @@
 import { Action } from "../../action"
-import { State } from "../index"
+import { State } from "../type"
 
 export const enhance = reduce => (state: State, action: Action) => {
     switch (action.type) {
@@ -37,9 +37,13 @@ export const enhance = reduce => (state: State, action: Action) => {
             return state
         }
 
+        case "ui:dragpainting:start":
         case "ui:drag:start":
             // cache the current value for some drag action
-            if (["tracewall", "rectwall"].includes(state.tool))
+            if (
+                ["tracewall", "rectwall"].includes(state.tool) ||
+                action.type === "ui:dragpainting:start"
+            )
                 state = {
                     ...state,
                     historyCache: state.museum,

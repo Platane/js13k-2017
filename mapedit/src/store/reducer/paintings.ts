@@ -3,10 +3,10 @@ import { State } from "./type"
 
 export const reduce = (state: State, action: Action): State => {
     switch (action.type) {
-        case "ui:tool:set": {
+        case "http:hydrate:paintings": {
             return {
                 ...state,
-                tool: action.tool,
+                paintings: action.paintings,
             }
         }
     }

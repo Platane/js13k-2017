@@ -2,6 +2,7 @@ export type Point = { x: number; y: number }
 
 export type PaintingSpot = {
     paintingId: string
+    cell: Point
     orientation:
         | { x: 1; y: 0 }
         | { x: -1; y: 0 }
@@ -23,3 +24,9 @@ export type Camera = {
 }
 
 export type Tool = "camera" | "tracewall" | "rectwall"
+
+export type Painting = {
+    id: string
+    PARAM: Object
+    target: number[]
+}

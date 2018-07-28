@@ -1,14 +1,12 @@
 {
     "compilerOptions": {
+        "allowJs": true,
         "module": "commonjs",
         "moduleResolution": "node",
         "baseUrl": "src",
         "target": "es5",
         "allowSyntheticDefaultImports": true,
         "jsx": "preserve",
-        "paths": {
-            "~/*": ["./*"]
-        },
-        "lib": ["ES2015"]
+        "lib": ["ES6", "ES2016.Array.Include", "DOM"]
     }
 }

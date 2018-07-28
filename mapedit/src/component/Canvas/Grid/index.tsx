@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import styled from "react-emotion"
 import { draw } from "./draw"
 
 export class Grid extends Component {

@@ -1,19 +1,21 @@
 import { Museum, Camera } from "../../../type"
 import { toScreen } from "../../../service/camera"
 
-const drawGrid = (ctx, camera) => {
+const drawGrid = (ctx: CanvasRenderingContext2D, camera: Camera) => {
     const p = toScreen(camera)
 
-    const l = 1000
+    const l = 1600 / camera.a
 
-    for (let k = -l; k <= l; k++) {
+    const tx = Math.floor(camera.t.x)
+    const ty = Math.floor(camera.t.y)
+
+    for (let k = -1; k <= l; k++) {
         ctx.strokeStyle = "#888"
-        ctx.strokeWidth = 0.1
-        ctx.lineWith = 1
+        ctx.lineWidth = 0.5
 
         {
-            const a = p({ x: l, y: k })
-            const b = p({ x: -l, y: k })
+            const a = p({ x: l + tx, y: k + ty })
+            const b = p({ x: -l + tx, y: k + ty })
 
             ctx.beginPath()
             ctx.moveTo(a.x, a.y)
@@ -22,8 +24,8 @@ const drawGrid = (ctx, camera) => {
         }
 
         {
-            const a = p({ x: k, y: l })
-            const b = p({ x: k, y: -l })
+            const a = p({ x: k + tx, y: l + ty })
+            const b = p({ x: k + tx, y: -l + ty })
 
             ctx.beginPath()
             ctx.moveTo(a.x, a.y)
@@ -33,7 +35,11 @@ const drawGrid = (ctx, camera) => {
     }
 }
 
-const drawWall = (ctx, camera, { grid, origin: o }) => {
+const drawWall = (
+    ctx: CanvasRenderingContext2D,
+    camera: Camera,
+    { grid, origin: o }: Museum
+) => {
     const p = toScreen(camera)
 
     ctx.fillStyle = "#f8f8f8"
@@ -60,7 +66,43 @@ const drawWall = (ctx, camera, { grid, origin: o }) => {
             }
 }
 
-export const draw = (ctx, camera: Camera, museum: Museum) => {
+const drawPaintings = (
+    ctx: CanvasRenderingContext2D,
+    camera: Camera,
+    { paintings }: Museum
+) => {
+    const p = toScreen(camera)
+
+    ctx.save()
+    ctx.strokeStyle = "#333"
+    ctx.lineWidth = 3
+
+    paintings.forEach(({ cell, orientation }) => {
+        ctx.beginPath()
+
+        const a = p({
+            x: cell.x + 0.5 + orientation.x * 0.5 + orientation.y * 0.4,
+            y: cell.y + 0.5 + orientation.y * 0.5 - orientation.x * 0.4,
+        })
+        const b = p({
+            x: cell.x + 0.5 + orientation.x * 0.5 - orientation.y * 0.4,
+            y: cell.y + 0.5 + orientation.y * 0.5 + orientation.x * 0.4,
+        })
+
+        ctx.moveTo(a.x, a.y)
+        ctx.lineTo(b.x, b.y)
+        ctx.stroke()
+    })
+
+    ctx.restore()
+}
+
+export const draw = (
+    ctx: CanvasRenderingContext2D,
+    camera: Camera,
+    museum: Museum
+) => {
     drawWall(ctx, camera, museum)
     drawGrid(ctx, camera)
+    drawPaintings(ctx, camera, museum)
 }

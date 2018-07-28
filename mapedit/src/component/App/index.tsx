@@ -1,6 +1,7 @@
 import React from "react"
 import { withCssReset } from "../_abstract/cssReset"
 import { Canvas } from "../Canvas"
+import { PaintingList } from "../PaintingList"
 import { ToolBar } from "../ToolBar"
 import styled from "react-emotion"
 
@@ -11,6 +12,10 @@ const App_ = props => (
         <ToolBarContainer>
             <ToolBar />
         </ToolBarContainer>
+
+        <PaintingListContainer>
+            <PaintingList />
+        </PaintingListContainer>
     </Container>
 )
 
@@ -20,7 +25,14 @@ const ToolBarContainer = styled.div`
     z-index: 2;
     bottom: 0;
     top: 0;
-    right: 10px;
+    right: 0px;
+`
+const PaintingListContainer = styled.div`
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+    top: 0;
+    right: 100px;
 `
 
 export const App = withCssReset(App_)

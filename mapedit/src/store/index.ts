@@ -1,9 +1,10 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux"
 import { attachToStore as attachToStoreUI } from "../sideEffect/ui"
+import { attachToStore as attachToStorePaintingStore } from "../sideEffect/paintingStore"
 
 import { reduce, defaultState } from "./reducer"
 
-const sideEffects = [attachToStoreUI]
+const sideEffects = [attachToStoreUI, attachToStorePaintingStore]
 
 const crashReporterMiddleware = store => next => action => {
     try {

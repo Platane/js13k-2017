@@ -16,7 +16,11 @@ const plugins = [
     ],
 ]
 
-const presets = ["@babel/preset-react", "@babel/preset-typescript"]
+const presets = [
+    "@babel/preset-flow",
+    "@babel/preset-react",
+    "@babel/preset-typescript",
+]
 
 if (process.env.NODE_ENV === "production") {
     presets.push("@babel/preset-env")
