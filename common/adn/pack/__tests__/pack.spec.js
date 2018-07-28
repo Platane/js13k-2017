@@ -1,8 +1,8 @@
-import { packADN, unpackADN } from '../index'
+import { packADN, unpackADN } from "../index"
 
-import * as param from '../../../param'
+import * as param from "../../../param"
 
-const samples = [
+export const samples = [
     [{ x: 14, y: 13, r: 2, color: 9, opacity: 1 }],
     [
         { color: 129, opacity: 3, r: 6, x: 28, y: 35 },
@@ -23,6 +23,6 @@ const samples = [
 ]
 
 samples.forEach((adn, i) =>
-    it(`pack / unpack should be identity ${i}`, () =>
+    it(`pack / unpack adn should be identity ${i}`, () =>
         expect(unpackADN(param, packADN(param, adn))).toEqual(adn))
 )
