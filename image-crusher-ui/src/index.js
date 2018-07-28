@@ -89,7 +89,8 @@ require('preact/devtools')
         }
 
         await fetch(url, fetchParam)
-            .then(err => window.alert("created"))
+            .then(res => res.ok ? res : Promise.reject(new Error(`request failed with ${res.status}`)))
+            .then(res => window.alert("created"))
             .catch(err => window.alert("wrong password, or whatever"))
 
         reload(url_dynamic)
