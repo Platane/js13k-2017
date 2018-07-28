@@ -1,12 +1,12 @@
 import { toScreen } from "../../../service/camera"
 import { Action } from "../../action"
-import { State } from "../index"
+import { State } from "../type"
 
 export const reduce = (state: State, action: Action): State => {
-    if (state.tool !== "camera") return state
-
     switch (action.type) {
         case "ui:drag:start": {
+            if (state.tool !== "camera") return state
+
             const pointerScreenAnchor = toScreen(state.camera)(action.pointer)
 
             return {
@@ -44,7 +44,7 @@ export const reduce = (state: State, action: Action): State => {
             break
 
         case "ui:drag:end":
-            return { ...state, dragCamera: null }
+            if (state.dragCamera) return { ...state, dragCamera: null }
     }
 
     return state

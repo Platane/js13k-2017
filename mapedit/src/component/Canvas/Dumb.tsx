@@ -20,18 +20,24 @@ export class Canvas extends Component {
     }
 
     move = event => {
-        if (!this.state.dragging) return
+        if (!this.state.dragging && !this.props.dragging) return
 
         const pointer = this.getPointer(event)
         this.props.moveDrag(pointer)
     }
 
     up = event => {
-        if (!this.state.dragging) return
+        if (!this.state.dragging && !this.props.dragging) return
 
         const pointer = this.getPointer(event)
         this.setState({ dragging: false })
         this.props.endDrag(pointer)
+    }
+
+    dragover = event => {
+        if (!this.props.dragging) return
+
+        event.preventDefault()
     }
 
     wheel = event => {
@@ -41,8 +47,11 @@ export class Canvas extends Component {
     }
 
     componentDidMount() {
+        document.body.addEventListener("drop", this.up)
         document.body.addEventListener("mouseup", this.up)
         document.body.addEventListener("mousemove", this.move)
+        document.body.addEventListener("drag", this.move)
+        document.body.addEventListener("dragover", this.dragover)
     }
 
     render() {

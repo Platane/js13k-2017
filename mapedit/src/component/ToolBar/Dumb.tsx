@@ -16,6 +16,7 @@ export const ToolBar = ({
     <Container>
         {availableTools.map(tool => (
             <ButtonTool
+                id={tool}
                 onClick={createClickHandler(setTool, tool)}
                 selected={currentTool === tool}
             >

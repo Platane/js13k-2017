@@ -21,11 +21,12 @@
         "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.54",
         "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.54",
         "@babel/preset-env": "7.0.0-beta.54",
+        "@babel/preset-flow": "7.0.0-beta.54",
         "@babel/preset-react": "7.0.0-beta.54",
         "@babel/preset-typescript": "7.0.0-beta.54",
-        "@types/react": "16.4.6",
+        "@types/react": "16.4.7",
         "@types/react-dom": "16.0.6",
-        "@types/react-redux": "6.0.4",
+        "@types/react-redux": "6.0.5",
         "@types/redux": "3.6.0",
         "@types/tape": "4.2.32",
         "babel-loader": "8.0.0-beta.3",
@@ -35,17 +36,19 @@
         "tap-spec": "5.0.0",
         "tape": "4.9.1",
         "typescript": "2.9.2",
-        "webpack": "4.16.1",
+        "webpack": "4.16.3",
         "webpack-assets-manifest": "3.0.1",
         "webpack-cli": "3.1.0",
-        "webpack-dev-server": "3.1.4"
+        "webpack-dev-server": "3.1.5"
     },
     "scripts": {
+        "prepare":
+            "rm -rf src/lib && mkdir -p src/lib/common && cp -r ../common/rImage src/lib/common/rImage && cp -r ../common/adn src/lib/common/adn && cp -r ../common/ancestorTree src/lib/common/ancestorTree",
         "start":
-            "webpack-dev-server --mode development --config ./script/webpack.config.js",
+            "yarn prepare && webpack-dev-server --mode development --config ./script/webpack.config.js",
         "build":
-            "rm -rf ./dist && mkdir ./dist && NODE_ENV=production webpack --mode production --config ./script/webpack.config.js --json > dist/stats.json",
+            "yarn prepare && rm -rf ./dist && mkdir ./dist && NODE_ENV=production webpack --mode production --config ./script/webpack.config.js --json > dist/stats.json",
         "test":
-            "NODE_ENV=test babel-node --extensions \".ts\" ./src/__tests__/index.ts | tap-spec"
+            "yarn prepare && NODE_ENV=test babel-node --extensions \".ts\" ./src/__tests__/index.ts | tap-spec"
     }
 }

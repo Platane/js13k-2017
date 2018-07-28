@@ -1,4 +1,4 @@
-import { Point, Tool } from "../../type"
+import { Point, Tool, Painting } from "../../type"
 
 export const setTool = (tool: Tool) => ({
     type: "ui:tool:set",
@@ -9,6 +9,11 @@ export const mouseWheel = (delta: Point, pointer: Point) => ({
     type: "ui:wheel",
     delta,
     pointer,
+})
+
+export const startDragPainting = (paintingId: string) => ({
+    type: "ui:dragpainting:start",
+    paintingId,
 })
 
 export const startDrag = (pointer: Point) => ({
@@ -34,7 +39,16 @@ export const redo = () => ({
     type: "redo",
 })
 
+export const hydratePaintings = paintings => ({
+    type: "http:hydrate:paintings",
+    paintings,
+})
+
 export type Action =
+    | {
+          type: "http:hydrate:paintings"
+          paintings: Painting[]
+      }
     | {
           type: "ui:tool:set"
           tool: Tool
@@ -47,6 +61,10 @@ export type Action =
     | {
           type: "ui:drag:start"
           pointer: Point
+      }
+    | {
+          type: "ui:dragpainting:start"
+          paintingId: string
       }
     | {
           type: "ui:drag:move"

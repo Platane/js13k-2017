@@ -1,12 +1,12 @@
 import { rectWall } from "../../../service/map/rectWall"
 import { Action } from "../../action"
-import { State } from "../index"
+import { State } from "../type"
 
 export const reduce = (state: State, action: Action): State => {
-    if (state.tool !== "rectwall") return state
-
     switch (action.type) {
         case "ui:drag:start": {
+            if (state.tool !== "rectwall") return state
+
             const A = {
                 x: Math.floor(action.pointer.x),
                 y: Math.floor(action.pointer.y),
@@ -36,7 +36,7 @@ export const reduce = (state: State, action: Action): State => {
             }
 
         case "ui:drag:end":
-            return { ...state, dragRectWall: null }
+            if (state.dragRectWall) return { ...state, dragRectWall: null }
     }
 
     return state

@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { rImageToCanvas } from '../../util/rImage/toCanvas'
+import { rImageToCanvas } from 'common/rImage/toCanvas'
 import { adnEqual } from 'common/adn/equal'
 import { request, cancel } from 'common/util/raf'
 

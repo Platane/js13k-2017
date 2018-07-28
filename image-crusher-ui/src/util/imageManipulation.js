@@ -7,8 +7,6 @@ export const loadFileAsDataUrl = file =>
         fr.readAsDataURL(file)
     })
 
-const raf = () => new Promise(resolve => requestAnimationFrame(resolve))
-
 export const dataUrlToImage = (dataUrl: string) =>
     new Promise((resolve, reject) => {
         const img = new Image()

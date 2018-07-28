@@ -11,6 +11,8 @@ const injectState = connect(
         camera: selectCamera(state),
 
         museum: selectMuseum(state),
+
+        dragging: !!state.dragPainting,
     }),
     {
         mouseWheel,
