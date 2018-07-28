@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import styled from "react-emotion"
 import { Grid } from "./Grid"
+import { Overlay } from "./Overlay"
 import { fromScreen } from "../../service/camera"
 
 const getPointer = (event): Point => ({
@@ -59,9 +59,14 @@ export class Canvas extends Component {
             <div
                 onMouseDown={this.down}
                 onWheel={this.wheel}
-                style={{ position: "relative" }}
+                style={{
+                    position: "relative",
+                    width: this.props.width,
+                    height: this.props.height,
+                }}
             >
                 <Grid {...this.props} />
+                <Overlay {...this.props} />
             </div>
         )
     }

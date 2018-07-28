@@ -23,6 +23,6 @@ export class Grid extends Component {
             requestAnimationFrame(() => this.forceUpdate())
         }
 
-        return <canvas />
+        return <canvas style={{ position: "absolute", top: 0, left: 0 }} />
     }
 }

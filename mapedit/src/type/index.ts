@@ -28,5 +28,6 @@ export type Tool = "camera" | "tracewall" | "rectwall"
 export type Painting = {
     id: string
     PARAM: Object
+    ancestorTree: Object
     target: number[]
 }
