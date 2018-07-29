@@ -14,6 +14,7 @@ export const injectReset = () =>
         margin: 0;
       }
 
+      #app,
       html,
       body {
         height: 100%;

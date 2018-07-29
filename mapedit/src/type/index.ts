@@ -1,6 +1,7 @@
 export type Point = { x: number; y: number }
 
 export type PaintingSpot = {
+    id: string
     paintingId: string
     cell: Point
     orientation:

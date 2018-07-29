@@ -3,20 +3,21 @@ import { Grid } from "./Grid"
 import { Overlay } from "./Overlay"
 import { fromScreen } from "../../service/camera"
 
-const getPointer = (event): Point => ({
+const getPointer = (top, event): Point => ({
     x: event.clientX,
-    y: event.clientY,
+    y: event.clientY - top,
 })
 
 export class Canvas extends Component {
-    state = { dragging: false }
+    state = { dragging: false, top: 0 }
 
-    getPointer = event => fromScreen(this.props.camera)(getPointer(event))
+    getPointer = event =>
+        fromScreen(this.props.camera)(getPointer(this.state.top, event))
 
     down = event => {
         const pointer = this.getPointer(event)
-        this.setState({ dragging: true })
         this.props.startDrag(pointer)
+        this.setState({ dragging: true }, () => this.move(event))
     }
 
     move = event => {
@@ -52,6 +53,10 @@ export class Canvas extends Component {
         document.body.addEventListener("mousemove", this.move)
         document.body.addEventListener("drag", this.move)
         document.body.addEventListener("dragover", this.dragover)
+
+        const { top } = this.base.getBoundingClientRect()
+
+        this.setState({ top })
     }
 
     render() {

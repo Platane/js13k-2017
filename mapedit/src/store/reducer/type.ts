@@ -24,5 +24,9 @@ export type State = {
     dragCamera: { cameraAnchor: Point; pointerScreenAnchor: Point } | null
     dragTraceWall: true | null
     dragRectWall: { originalMuseum: Museum; A: Point } | null
-    dragPainting: { originalMuseum: Museum; paintingId: string } | null
+    dragPainting: {
+        originalMuseum: Museum
+        paintingId: string
+        id: string
+    } | null
 }

@@ -11,9 +11,13 @@ export const mouseWheel = (delta: Point, pointer: Point) => ({
     pointer,
 })
 
-export const startDragPainting = (paintingId: string) => ({
+export const startDragPainting = (paintingId: string, existingId: string) => ({
     type: "ui:dragpainting:start",
     paintingId,
+    existingId,
+    id: Math.random()
+        .toString(16)
+        .slice(2, 10),
 })
 
 export const startDrag = (pointer: Point) => ({
@@ -65,6 +69,8 @@ export type Action =
     | {
           type: "ui:dragpainting:start"
           paintingId: string
+          existingId: string
+          id: string
       }
     | {
           type: "ui:drag:move"
