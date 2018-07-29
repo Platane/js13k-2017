@@ -8,7 +8,13 @@ import {
     selectPaintingParam,
 } from "../../store/selector/paintings"
 
-import { mouseWheel, startDrag, moveDrag, endDrag } from "../../store/action"
+import {
+    mouseWheel,
+    startDrag,
+    moveDrag,
+    endDrag,
+    startDragPainting,
+} from "../../store/action"
 
 const injectState = connect(
     state => ({
@@ -23,6 +29,7 @@ const injectState = connect(
         param: selectPaintingParam(state),
     }),
     {
+        startDragPainting,
         mouseWheel,
         startDrag,
         moveDrag,

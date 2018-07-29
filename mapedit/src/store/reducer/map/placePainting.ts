@@ -74,19 +74,25 @@ export const reduce = (state: State, action: Action): State => {
             return {
                 ...state,
                 dragPainting: {
-                    originalMuseum: state.museum,
+                    originalMuseum: {
+                        ...state.museum,
+                        paintings: state.museum.paintings.filter(
+                            x => x.id !== action.existingId
+                        ),
+                    },
                     paintingId: action.paintingId,
+                    id: action.id,
                 },
             }
 
         case "ui:drag:move":
             if (state.dragPainting) {
-                const { paintingId, originalMuseum } = state.dragPainting
+                const { paintingId, originalMuseum, id } = state.dragPainting
 
                 const spot = getClosestSpot(originalMuseum, action.pointer)
 
                 if (spot) {
-                    const paintingSpot = { ...spot, paintingId }
+                    const paintingSpot = { ...spot, id, paintingId }
 
                     if (haveThePaintingAlready(state.museum, paintingSpot))
                         return state

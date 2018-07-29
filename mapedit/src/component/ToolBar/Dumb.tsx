@@ -23,11 +23,6 @@ export const ToolBar = ({
                 {tool}
             </ButtonTool>
         ))}
-
-        <div style={{ margin: "20px" }} />
-
-        <ButtonTool onClick={undo}>{"<"}</ButtonTool>
-        <ButtonTool onClick={redo}>{">"}</ButtonTool>
     </Container>
 )
 

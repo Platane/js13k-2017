@@ -14,11 +14,26 @@ const createTransform = (camera, cell, orientation) => {
     return `translate3d(${p.x}px,${p.y}px,0)`
 }
 
-export const Overlay = ({ param, museum, camera, paintingsById }) => (
+const m = {}
+const createDragEvent = (startDragPainting, paintingId, id) =>
+    (m[id] = m[id] || (() => startDragPainting(paintingId, id)))
+
+const stopPropagation = event => event.stopPropagation()
+
+export const Overlay = ({
+    param,
+    museum,
+    camera,
+    paintingsById,
+    startDragPainting,
+}) => (
     <Container>
-        {museum.paintings.map(({ cell, orientation, paintingId }) => (
+        {museum.paintings.map(({ id, cell, orientation, paintingId }) => (
             <Painting
                 id={paintingId}
+                draggable={true}
+                onMouseDown={stopPropagation}
+                onDragStart={createDragEvent(startDragPainting, paintingId, id)}
                 style={{
                     transform: createTransform(camera, cell, orientation),
                 }}

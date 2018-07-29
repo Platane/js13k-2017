@@ -13,8 +13,6 @@ const injectState = connect(
     }),
     {
         setTool,
-        undo,
-        redo,
     }
 )
 
