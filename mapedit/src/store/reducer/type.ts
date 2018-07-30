@@ -1,9 +1,11 @@
-import { Camera, Painting, Museum, Point, Tool } from "../../type"
+import { Camera, Painting, Museum, Point, Tool, Panel } from '../../type'
 
 export type State = {
     camera: Camera
 
     museum: Museum
+
+    currentPanel: Panel
 
     tool: Tool
 
@@ -23,6 +25,7 @@ export type State = {
 
     dragCamera: { cameraAnchor: Point; pointerScreenAnchor: Point } | null
     dragTraceWall: true | null
+    dragStartingPoint: true | null
     dragRectWall: { originalMuseum: Museum; A: Point } | null
     dragPainting: {
         originalMuseum: Museum
