@@ -1,10 +1,16 @@
 import { connect } from 'react-redux'
 import { PlayButton as Dumb } from './Dumb'
-import { selectMuseumAsBinary } from '../../store/selector/binary'
 import { State } from '../../store/reducer/type'
+import { togglePlayWindowAutoRefresh, openPlayWindow } from '../../store/action'
 
-const injectState = connect((state: State) => ({
-    museumAsBinary: selectMuseumAsBinary(state),
-}))
+const injectState = connect(
+    (state: State) => ({
+        autorefresh: state.playWindow.autorefresh,
+    }),
+    {
+        togglePlayWindowAutoRefresh,
+        openPlayWindow,
+    }
+)
 
 export const PlayButton = injectState(Dumb)

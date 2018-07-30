@@ -1,10 +1,15 @@
-import { createStore, combineReducers, applyMiddleware, compose } from "redux"
-import { attachToStore as attachToStoreUI } from "../sideEffect/ui"
-import { attachToStore as attachToStorePaintingStore } from "../sideEffect/paintingStore"
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+import { attachToStore as attachToStoreUI } from '../sideEffect/ui'
+import { attachToStore as attachToStorePaintingStore } from '../sideEffect/paintingStore'
+import { attachToStore as attachToStorePlayWindow } from '../sideEffect/playWindow'
 
-import { reduce, defaultState } from "./reducer"
+import { reduce, defaultState } from './reducer'
 
-const sideEffects = [attachToStoreUI, attachToStorePaintingStore]
+const sideEffects = [
+    attachToStoreUI,
+    attachToStorePaintingStore,
+    attachToStorePlayWindow,
+]
 
 const crashReporterMiddleware = store => next => action => {
     try {
@@ -22,7 +27,7 @@ export const create = () => {
     // enhancers composing
     const enhancers = [
         applyMiddleware(...middlewares),
-        "undefined" != typeof window &&
+        'undefined' != typeof window &&
             window.__REDUX_DEVTOOLS_EXTENSION__ &&
             window.__REDUX_DEVTOOLS_EXTENSION__(),
     ].filter(Boolean)

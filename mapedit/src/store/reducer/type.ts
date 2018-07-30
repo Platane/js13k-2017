@@ -11,7 +11,7 @@ export type State = {
 
     paintings: Painting[]
 
-    historyStableMuseum: Museum,
+    historyStableMuseum: Museum
 
     historyRedoStack: {
         label: string
@@ -34,4 +34,9 @@ export type State = {
         paintingId: string
         id: string
     } | null
+
+    playWindow: {
+        refreshKey: null | number
+        autorefresh: boolean
+    }
 }
