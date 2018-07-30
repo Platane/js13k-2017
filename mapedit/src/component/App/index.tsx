@@ -1,11 +1,12 @@
-import React from "react"
-import { withCssReset } from "../_abstract/cssReset"
-import { Canvas } from "../Canvas"
-import { PaintingList } from "../PaintingList"
-import { SaveButton } from "../SaveButton"
-import { ToolBar } from "../ToolBar"
-import { Header } from "../Header"
-import styled from "react-emotion"
+import React from 'react'
+import { withCssReset } from '../_abstract/cssReset'
+import { Canvas } from '../Canvas'
+import { RouteBuilder } from '../RouteBuilder'
+import { PaintingList } from '../PaintingList'
+import { SaveButton } from '../SaveButton'
+import { ToolBar } from '../ToolBar'
+import { Header } from '../Header'
+import styled from 'react-emotion'
 
 const App_ = props => (
     <Container>
@@ -19,16 +20,20 @@ const App_ = props => (
             <Panel>
                 <ToolBarContainer>
                     <ToolBar />
+                    <div style={{ margin: '40px' }} />
+                    <SaveButton />
                 </ToolBarContainer>
 
                 <PaintingListContainer>
                     <PaintingList />
-                    <SaveButton />
                 </PaintingListContainer>
             </Panel>
         </Bottom>
     </Container>
 )
+// {/* <RouteBuilderContainer>
+//     <RouteBuilder />
+// </RouteBuilderContainer> */}
 
 const Container = styled.div`
     position: relative;
@@ -53,7 +58,7 @@ const Panel = styled.div`
     flex-grow: 1;
     width: 50%;
     min-width: 200px;
-    max-width: 360px;
+    max-width: 480px;
 
     display: flex;
     flex-direction: row;
@@ -66,6 +71,11 @@ const ToolBarContainer = styled.div`
     right: 0px;
 `
 const PaintingListContainer = styled.div`
+    overflow: hidden;
+    height: 100%;
+    margin-left: auto;
+`
+const RouteBuilderContainer = styled.div`
     overflow: hidden;
     height: 100%;
     margin-left: auto;

@@ -1,12 +1,12 @@
-import { packADN, unpackADN } from "../../adn/pack"
+import { packADN, unpackADN } from '../../adn/pack'
 
-const orientations = [
+export const orientations = [
     { x: 0, y: 1 },
     { x: 1, y: 0 },
     { x: 0, y: -1 },
     { x: -1, y: 0 },
 ]
-const getOrientationKey = ({ x, y }) =>
+export const getOrientationKey = ({ x, y }) =>
     orientations.findIndex(o => o.x === x && o.y === y)
 
 const flat = arr => [].concat(...arr)

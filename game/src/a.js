@@ -127,16 +127,34 @@ const loadingMap = fetch("./map")
 
         const buffer = new Uint8Array(x)
 
-        const [width, height, paintingLength] = buffer
+        let [width, height, paintingLength, sx, sy, so] = buffer
 
         const gridLength = Math.ceil((height * width) / 8)
 
-        world.worldGrid = unpackGrid(width, height, buffer.slice(3, 3 + gridLength))
+        world.worldGrid = unpackGrid(
+            width,
+            height,
+            buffer.slice(6, 6 + gridLength)
+        )
 
         world.paintings = unpackPaintings(
             paintingLength,
-            buffer.slice(3 + gridLength)
+            buffer.slice(6 + gridLength)
         )
+
+        world.tim.position.x = sx
+        world.tim.position.y = sy
+
+        //
+        // hacky way to set a default camera rotation
+        // set a new base dx,dy
+
+        world.tim.d = {x: around[(so+3)%4].x, y: around[(so+3)%4].y}
+
+        if ( world.tim.camera3d ){
+
+            world.tim.camera3d.rotation.y = ( so -2 )*Math.PI*0.5
+        }
     })
 
 
@@ -272,13 +290,24 @@ AFRAME.registerComponent('tim', {
             const mesh = new THREE.Mesh(geom, mat)
 
             this.el.object3D.add(mesh)
+
+            // const camera = this.el.children[0].object3D
+            const camera = this.el.object3D
+
+            world.tim.camera3d = camera
         }
     },
     tick: function() {
+
+        if ( !world.tim.d ) return
+
         const direction = this.el.children[0].object3D.rotation.y
 
-        world.tim.direction.x = -Math.sin(direction)
-        world.tim.direction.y = -Math.cos(direction)
+        const dx = -Math.sin(direction)
+        const dy = -Math.cos(direction)
+
+        world.tim.direction.x = dx * world.tim.d.x - dy * world.tim.d.y
+        world.tim.direction.y = dx * world.tim.d.y + dy * world.tim.d.x
 
         tick()
 
