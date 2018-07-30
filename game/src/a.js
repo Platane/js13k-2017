@@ -121,13 +121,16 @@ const unpackGrid = (w, h, buffer) => {
     return grid
 }
 
-const loadingMap = fetch("./map")
-    .then(x => x.arrayBuffer())
+const loadBinary = location.search.includes('local')
+    ? Promise.resolve(localStorage.getItem('museumAsBinary').split(','))
+    : fetch("./map").then(x => x.arrayBuffer())
+
+const loadingMap = loadBinary
     .then(x => {
 
         const buffer = new Uint8Array(x)
 
-        let [width, height, paintingLength, sx, sy, so] = buffer
+        const [width, height, paintingLength, sx, sy, so] = buffer
 
         const gridLength = Math.ceil((height * width) / 8)
 
@@ -149,11 +152,12 @@ const loadingMap = fetch("./map")
         // hacky way to set a default camera rotation
         // set a new base dx,dy
 
-        world.tim.d = {x: around[(so+3)%4].x, y: around[(so+3)%4].y}
+        const a = ( so -2 )*Math.PI*0.5
+
+        world.tim.d = {x: around[(so+3)%4].x, y: around[(so+3)%4].y, a }
 
         if ( world.tim.camera3d ){
-
-            world.tim.camera3d.rotation.y = ( so -2 )*Math.PI*0.5
+            world.tim.camera3d.rotation.y = a
         }
     })
 
@@ -295,6 +299,9 @@ AFRAME.registerComponent('tim', {
             const camera = this.el.object3D
 
             world.tim.camera3d = camera
+
+            if ( world.tim.d )
+                camera.rotation.y = world.tim.d.a
         }
     },
     tick: function() {

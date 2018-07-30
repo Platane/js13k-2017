@@ -4,6 +4,7 @@ import { Canvas } from '../Canvas'
 import { RouteBuilder } from '../RouteBuilder'
 import { PaintingList } from '../PaintingList'
 import { SaveButton } from '../SaveButton'
+import { PlayButton } from '../PlayButton'
 import { ToolBar } from '../ToolBar'
 import { Header } from '../Header'
 import styled from 'react-emotion'
@@ -20,8 +21,9 @@ const App_ = props => (
             <Panel>
                 <ToolBarContainer>
                     <ToolBar />
-                    <div style={{ margin: '40px' }} />
+                    <div style={{ margin: '60px' }} />
                     <SaveButton />
+                    <PlayButton />
                 </ToolBarContainer>
 
                 <PaintingListContainer>
