@@ -1,9 +1,9 @@
-import { Action } from "../../action"
-import { State } from "../type"
+import { Action } from '../../action'
+import { State } from '../type'
 
 export const enhance = reduce => (state: State, action: Action) => {
     switch (action.type) {
-        case "undo": {
+        case 'undo': {
             const [first, ...historyUndoStack] = state.historyUndoStack
 
             if (first)
@@ -20,7 +20,7 @@ export const enhance = reduce => (state: State, action: Action) => {
             return state
         }
 
-        case "redo": {
+        case 'redo': {
             const [first, ...historyRedoStack] = state.historyRedoStack
 
             if (first)
@@ -37,13 +37,14 @@ export const enhance = reduce => (state: State, action: Action) => {
             return state
         }
 
-        case "ui:dragstartingpoint:start":
-        case "ui:dragpainting:start":
-        case "ui:drag:start":
+        case 'ui:dragstartingpoint:start':
+        case 'ui:dragpainting:start':
+        case 'ui:drag:start':
             // cache the current value for some drag action
             if (
-                ["tracewall", "rectwall"].includes(state.tool) ||
-                action.type === "ui:dragpainting:start"
+                ['tracewall', 'rectwall'].includes(state.tool) ||
+                action.type === 'ui:dragstartingpoint:start' ||
+                action.type === 'ui:dragpainting:start'
             )
                 state = {
                     ...state,
@@ -52,7 +53,7 @@ export const enhance = reduce => (state: State, action: Action) => {
 
             return reduce(state, action)
 
-        case "ui:drag:end":
+        case 'ui:drag:end':
             if (state.historyCache) {
                 const newState = reduce(state, action)
 
