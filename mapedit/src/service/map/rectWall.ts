@@ -1,5 +1,5 @@
-import { setCells, readCell } from "./set"
-import { Museum, Point } from "../../type"
+import { setCells, readCell } from './set'
+import { Museum, Point } from '../../type'
 
 export const rectWall = (
     museum: Museum,
@@ -24,7 +24,7 @@ export const rectWall = (
             cells.push({ ...min, y }, { ...max, y })
     }
 
-    return cells.every(cell => readCell(museum, cell))
+    return cells.every(cell => readCell(museum, cell) === value)
         ? museum
         : setCells(museum, cells, value)
 }
