@@ -1,21 +1,23 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { create } from '../../service/popup'
+
+const open = create()
 
 const createClickHandler = museumAsBinary => event => {
     localStorage.setItem('museumAsBinary', museumAsBinary.join(','))
+    open()
 }
 
 export const PlayButton = ({ museumAsBinary }) => (
-    <Container
-        onClick={createClickHandler(museumAsBinary)}
-        href="/game?local=1"
-        target="_blank"
-    >
+    <Container onClick={createClickHandler(museumAsBinary)}>
         <Button>play</Button>
     </Container>
 )
+// href="/game?local=1"
+// target="_blank"
 
-const Container = styled.a``
+const Container = styled.div``
 
 const Button = styled.div`
     cursor: pointer;
