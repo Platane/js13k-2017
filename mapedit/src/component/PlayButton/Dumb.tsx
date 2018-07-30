@@ -1,17 +1,24 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { create } from '../../service/popup'
 
-const open = create()
-
-const createClickHandler = museumAsBinary => event => {
-    localStorage.setItem('museumAsBinary', museumAsBinary.join(','))
-    open()
-}
-
-export const PlayButton = ({ museumAsBinary }) => (
-    <Container onClick={createClickHandler(museumAsBinary)}>
-        <Button>play</Button>
+export const PlayButton = ({
+    openPlayWindow,
+    togglePlayWindowAutoRefresh,
+    autorefresh,
+}) => (
+    <Container onClick={openPlayWindow}>
+        <Button>
+            play
+            <input
+                type="checkbox"
+                onClick={event => {
+                    event.stopPropagation()
+                    togglePlayWindowAutoRefresh()
+                }}
+                checked={autorefresh}
+                style={{ marginLeft: '20px' }}
+            />
+        </Button>
     </Container>
 )
 // href="/game?local=1"

@@ -2,6 +2,7 @@ import { composeReducer } from '../../util/redux'
 import { reduce as reduceMap } from './map'
 import { reduce as reduceTool } from './tool'
 import { reduce as reducePaintings } from './paintings'
+import { reduce as reducePlayWindow } from './playWindow'
 import { State } from './type'
 
 const museum = {
@@ -33,6 +34,16 @@ export const defaultState: State = {
     dragTraceWall: null,
     dragRectWall: null,
     dragPainting: null,
+
+    playWindow: {
+        refreshKey: null,
+        autorefresh: false,
+    },
 }
 
-export const reduce = composeReducer(reduceMap, reduceTool, reducePaintings)
+export const reduce = composeReducer(
+    reduceMap,
+    reduceTool,
+    reducePaintings,
+    reducePlayWindow
+)

@@ -57,6 +57,14 @@ export const hydratePaintings = paintings => ({
     paintings,
 })
 
+export const togglePlayWindowAutoRefresh = () => ({
+    type: 'playwindow:autorefresh:toggle',
+})
+
+export const openPlayWindow = () => ({
+    type: 'playwindow:open',
+})
+
 export type Action =
     | {
           type: 'http:hydrate:paintings'
@@ -97,4 +105,10 @@ export type Action =
       }
     | {
           type: 'redo'
+      }
+    | {
+          type: 'playwindow:open'
+      }
+    | {
+          type: 'playwindow:autorefresh:toggle'
       }
