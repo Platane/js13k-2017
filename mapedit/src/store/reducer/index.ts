@@ -1,8 +1,8 @@
-import { composeReducer } from "../../util/redux"
-import { reduce as reduceMap } from "./map"
-import { reduce as reduceTool } from "./tool"
-import { reduce as reducePaintings } from "./paintings"
-import { State } from "./type"
+import { composeReducer } from '../../util/redux'
+import { reduce as reduceMap } from './map'
+import { reduce as reduceTool } from './tool'
+import { reduce as reducePaintings } from './paintings'
+import { State } from './type'
 
 export const defaultState: State = {
     camera: {
@@ -16,9 +16,11 @@ export const defaultState: State = {
         origin: { x: 5, y: 3 },
         grid: [[true]],
         paintings: [],
+        startingPoint: { x: 0, y: 1 },
+        startingOrientation: { x: 0, y: 1 },
     },
 
-    tool: "camera",
+    tool: 'camera',
 
     historyCache: null,
     historyRedoStack: [],

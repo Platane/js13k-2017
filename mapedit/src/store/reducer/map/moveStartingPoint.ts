@@ -1,7 +1,7 @@
 import { readCell } from '../../../service/map/set'
 import { Action } from '../../action'
 import { State } from '../type'
-import { Museum, Point } from '../../../type'
+import { Museum, Point, Orientation } from '../../../type'
 
 const orientations = [
     { x: 1, y: 0 },
@@ -68,56 +68,52 @@ const haveThePaintingAlready = (
     )
 }
 
+const pointEqual = (a, b) => a.x === b.x && a.y === b.y
+
 export const reduce = (state: State, action: Action): State => {
     switch (action.type) {
-        case 'ui:dragpainting:start':
+        case 'ui:dragstartingpoint:start':
             return {
                 ...state,
-                dragPainting: {
-                    originalMuseum: {
-                        ...state.museum,
-                        paintings: state.museum.paintings.filter(
-                            x => x.id !== action.existingId
-                        ),
-                    },
-                    paintingId: action.paintingId,
-                    id: action.id,
-                },
+                dragStartingPoint: true,
             }
 
         case 'ui:drag:move':
-            if (state.dragPainting) {
-                const { paintingId, originalMuseum, id } = state.dragPainting
+            if (state.dragStartingPoint) {
+                const startingPoint = {
+                    x: Math.floor(action.pointer.x),
+                    y: Math.floor(action.pointer.y),
+                }
 
-                const spot = getClosestSpot(originalMuseum, action.pointer)
+                const dx = (((action.pointer.x % 1) + 1) % 1) - 0.5
+                const dy = (((action.pointer.y % 1) + 1) % 1) - 0.5
 
-                if (spot) {
-                    const paintingSpot = { ...spot, id, paintingId }
+                const startingOrientation: Orientation = {
+                    x: Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 1 : -1) : 0,
+                    y: Math.abs(dy) >= Math.abs(dx) ? (dy > 0 ? 1 : -1) : 0,
+                } as any
 
-                    if (haveThePaintingAlready(state.museum, paintingSpot))
-                        return state
-                    else
-                        return {
-                            ...state,
-                            museum: {
-                                ...originalMuseum,
-                                paintings: [
-                                    ...originalMuseum.paintings,
-                                    paintingSpot,
-                                ],
-                            },
-                        }
-                } else
+                if (
+                    !pointEqual(startingPoint, state.museum.startingPoint) ||
+                    !pointEqual(
+                        startingOrientation,
+                        state.museum.startingOrientation
+                    )
+                )
                     return {
                         ...state,
-                        museum: originalMuseum,
+                        museum: {
+                            ...state.museum,
+                            startingPoint,
+                            startingOrientation,
+                        },
                     }
             }
 
             break
 
         case 'ui:drag:end':
-            return { ...state, dragPainting: null }
+            return { ...state, dragStartingPoint: null }
     }
 
     return state

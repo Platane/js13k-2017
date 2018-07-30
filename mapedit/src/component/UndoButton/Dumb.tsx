@@ -3,10 +3,18 @@ import styled from "react-emotion"
 
 export const UndoButton = ({ toUndo, toRedo, undo, redo }) => (
     <Container>
-        <ButtonTool onClick={undo} disabled={!toUndo} title={`undo ${toUndo}`}>
+        <ButtonTool
+            onClick={undo}
+            disabled={!toUndo}
+            title={toUndo && `undo ${toUndo}`}
+        >
             {"<"}
         </ButtonTool>
-        <ButtonTool onClick={redo} disabled={!toRedo} title={`redo ${toRedo}`}>
+        <ButtonTool
+            onClick={redo}
+            disabled={!toRedo}
+            title={toRedo && `redo ${toRedo}`}
+        >
             {">"}
         </ButtonTool>
     </Container>
