@@ -1,4 +1,4 @@
-import { Museum, Point } from "../../type"
+import { Museum, Point } from '../../type'
 
 export const reduceGrid = ({ grid, origin, ...museum }: Museum): Museum => {
     const height = grid.length
@@ -52,8 +52,18 @@ export const reduceGrid = ({ grid, origin, ...museum }: Museum): Museum => {
     }
 }
 
-export const centerOrigin = ({ origin, paintings, ...museum }: Museum) => ({
+export const centerOrigin = ({
+    startingPoint,
+    origin,
+    paintings,
+    ...museum
+}: Museum) => ({
     origin: { x: 0, y: 0 },
+
+    startingPoint: {
+        x: startingPoint.x - origin.x,
+        y: startingPoint.y - origin.y,
+    },
 
     paintings: paintings.map(({ cell, ...rest }) => ({
         ...rest,

@@ -1,12 +1,14 @@
-import { packMuseum, unpackMuseum } from "../museum"
-import * as param from "../../../param"
-import { samples as paintingsSamples } from "../../../adn/pack/__tests__/pack.spec"
-import { samples as gridSamples } from "./packGrid.spec"
+import { packMuseum, unpackMuseum } from '../museum'
+import * as param from '../../../param'
+import { samples as paintingsSamples } from '../../../adn/pack/__tests__/pack.spec'
+import { samples as gridSamples } from './packGrid.spec'
 
 const samples = [
     {
         grid: [[]],
         paintings: [],
+        startingPoint: { x: 0, y: 0 },
+        startingOrientation: { x: 0, y: 1 },
     },
 
     {
@@ -18,6 +20,8 @@ const samples = [
                 adn: paintingsSamples[0],
             },
         ],
+        startingPoint: { x: 0, y: 0 },
+        startingOrientation: { x: 0, y: 1 },
     },
 
     {
@@ -39,6 +43,8 @@ const samples = [
                 adn: paintingsSamples[2],
             },
         ],
+        startingPoint: { x: 0, y: 0 },
+        startingOrientation: { x: 0, y: 1 },
     },
 ]
 

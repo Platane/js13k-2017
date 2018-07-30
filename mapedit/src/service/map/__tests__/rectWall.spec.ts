@@ -1,9 +1,9 @@
-import test from "tape"
-import { rectWall } from "../rectWall"
-import { readCell } from "../set"
-import { Museum } from "type"
+import test from 'tape'
+import { rectWall } from '../rectWall'
+import { readCell } from '../set'
+import { Museum } from 'type'
 
-test("rectWall", t => {
+test('rectWall', t => {
     const m: Museum = {
         origin: { x: 0, y: 0 },
         grid: [[]],
@@ -27,10 +27,10 @@ test("rectWall", t => {
 
     t.assert(
         cells.every(cell => readCell(m1, cell)),
-        "should have set the points"
+        'should have set the points'
     )
 
-    t.deepEqual(m.grid, [[]], "should have left the original untouched")
+    t.deepEqual(m.grid, [[]], 'should have left the original untouched')
 
     t.end()
 })

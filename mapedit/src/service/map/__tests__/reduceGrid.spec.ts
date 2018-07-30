@@ -40,6 +40,8 @@ test('centerOrigin', t => {
                 orientation: { x: 1, y: 0 },
             },
         ],
+        startingPoint: { x: 0, y: 1 },
+        startingOrientation: { x: 0, y: 1 },
     }
 
     const m1 = centerOrigin(m)
@@ -56,6 +58,8 @@ test('centerOrigin', t => {
                     orientation: { x: 1, y: 0 },
                 },
             ],
+            startingPoint: { x: -4, y: 0 },
+            startingOrientation: { x: 0, y: 1 },
         },
         'should remove useless line'
     )
