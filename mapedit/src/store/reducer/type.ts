@@ -29,6 +29,7 @@ export type State = {
     dragTraceWall: true | null
     dragStartingPoint: true | null
     dragRectWall: { originalMuseum: Museum; A: Point } | null
+    dragEraseWall: { originalMuseum: Museum; A: Point } | null
     dragPainting: {
         originalMuseum: Museum
         paintingId: string

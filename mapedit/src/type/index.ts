@@ -31,7 +31,7 @@ export type Camera = {
     t: Point
 }
 
-export type Tool = 'camera' | 'tracewall' | 'rectwall'
+export type Tool = 'camera' | 'tracewall' | 'rectwall' | 'erasewall'
 
 export type Panel = 'wallbuilder' | 'placepainting' | 'routebuilder'
 
