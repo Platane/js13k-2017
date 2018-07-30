@@ -29,7 +29,7 @@ export const renderPaintings = ({
 }) =>
     museum.paintings.map(({ id, cell, orientation, paintingId }) => (
         <Painting
-            key={paintingId}
+            key={id}
             draggable={true}
             onMouseDown={stopPropagation}
             onDragStart={createDragEvent(startDragPainting, paintingId, id)}

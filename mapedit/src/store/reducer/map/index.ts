@@ -5,16 +5,19 @@ import { reduce as reduceTraceWall } from './traceWall'
 import { reduce as reducePlacePainting } from './placePainting'
 import { reduce as reduceMoveStartingPoint } from './moveStartingPoint'
 import { reduce as reduceRectWall } from './rectWall'
-import { enhance } from './history'
+import { enhance as enhanceHistory } from './history'
+import { enhance as enhanceHistoryStable } from './historyStable'
 export { State } from '../type'
 
-export const reduce = enhance(
-    composeReducer(
-        reduceCameraPan,
-        reduceCameraZoom,
-        reduceTraceWall,
-        reduceRectWall,
-        reducePlacePainting,
-        reduceMoveStartingPoint
+export const reduce = enhanceHistoryStable(
+    enhanceHistory(
+        composeReducer(
+            reduceCameraPan,
+            reduceCameraZoom,
+            reduceTraceWall,
+            reduceRectWall,
+            reducePlacePainting,
+            reduceMoveStartingPoint
+        )
     )
 )

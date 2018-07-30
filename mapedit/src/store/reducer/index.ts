@@ -4,6 +4,14 @@ import { reduce as reduceTool } from './tool'
 import { reduce as reducePaintings } from './paintings'
 import { State } from './type'
 
+const museum = {
+    origin: { x: 0, y: 0 },
+    grid: [[]],
+    paintings: [],
+    startingPoint: { x: 0, y: 0 },
+    startingOrientation: { x: 0, y: 1 },
+}
+
 export const defaultState: State = {
     camera: {
         a: 50,
@@ -12,16 +20,11 @@ export const defaultState: State = {
 
     paintings: [],
 
-    museum: {
-        origin: { x: 5, y: 3 },
-        grid: [[true]],
-        paintings: [],
-        startingPoint: { x: 0, y: 1 },
-        startingOrientation: { x: 0, y: 1 },
-    },
+    museum,
 
     tool: 'camera',
 
+    historyStableMuseum: museum,
     historyCache: null,
     historyRedoStack: [],
     historyUndoStack: [],

@@ -11,6 +11,8 @@ export type State = {
 
     paintings: Painting[]
 
+    historyStableMuseum: Museum,
+
     historyRedoStack: {
         label: string
         museum: Museum

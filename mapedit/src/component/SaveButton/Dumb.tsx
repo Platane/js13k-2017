@@ -1,21 +1,8 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { reduceGrid, centerOrigin } from '../../service/map/reduceGrid'
-import { packMuseum } from '../../lib/common/map/pack/museum'
-import { getBestFitLeafs } from '../../lib/common/ancestorTree/stats'
 
-const createClickHandler = (param, museum, paintings) => event => {
-    const m = centerOrigin(reduceGrid(museum))
-
-    m.paintings = m.paintings.map(({ paintingId, ...painting }) => {
-        const p = paintings.find(({ id }) => paintingId === id)
-
-        const [{ adn }] = getBestFitLeafs(p.ancestorTree, 1)
-
-        return { adn, ...painting }
-    })
-
-    const typedArray = packMuseum(param, m)
+const createClickHandler = museumAsBinary => event => {
+    const typedArray = museumAsBinary
 
     const file = new Blob([typedArray], {
         type: 'application/octet-binary',
@@ -29,9 +16,23 @@ const createClickHandler = (param, museum, paintings) => event => {
     element.download = 'museum'
 }
 
-export const SaveButton = ({ param, museum, paintings }) => (
-    <Container onClick={createClickHandler(param, museum, paintings)}>
-        <Button>download</Button>
+const toSize = s => {
+    const a = Math.floor(s / 1024)
+    const b = s % 1024
+
+    if (!a) return b + ' bytes'
+
+    return a + '.' + Math.floor((b / 1024) * 10) + ' kB'
+}
+
+export const SaveButton = ({ museumAsBinary }) => (
+    <Container onClick={createClickHandler(museumAsBinary)}>
+        <Button>
+            download{' '}
+            <span style={{ fontSize: '10px' }}>
+                ({toSize(museumAsBinary.length)})
+            </span>
+        </Button>
     </Container>
 )
 

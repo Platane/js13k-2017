@@ -37,6 +37,7 @@ export const enhance = reduce => (state: State, action: Action) => {
             return state
         }
 
+        case "ui:dragstartingpoint:start":
         case "ui:dragpainting:start":
         case "ui:drag:start":
             // cache the current value for some drag action
