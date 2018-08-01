@@ -3,9 +3,11 @@ import { reduce as reduceMap } from './map'
 import { reduce as reduceTool } from './tool'
 import { reduce as reducePaintings } from './paintings'
 import { reduce as reducePlayWindow } from './playWindow'
+import { reduce as reduceInit } from './init'
 import { State } from './type'
+import { Museum } from '../../type'
 
-const museum = {
+const museum: Museum = {
     origin: { x: 0, y: 0 },
     grid: [[]],
     paintings: [],
@@ -32,8 +34,10 @@ export const defaultState: State = {
 
     dragCamera: null,
     dragTraceWall: null,
+    dragEraseWall: null,
     dragRectWall: null,
     dragPainting: null,
+    dragStartingPoint: null,
 
     playWindow: {
         refreshKey: null,
@@ -42,6 +46,7 @@ export const defaultState: State = {
 }
 
 export const reduce = composeReducer(
+    reduceInit,
     reduceMap,
     reduceTool,
     reducePaintings,

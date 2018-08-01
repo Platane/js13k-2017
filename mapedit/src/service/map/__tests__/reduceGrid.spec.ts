@@ -61,7 +61,7 @@ test('centerOrigin', t => {
             startingPoint: { x: -4, y: 0 },
             startingOrientation: { x: 0, y: 1 },
         },
-        'should remove useless line'
+        'should center paintings and startingPoint'
     )
 
     t.end()

@@ -1,8 +1,12 @@
-import { Point, Tool, Painting } from '../../type'
+import { Point, Tool, Painting, Museum } from '../../type'
 
 export const setTool = (tool: Tool) => ({
     type: 'ui:tool:set',
     tool,
+})
+export const readFromLocalStorage = (museum: Museum) => ({
+    type: 'localstorage:read',
+    museum,
 })
 
 export const mouseWheel = (delta: Point, pointer: Point) => ({
@@ -11,7 +15,7 @@ export const mouseWheel = (delta: Point, pointer: Point) => ({
     pointer,
 })
 
-export const startDragPainting = (paintingId: string, existingId: string) => ({
+export const startDragPainting = (paintingId: string, existingId?: string) => ({
     type: 'ui:dragpainting:start',
     paintingId,
     existingId,
@@ -66,6 +70,10 @@ export const openPlayWindow = () => ({
 })
 
 export type Action =
+    | {
+          type: 'localstorage:read'
+          museum: Museum
+      }
     | {
           type: 'http:hydrate:paintings'
           paintings: Painting[]

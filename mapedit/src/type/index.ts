@@ -22,8 +22,6 @@ export type Museum = {
 
     startingPoint: Point
     startingOrientation: Orientation
-
-    indications: string[]
 }
 
 export type Camera = {

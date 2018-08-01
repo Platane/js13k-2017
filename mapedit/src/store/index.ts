@@ -1,14 +1,16 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { attachToStore as attachToStoreUI } from '../sideEffect/ui'
 import { attachToStore as attachToStorePaintingStore } from '../sideEffect/paintingStore'
 import { attachToStore as attachToStorePlayWindow } from '../sideEffect/playWindow'
+import { attachToStore as attachToStoreLocalStorage } from '../sideEffect/localStorage'
 
 import { reduce, defaultState } from './reducer'
 
 const sideEffects = [
-    attachToStoreUI,
     attachToStorePaintingStore,
+    attachToStoreLocalStorage,
     attachToStorePlayWindow,
+    attachToStoreUI,
 ]
 
 const crashReporterMiddleware = store => next => action => {
