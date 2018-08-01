@@ -9,8 +9,10 @@ export const attachToStore = store => {
 
     window.onbeforeunload = () => win && win.close()
 
+    const isWindowOpened = () => win && win.location && win.location.reload
+
     const refresh = forceFocus => {
-        if (!win) {
+        if (!isWindowOpened()) {
             win = window.open(url, '_blank', features)
 
             if (win) win.onclose = () => (win = null)
@@ -18,7 +20,7 @@ export const attachToStore = store => {
             win.location.reload()
         }
 
-        if (win && forceFocus) win.focus()
+        if (isWindowOpened() && forceFocus) win.focus()
     }
 
     let lastMuseum = null
@@ -32,7 +34,9 @@ export const attachToStore = store => {
         const museumAsBinary = selectMuseumAsBinary(state)
 
         if (
-            (lastMuseum != museum && playWindow.autorefresh && win) ||
+            (lastMuseum != museum &&
+                playWindow.autorefresh &&
+                isWindowOpened()) ||
             lastRefreshKey != playWindow.refreshKey
         ) {
             const forceFocus = lastRefreshKey != playWindow.refreshKey
