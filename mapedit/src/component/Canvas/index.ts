@@ -29,6 +29,8 @@ const injectState = connect(
         paintingsById: selectTargetPaintingsById(state),
 
         param: selectPaintingParam(state),
+
+        dragEraseWall: state.dragEraseWall,
     }),
     {
         startDragStartingPoint,

@@ -1,4 +1,4 @@
-import { Museum, Point } from "../../type"
+import { Museum, Point } from '../../type'
 
 export const expandGrid = (museum: Museum, min: Point, max: Point) => {
     let { origin, grid } = museum
@@ -48,3 +48,16 @@ export const expandGrid = (museum: Museum, min: Point, max: Point) => {
         grid,
     }
 }
+
+export const addBorder = (museum: Museum, border: number = 1) =>
+    expandGrid(
+        museum,
+        {
+            x: museum.origin.x - border,
+            y: museum.origin.y - border,
+        },
+        {
+            x: museum.origin.x + museum.grid[0].length + border,
+            y: museum.origin.y + museum.grid.length + border,
+        }
+    )

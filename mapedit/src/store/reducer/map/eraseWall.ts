@@ -16,6 +16,7 @@ export const reduce = (state: State, action: Action): State => {
                 ...state,
                 dragEraseWall: {
                     A,
+                    B: A,
                     originalMuseum: state.museum,
                 },
             }
@@ -32,7 +33,14 @@ export const reduce = (state: State, action: Action): State => {
 
                 const museum = rectWall(originalMuseum, A, B, false, true)
 
-                return { ...state, museum }
+                return {
+                    ...state,
+                    museum,
+                    dragEraseWall: {
+                        ...state.dragEraseWall,
+                        B,
+                    },
+                }
             }
 
         case 'ui:drag:end':

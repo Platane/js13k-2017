@@ -7,8 +7,6 @@ test('expandGrid', t => {
         origin: { x: 0, y: 0 },
         grid: [[true]],
         paintings: [],
-        startingPoint: { x: 0, y: 1 },
-        startingOrientation: { x: 0, y: 1 },
     }
 
     const m1 = expandGrid(m, { x: -2, y: -1 }, { x: 1, y: 2 })

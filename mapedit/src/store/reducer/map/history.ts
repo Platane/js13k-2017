@@ -39,19 +39,30 @@ export const enhance = reduce => (state: State, action: Action) => {
 
         case 'ui:dragstartingpoint:start':
         case 'ui:dragpainting:start':
-        case 'ui:drag:start':
+        case 'ui:drag:start': {
+            // grab the mutation label
+            const label =
+                (action.type === 'ui:dragstartingpoint:start' &&
+                    'movestartingpoint') ||
+                (action.type === 'ui:dragpainting:start' &&
+                    !action.existingId &&
+                    'placepainting') ||
+                (action.type === 'ui:dragpainting:start' &&
+                    action.existingId &&
+                    'movepainting') ||
+                (['tracewall', 'rectwall', 'erasewall'].includes(state.tool) &&
+                    state.tool) ||
+                null
+
             // cache the current value for some drag action
-            if (
-                ['tracewall', 'rectwall'].includes(state.tool) ||
-                action.type === 'ui:dragstartingpoint:start' ||
-                action.type === 'ui:dragpainting:start'
-            )
+            if (label)
                 state = {
                     ...state,
-                    historyCache: state.museum,
+                    historyCache: { museum: state.museum, label },
                 }
 
             return reduce(state, action)
+        }
 
         case 'ui:drag:end':
             if (state.historyCache) {
@@ -60,20 +71,17 @@ export const enhance = reduce => (state: State, action: Action) => {
                 return {
                     ...newState,
 
+                    // reset the undo stack
+                    historyRedoStack: [],
+
                     // reset the cache
                     historyCache: null,
 
                     // if there is a difference, push to the undo stack
                     historyUndoStack:
-                        state.historyCache === newState.museum
+                        state.historyCache.museum === newState.museum
                             ? state.historyUndoStack
-                            : [
-                                  {
-                                      label: state.tool,
-                                      museum: state.historyCache,
-                                  },
-                                  ...state.historyUndoStack,
-                              ],
+                            : [state.historyCache, ...state.historyUndoStack],
                 }
             }
 
