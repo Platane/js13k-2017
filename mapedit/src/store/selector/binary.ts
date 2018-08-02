@@ -14,11 +14,16 @@ export const selectMuseumAsBinary = createSelector(
     (museum, bestPaintingsById, param) => {
         const m: any = centerOrigin(addBorder(reduceGrid(museum), 4))
 
-        m.paintings = m.paintings.map(({ paintingId, ...painting }) => {
-            const [{ adn }] = bestPaintingsById[paintingId]
+        m.paintings = m.paintings
+            .filter(
+                ({ paintingId }) =>
+                    bestPaintingsById && bestPaintingsById[paintingId]
+            )
+            .map(({ paintingId, ...painting }) => {
+                const [{ adn }] = bestPaintingsById[paintingId]
 
-            return { adn, ...painting }
-        })
+                return { adn, ...painting }
+            })
 
         return packMuseum(param, m)
     }

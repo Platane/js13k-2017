@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Button } from '../Button'
 
 export const PlayButton = ({
     openPlayWindow,
@@ -8,29 +9,22 @@ export const PlayButton = ({
 }) => (
     <Container onClick={openPlayWindow}>
         <Button>
-            play
-            <input
+            Play
+            <Checkbox
                 type="checkbox"
                 onClick={event => {
                     event.stopPropagation()
                     togglePlayWindowAutoRefresh()
                 }}
+                title="auto refresh"
                 checked={autorefresh}
-                style={{ marginLeft: '20px' }}
             />
         </Button>
     </Container>
 )
-// href="/game?local=1"
-// target="_blank"
+
+const Checkbox = styled.input`
+    margin-left: 20px;
+`
 
 const Container = styled.div``
-
-const Button = styled.div`
-    cursor: pointer;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 2px;
-    background-color: #f2f2f2;
-    box-shadow: 0 0 0 2px ${props => (props.selected ? '#ddd' : 'transparent')};
-`

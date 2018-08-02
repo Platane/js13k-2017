@@ -2,7 +2,7 @@ import { clamp } from '../../../util/math'
 import { Action } from '../../action'
 import { State } from '../type'
 
-const zoomLevel = [10, 16, 24, 36, 46, 60, 78, 90]
+const zoomLevel = [12, 16, 24, 36, 46, 60, 78, 90]
 
 export const reduce = (state: State, action: Action): State => {
     switch (action.type) {

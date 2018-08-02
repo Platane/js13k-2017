@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Button } from '../Button'
 
 const createClickHandler = museumAsBinary => event => {
     const typedArray = museumAsBinary
@@ -27,22 +28,15 @@ const toSize = s => {
 
 export const SaveButton = ({ museumAsBinary }) => (
     <Container onClick={createClickHandler(museumAsBinary)}>
-        <Button>
-            download{' '}
+        <ButtonTool>
+            <div>Download</div>
             <span style={{ fontSize: '10px' }}>
-                ({toSize(museumAsBinary.length)})
+                ({museumAsBinary ? toSize(museumAsBinary.length) : '--'})
             </span>
-        </Button>
+        </ButtonTool>
     </Container>
 )
 
 const Container = styled.a``
 
-const Button = styled.div`
-    cursor: pointer;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 2px;
-    background-color: #f2f2f2;
-    box-shadow: 0 0 0 2px ${props => (props.selected ? '#ddd' : 'transparent')};
-`
+const ButtonTool = styled(Button)`flex-direction:column`

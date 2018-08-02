@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'react-emotion'
 import { RImage } from '../../RImage'
 import { toScreen } from '../../../service/camera'
+import {  grey } from '../../_abstract/palette'
 
 const s = 0.75
 
@@ -23,8 +24,6 @@ const createDragEvent = (startDragPainting, paintingId, id) =>
             startDragPainting(paintingId, id)
         }))
 
-const stopPropagation = event => event.stopPropagation()
-
 export const renderPaintings = ({
     camera,
     param,
@@ -37,6 +36,8 @@ export const renderPaintings = ({
             key={id}
             onMouseDown={createDragEvent(startDragPainting, paintingId, id)}
             style={{
+                width: `${camera.a * s}px`,
+                height: `${camera.a * s}px`,
                 transform: createTransform(camera, cell, orientation),
             }}
         >
@@ -59,4 +60,5 @@ const Painting = styled.div`
     border-radius: 4px;
     font-size: 0;
     cursor: pointer;
+    background-color: ${grey};
 `
