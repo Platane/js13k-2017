@@ -1,6 +1,6 @@
-import { createSelector } from "reselect"
-import { State } from "../reducer/type"
-import { getBestFitLeafs } from "../../lib/common/ancestorTree/stats"
+import { createSelector } from 'reselect'
+import { State } from '../reducer/type'
+import { getBestFitLeafs } from '../../lib/common/ancestorTree/stats'
 
 export const selectPaintings = (state: State) => state.paintings
 
@@ -19,7 +19,7 @@ export const selectBestPaintingsById = createSelector(
         const byId = {}
         paintings.forEach(
             painting =>
-                (byId[painting.id] = getBestFitLeafs(painting.ancestorTree, 5))
+                (byId[painting.id] = getBestFitLeafs(painting.ancestorTree, 6))
         )
         return byId
     }

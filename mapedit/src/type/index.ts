@@ -9,6 +9,8 @@ export type Orientation =
 export type PaintingSpot = {
     id: string
     paintingId: string
+    downsizeId: string
+    adn: Object
     cell: Point
     orientation: Orientation
 }

@@ -3,6 +3,7 @@ import styled from 'react-emotion'
 import { Button } from '../Button'
 
 const mutationLabel = {
+    setpaintingdownsize: 'set painting version',
     movestartingpoint: 'move starting point',
     tracewall: 'trace wall with pen',
     rectwall: 'trace rectangle wall',

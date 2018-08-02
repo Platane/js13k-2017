@@ -1,5 +1,5 @@
-import { rImageToCanvas } from "../../lib/common/rImage/toCanvas"
-import React, { Component } from "react"
+import { rImageToCanvas } from '../../lib/common/rImage/toCanvas'
+import React, { Component } from 'react'
 
 export class RImage extends Component {
     shouldComponentUpdate(nextProps) {
