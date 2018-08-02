@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const webpack = require('webpack')
+const WebpackAssetsManifest = require('webpack-assets-manifest')
 
 module.exports = {
     entry: {
@@ -44,6 +44,12 @@ module.exports = {
             },
         ],
     },
+
+    plugins: [
+        new WebpackAssetsManifest({
+            output: path.resolve(__dirname, '../dist', 'assetManifest.json'),
+        }),
+    ],
 
     devtool: false,
 
