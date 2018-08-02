@@ -1,5 +1,20 @@
 import { Action } from '../../action'
 import { State } from '../type'
+import { selectCurrentTool } from '../../selector/currentTool'
+
+const getMutationLabel = (action: Action, state: State) =>
+    (action.type === 'ui:dragstartingpoint:start' && 'movestartingpoint') ||
+    (action.type === 'ui:dragpainting:start' &&
+        !action.existingId &&
+        'placepainting') ||
+    (action.type === 'ui:dragpainting:start' &&
+        action.existingId &&
+        'movepainting') ||
+    (['tracewall', 'rectwall', 'erasewall'].includes(
+        selectCurrentTool(state)
+    ) &&
+        selectCurrentTool(state)) ||
+    null
 
 export const enhance = reduce => (state: State, action: Action) => {
     switch (action.type) {
@@ -40,19 +55,7 @@ export const enhance = reduce => (state: State, action: Action) => {
         case 'ui:dragstartingpoint:start':
         case 'ui:dragpainting:start':
         case 'ui:drag:start': {
-            // grab the mutation label
-            const label =
-                (action.type === 'ui:dragstartingpoint:start' &&
-                    'movestartingpoint') ||
-                (action.type === 'ui:dragpainting:start' &&
-                    !action.existingId &&
-                    'placepainting') ||
-                (action.type === 'ui:dragpainting:start' &&
-                    action.existingId &&
-                    'movepainting') ||
-                (['tracewall', 'rectwall', 'erasewall'].includes(state.tool) &&
-                    state.tool) ||
-                null
+            const label = getMutationLabel(action, state)
 
             // cache the current value for some drag action
             if (label)

@@ -1,11 +1,12 @@
 import { rectWall } from '../../../service/map/rectWall'
 import { Action } from '../../action'
 import { State } from '../type'
+import { selectCurrentTool } from '../../selector/currentTool'
 
 export const reduce = (state: State, action: Action): State => {
     switch (action.type) {
         case 'ui:drag:start': {
-            if (state.tool !== 'rectwall') return state
+            if (selectCurrentTool(state) !== 'rectwall') return state
 
             const A = {
                 x: Math.floor(action.pointer.x),

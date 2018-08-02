@@ -1,7 +1,8 @@
-import React, { Component } from "react"
-import { Grid } from "./Grid"
-import { Overlay } from "./Overlay"
-import { fromScreen } from "../../service/camera"
+import React, { Component } from 'react'
+import { Grid } from './Grid'
+import { Overlay } from './Overlay'
+import { fromScreen } from '../../service/camera'
+import { Point } from '../../type'
 
 const getPointer = (top, event): Point => ({
     x: event.clientX,
@@ -9,7 +10,7 @@ const getPointer = (top, event): Point => ({
 })
 
 export class Canvas extends Component {
-    state = { dragging: false, top: 0 }
+    state = { top: 0 }
 
     getPointer = event =>
         fromScreen(this.props.camera)(getPointer(this.state.top, event))
@@ -17,21 +18,21 @@ export class Canvas extends Component {
     down = event => {
         const pointer = this.getPointer(event)
         this.props.startDrag(pointer)
-        this.setState({ dragging: true }, () => this.move(event))
+        this.move(event)
     }
 
     move = event => {
-        if (!this.state.dragging && !this.props.dragging) return
+        if (!this.props.dragging) return
 
         const pointer = this.getPointer(event)
         this.props.moveDrag(pointer)
     }
 
     up = event => {
-        if (!this.state.dragging && !this.props.dragging) return
+        if (!this.props.dragging) return
 
         const pointer = this.getPointer(event)
-        this.setState({ dragging: false })
+        this.props.moveDrag(pointer)
         this.props.endDrag(pointer)
     }
 
@@ -48,11 +49,11 @@ export class Canvas extends Component {
     }
 
     componentDidMount() {
-        document.body.addEventListener("drop", this.up)
-        document.body.addEventListener("mouseup", this.up)
-        document.body.addEventListener("mousemove", this.move)
-        document.body.addEventListener("drag", this.move)
-        document.body.addEventListener("dragover", this.dragover)
+        document.body.addEventListener('drop', this.up)
+        document.body.addEventListener('mouseup', this.up)
+        document.body.addEventListener('mousemove', this.move)
+        document.body.addEventListener('drag', this.move)
+        document.body.addEventListener('dragover', this.dragover)
 
         const { top } = this.base.getBoundingClientRect()
 
@@ -65,7 +66,9 @@ export class Canvas extends Component {
                 onMouseDown={this.down}
                 onWheel={this.wheel}
                 style={{
-                    position: "relative",
+                    top: 0,
+                    left: 0,
+                    position: 'absolute',
                     width: this.props.width,
                     height: this.props.height,
                 }}

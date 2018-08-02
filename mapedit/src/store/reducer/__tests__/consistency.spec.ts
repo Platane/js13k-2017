@@ -11,12 +11,14 @@ import {
 import { selectMuseum } from '../../selector/museum'
 import { readCell } from '../../../service/map/set'
 import { defaultState, reduce } from '..'
+import { State } from '../type'
+import { Painting } from '../../../type'
 
 // default state with identity camera
-const defaultState_ = {
+const defaultState_: State = {
     ...defaultState,
     camera: { a: 1, t: { x: 0, y: 0 } },
-    paintings: [{ id: 'a' }],
+    paintings: [{ id: 'a' } as Painting],
 }
 
 test('placeWall wall, place painting, undo', t => {
@@ -87,6 +89,40 @@ test('placeWall wall, place painting, undo', t => {
         t.assert(
             selectMuseum(store.getState()).paintings.length === 1,
             'painting should be back'
+        )
+    }
+
+    t.pass(' --- move the painting')
+    store.dispatch(
+        startDragPainting('a', selectMuseum(store.getState()).paintings[0].id)
+    )
+    store.dispatch(moveDrag({ x: 1.5, y: 0.1 }))
+    store.dispatch(endDrag({ x: 1.5, y: 0.1 }))
+
+    {
+        const [paintingSpot, ...rest] = selectMuseum(store.getState()).paintings
+        t.equal(rest.length, 0, 'should have 1 painting')
+        t.deepEqual(
+            paintingSpot.cell,
+            { x: 1, y: 0 },
+            'painting should be moved at the correct cell'
+        )
+        t.deepEqual(
+            paintingSpot.orientation,
+            { x: 0, y: -1 },
+            'painting should be moved at the correct orientation'
+        )
+    }
+
+    t.pass(' --- undo')
+    store.dispatch(undo())
+    // undo
+    {
+        const [paintingSpot] = selectMuseum(store.getState()).paintings
+        t.deepEqual(
+            paintingSpot.orientation,
+            { x: 1, y: 0 },
+            'painting should be moved back'
         )
     }
 

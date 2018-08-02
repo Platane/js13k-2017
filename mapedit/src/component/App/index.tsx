@@ -1,7 +1,6 @@
 import React from 'react'
 import { withCssReset } from '../_abstract/cssReset'
 import { Canvas } from '../Canvas'
-import { RouteBuilder } from '../RouteBuilder'
 import { PaintingList } from '../PaintingList'
 import { SaveButton } from '../SaveButton'
 import { PlayButton } from '../PlayButton'
@@ -15,7 +14,7 @@ const App_ = props => (
 
         <Bottom>
             <Main>
-                <Canvas {...props} width={600} height={400} />
+                <Canvas {...props} style={{ width: '100%', height: '100%' }} />
             </Main>
 
             <Panel>
@@ -33,9 +32,6 @@ const App_ = props => (
         </Bottom>
     </Container>
 )
-// {/* <RouteBuilderContainer>
-//     <RouteBuilder />
-// </RouteBuilderContainer> */}
 
 const Container = styled.div`
     position: relative;

@@ -3,10 +3,12 @@ import { attachToStore as attachToStoreUI } from '../sideEffect/ui'
 import { attachToStore as attachToStorePaintingStore } from '../sideEffect/paintingStore'
 import { attachToStore as attachToStorePlayWindow } from '../sideEffect/playWindow'
 import { attachToStore as attachToStoreLocalStorage } from '../sideEffect/localStorage'
+import { attachToStore as attachToStoreKeyboardShortcut } from '../sideEffect/keyboardShortcut'
 
 import { reduce, defaultState } from './reducer'
 
 const sideEffects = [
+    attachToStoreKeyboardShortcut,
     attachToStorePaintingStore,
     attachToStoreLocalStorage,
     attachToStorePlayWindow,

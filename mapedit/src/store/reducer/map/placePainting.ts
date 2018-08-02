@@ -49,7 +49,7 @@ const getClosestSpot = (museum: Museum, point: Point) => {
         )
     ).sort((a, b) => a.distance - b.distance)
 
-    return closest && closest.distance < 2.5 ? closest.spot : null
+    return closest && closest.distance < 1.5 ? closest.spot : null
 }
 
 const haveThePaintingAlready = (
