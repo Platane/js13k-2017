@@ -16,6 +16,19 @@ const getMutationLabel = (action: Action, state: State) =>
         selectCurrentTool(state)) ||
     null
 
+const pushToUndo = (state, museum, label) => ({
+    ...state,
+
+    // reset the undo stack
+    historyRedoStack: [],
+
+    // reset the cache
+    historyCache: null,
+
+    // if there is a difference, push to the undo stack
+    historyUndoStack: [{ museum, label }, ...state.historyUndoStack],
+})
+
 export const enhance = reduce => (state: State, action: Action) => {
     switch (action.type) {
         case 'undo': {
@@ -52,6 +65,16 @@ export const enhance = reduce => (state: State, action: Action) => {
             return state
         }
 
+        case 'paintingdownsize:set': {
+            const museum = state.museum
+
+            state = reduce(state, action)
+
+            return state.museum === museum
+                ? state
+                : pushToUndo(state, museum, 'setpaintingdownsize')
+        }
+
         case 'ui:dragstartingpoint:start':
         case 'ui:dragpainting:start':
         case 'ui:drag:start': {
@@ -71,21 +94,11 @@ export const enhance = reduce => (state: State, action: Action) => {
             if (state.historyCache) {
                 const newState = reduce(state, action)
 
-                return {
-                    ...newState,
+                const { museum, label } = state.historyCache
 
-                    // reset the undo stack
-                    historyRedoStack: [],
-
-                    // reset the cache
-                    historyCache: null,
-
-                    // if there is a difference, push to the undo stack
-                    historyUndoStack:
-                        state.historyCache.museum === newState.museum
-                            ? state.historyUndoStack
-                            : [state.historyCache, ...state.historyUndoStack],
-                }
+                return museum === newState.museum
+                    ? newState
+                    : pushToUndo(newState, museum, label)
             }
 
             return reduce(state, action)

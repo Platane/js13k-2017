@@ -2,6 +2,7 @@ import React from 'react'
 import { withCssReset } from '../_abstract/cssReset'
 import { Canvas } from '../Canvas'
 import { PaintingList } from '../PaintingList'
+import { PaintingDownsizeList } from '../PaintingDownsizeList'
 import { SaveButton } from '../SaveButton'
 import { PlayButton } from '../PlayButton'
 import { ToolBar } from '../ToolBar'
@@ -28,6 +29,10 @@ const App_ = props => (
 
                 <PaintingListContainer>
                     <PaintingList />
+                </PaintingListContainer>
+
+                <PaintingListContainer>
+                    <PaintingDownsizeList />
                 </PaintingListContainer>
             </Panel>
         </Bottom>

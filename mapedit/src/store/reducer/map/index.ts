@@ -7,6 +7,7 @@ import { reduce as reduceMoveStartingPoint } from './moveStartingPoint'
 import { reduce as reduceRectWall } from './rectWall'
 import { reduce as reduceEraseWall } from './eraseWall'
 import { reduce as reduceConsistency } from './consistency'
+import { reduce as reduceSetPaintingDownsize } from './setPaintingDownsize'
 import { enhance as enhanceHistory } from './history'
 import { enhance as enhanceHistoryStable } from './historyStable'
 export { State } from '../type'
@@ -23,7 +24,8 @@ export const reduce = enhanceHistoryStable(
             reduceEraseWall,
             reduceRectWall,
             reducePlacePainting,
-            reduceMoveStartingPoint
+            reduceMoveStartingPoint,
+            reduceSetPaintingDownsize
         )
     )
 )

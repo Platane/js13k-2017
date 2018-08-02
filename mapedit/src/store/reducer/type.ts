@@ -48,6 +48,8 @@ export type State = {
     dragPainting: {
         originalMuseum: Museum
         paintingId: string
+        downsizeId: string
+        adn: Object
         id: string
     } | null
 

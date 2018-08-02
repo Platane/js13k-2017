@@ -2,6 +2,7 @@ import { readCell } from '../../../service/map/set'
 import { Action } from '../../action'
 import { State } from '../type'
 import { Museum, Point } from '../../../type'
+import { selectBestPaintingsById } from '../../selector/paintings'
 
 const orientations = [
     { x: 1, y: 0 },
@@ -70,7 +71,15 @@ const haveThePaintingAlready = (
 
 export const reduce = (state: State, action: Action): State => {
     switch (action.type) {
-        case 'ui:dragpainting:start':
+        case 'ui:dragpainting:start': {
+            const samePainting = state.museum.paintings.find(
+                x => x.paintingId === action.paintingId
+            )
+
+            const downsize = selectBestPaintingsById(state)[
+                action.paintingId
+            ].find(x => !samePainting || samePainting.downsizeId === x.id)
+
             return {
                 ...state,
                 dragPainting: {
@@ -80,19 +89,22 @@ export const reduce = (state: State, action: Action): State => {
                             x => x.id !== action.existingId
                         ),
                     },
+                    adn: downsize.adn,
+                    downsizeId: downsize.id,
                     paintingId: action.paintingId,
                     id: action.id,
                 },
             }
+        }
 
         case 'ui:drag:move':
             if (state.dragPainting) {
-                const { paintingId, originalMuseum, id } = state.dragPainting
+                const { originalMuseum, ...rest } = state.dragPainting
 
                 const spot = getClosestSpot(originalMuseum, action.pointer)
 
                 if (spot) {
-                    const paintingSpot = { ...spot, id, paintingId }
+                    const paintingSpot = { ...spot, ...rest }
 
                     if (haveThePaintingAlready(state.museum, paintingSpot))
                         return state
