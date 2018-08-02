@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { rImageToCanvas } from '../../util/rImage/toCanvas'
+import { rImageToCanvas } from 'common/rImage/toCanvas'
 import { adnEqual } from 'common/adn/equal'
 import { request, cancel } from 'common/util/raf'
 
@@ -42,9 +42,9 @@ export class Image extends Component {
             ctx.globalAlpha = this.props.param.OPACITY_AVAILABLE[opacity]
 
             ctx.arc(
-                x / 64 * s,
-                y / 64 * s,
-                this.props.param.RADIUS_AVAILABLE[r] / 64 * s,
+                (x / 64) * s,
+                (y / 64) * s,
+                (this.props.param.RADIUS_AVAILABLE[r] / 64) * s,
                 0,
                 Math.PI * 2
             )
