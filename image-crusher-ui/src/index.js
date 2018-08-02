@@ -8,7 +8,7 @@ import {
     canvasToRImage,
     imageToRImage,
     rImageToCanvas,
-} from './util/rImage/toCanvas'
+} from 'common/rImage/toCanvas'
 
 import { packADN } from 'common/adn/pack'
 
