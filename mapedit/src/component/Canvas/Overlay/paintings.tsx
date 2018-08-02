@@ -16,7 +16,12 @@ const createTransform = (camera, cell, orientation) => {
 
 const m = {}
 const createDragEvent = (startDragPainting, paintingId, id) =>
-    (m[id] = m[id] || (() => startDragPainting(paintingId, id)))
+    (m[id] =
+        m[id] ||
+        (event => {
+            event.stopPropagation()
+            startDragPainting(paintingId, id)
+        }))
 
 const stopPropagation = event => event.stopPropagation()
 
@@ -30,9 +35,7 @@ export const renderPaintings = ({
     museum.paintings.map(({ id, cell, orientation, paintingId }) => (
         <Painting
             key={id}
-            draggable={true}
-            onMouseDown={stopPropagation}
-            onDragStart={createDragEvent(startDragPainting, paintingId, id)}
+            onMouseDown={createDragEvent(startDragPainting, paintingId, id)}
             style={{
                 transform: createTransform(camera, cell, orientation),
             }}

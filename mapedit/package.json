@@ -42,6 +42,8 @@
         "webpack-dev-server": "3.1.5"
     },
     "scripts": {
+        "test:type": " yarn tsc --noEmit --project .",
+
         "prepare":
             "rm -rf src/lib && mkdir -p src/lib/common && cp -r ../common/map src/lib/common/map && cp -r ../common/rImage src/lib/common/rImage && cp -r ../common/adn src/lib/common/adn && cp -r ../common/ancestorTree src/lib/common/ancestorTree && cp ../common/param.js src/lib/common/param.js",
         "start":

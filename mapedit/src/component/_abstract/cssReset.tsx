@@ -1,5 +1,5 @@
-import { injectGlobal } from "react-emotion"
-import React, { Component } from "react"
+import { injectGlobal } from 'react-emotion'
+import React, { Component } from 'react'
 
 export const injectReset = () =>
     injectGlobal`
@@ -21,6 +21,7 @@ export const injectReset = () =>
         position: relative;
         margin: 0;
         font-family: Lato,Avenir Next,Helvetica Neue,sans-serif;
+        user-select: none;
       }
     `
 

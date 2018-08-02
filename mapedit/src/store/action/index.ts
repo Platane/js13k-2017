@@ -1,51 +1,15 @@
-import { Point, Tool, Painting, Museum } from '../../type'
+import { Painting, Museum } from '../../type'
+export * from './playWindow'
+export * from './canvas'
+export * from './tool'
 
-export const setTool = (tool: Tool) => ({
-    type: 'ui:tool:set',
-    tool,
-})
+import { Action as ActionPlayWindow } from './playWindow'
+import { Action as ActionCanvas } from './canvas'
+import { Action as ActionTool } from './tool'
+
 export const readFromLocalStorage = (museum: Museum) => ({
     type: 'localstorage:read',
     museum,
-})
-
-export const mouseWheel = (delta: Point, pointer: Point) => ({
-    type: 'ui:wheel',
-    delta,
-    pointer,
-})
-
-export const startDragPainting = (paintingId: string, existingId?: string) => ({
-    type: 'ui:dragpainting:start',
-    paintingId,
-    existingId,
-    id: Math.random()
-        .toString(16)
-        .slice(2, 10),
-})
-
-export const startDragStartingPoint = () => ({
-    type: 'ui:dragstartingpoint:start',
-})
-
-export const setIndication = (text: string) => ({
-    type: 'indication:set',
-    text,
-})
-
-export const startDrag = (pointer: Point) => ({
-    type: 'ui:drag:start',
-    pointer,
-})
-
-export const moveDrag = (pointer: Point) => ({
-    type: 'ui:drag:move',
-    pointer,
-})
-
-export const endDrag = (pointer: Point) => ({
-    type: 'ui:drag:end',
-    pointer,
 })
 
 export const undo = () => ({
@@ -61,15 +25,10 @@ export const hydratePaintings = paintings => ({
     paintings,
 })
 
-export const togglePlayWindowAutoRefresh = () => ({
-    type: 'playwindow:autorefresh:toggle',
-})
-
-export const openPlayWindow = () => ({
-    type: 'playwindow:open',
-})
-
 export type Action =
+    | ActionPlayWindow
+    | ActionCanvas
+    | ActionTool
     | {
           type: 'localstorage:read'
           museum: Museum
@@ -79,44 +38,8 @@ export type Action =
           paintings: Painting[]
       }
     | {
-          type: 'ui:tool:set'
-          tool: Tool
-      }
-    | {
-          type: 'ui:wheel'
-          delta: 1 | -1
-          pointer: Point
-      }
-    | {
-          type: 'ui:dragstartingpoint:start'
-      }
-    | {
-          type: 'ui:drag:start'
-          pointer: Point
-      }
-    | {
-          type: 'ui:dragpainting:start'
-          paintingId: string
-          existingId: string
-          id: string
-      }
-    | {
-          type: 'ui:drag:move'
-          pointer: Point
-      }
-    | {
-          type: 'ui:drag:end'
-          pointer: Point
-      }
-    | {
           type: 'undo'
       }
     | {
           type: 'redo'
-      }
-    | {
-          type: 'playwindow:open'
-      }
-    | {
-          type: 'playwindow:autorefresh:toggle'
       }

@@ -192,6 +192,36 @@ build-image-crusher-ui:
                 mkdir -p gh-pages
                 mv image-crusher-ui/dist gh-pages/image-crusher-ui
 
+build-mapedit:
+
+    box: node:8.1
+
+    steps:
+
+        - script:
+            cwd: mapedit
+            name: install dependencies
+            code: |
+                npm install -g yarn
+                export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
+                HOME=$YARN_CACHE yarn --pure-lockfile
+
+        - script:
+            cwd: mapedit
+            name: build
+            code: yarn run build
+
+        - script:
+            cwd: mapedit
+            name: test
+            code: yarn run test
+
+        - script:
+            name: prepare
+            code: |
+                mkdir -p gh-pages
+                mv mapedit/dist gh-pages/mapedit
+
 build-postmortem:
 
     box: node:8.1

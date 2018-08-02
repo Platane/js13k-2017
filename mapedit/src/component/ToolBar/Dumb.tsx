@@ -1,6 +1,13 @@
-import React from "react"
-import { Canvas } from "../Canvas"
-import styled from "react-emotion"
+import React from 'react'
+import { Canvas } from '../Canvas'
+import styled from 'react-emotion'
+
+const toolLabel = {
+    camera: 'camera',
+    tracewall: 'Pen',
+    rectwall: 'Rect',
+    erasewall: 'Eraser',
+}
 
 const m = {}
 const createClickHandler = (setTool, tool) =>
@@ -20,7 +27,7 @@ export const ToolBar = ({
                 onClick={createClickHandler(setTool, tool)}
                 selected={currentTool === tool}
             >
-                {tool}
+                {toolLabel[tool]}
             </ButtonTool>
         ))}
     </Container>
@@ -38,5 +45,5 @@ const ButtonTool = styled.div`
     padding: 10px;
     border-radius: 2px;
     background-color: #f2f2f2;
-    box-shadow: 0 0 0 2px ${props => (props.selected ? "#ddd" : "transparent")};
+    box-shadow: 0 0 0 2px ${props => (props.selected ? '#ddd' : 'transparent')};
 `

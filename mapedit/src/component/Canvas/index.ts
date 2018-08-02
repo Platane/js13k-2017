@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { Canvas as Dumb } from './Dumb'
-
+import { withSize } from './withSize'
 import { selectCamera } from '../../store/selector/camera'
 import { selectMuseum } from '../../store/selector/museum'
 import {
@@ -17,6 +17,7 @@ import {
     startDragStartingPoint,
 } from '../../store/action'
 import { State } from '../../store/reducer/type'
+import { selectIsDraging } from '../../store/selector/drag'
 
 const injectState = connect(
     (state: State) => ({
@@ -24,7 +25,7 @@ const injectState = connect(
 
         museum: selectMuseum(state),
 
-        dragging: !!(state.dragPainting || state.dragStartingPoint),
+        dragging: selectIsDraging(state),
 
         paintingsById: selectTargetPaintingsById(state),
 
@@ -42,4 +43,4 @@ const injectState = connect(
     }
 )
 
-export const Canvas = injectState(Dumb)
+export const Canvas = injectState(withSize(Dumb))

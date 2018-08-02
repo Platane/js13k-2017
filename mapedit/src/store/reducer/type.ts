@@ -6,7 +6,10 @@ export type State = {
     // current museum
     museum: Museum
 
-    tool: Tool
+    tool: {
+        current: Tool
+        cameraOverwrite: boolean
+    }
 
     paintings: Painting[]
 

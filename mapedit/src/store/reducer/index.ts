@@ -25,7 +25,10 @@ export const defaultState: State = {
 
     museum,
 
-    tool: 'camera',
+    tool: {
+        current: 'camera',
+        cameraOverwrite: false,
+    },
 
     historyStableMuseum: museum,
     historyCache: null,
