@@ -10,7 +10,7 @@ export const withSize = C =>
         }
 
         componentDidMount() {
-            setTimeout(this.onResize, 100)
+            this.onResize()
 
             window.addEventListener('resize', this.onResize)
         }

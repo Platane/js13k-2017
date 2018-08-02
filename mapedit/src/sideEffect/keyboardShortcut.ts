@@ -3,6 +3,7 @@ import {
     redo,
     cameraOverwriteOn,
     cameraOverwriteOff,
+    setTool,
 } from '../store/action'
 import { selectIsDraging } from '../store/selector/drag'
 import { selectIsCameraOverwrite } from '../store/selector/currentTool'
@@ -18,6 +19,10 @@ export const attachToStore = store => {
         if (ctrlKey && which == 90) store.dispatch(undo())
         else if (ctrlKey && which == 89) store.dispatch(redo())
         else if (which == 32) store.dispatch(cameraOverwriteOn())
+        else if (which == 67) store.dispatch(setTool('camera'))
+        else if (which == 82) store.dispatch(setTool('rectwall'))
+        else if (which == 80) store.dispatch(setTool('tracewall'))
+        else if (which == 69) store.dispatch(setTool('erasewall'))
     }
 
     const onkeyup = () => {

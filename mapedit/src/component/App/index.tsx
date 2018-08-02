@@ -7,6 +7,7 @@ import { PlayButton } from '../PlayButton'
 import { ToolBar } from '../ToolBar'
 import { Header } from '../Header'
 import styled from 'react-emotion'
+import { light } from '../_abstract/palette'
 
 const App_ = props => (
     <Container>
@@ -20,7 +21,7 @@ const App_ = props => (
             <Panel>
                 <ToolBarContainer>
                     <ToolBar />
-                    <div style={{ margin: '60px' }} />
+                    <div style={{ marginTop: 'auto' }} />
                     <SaveButton />
                     <PlayButton />
                 </ToolBarContainer>
@@ -44,39 +45,34 @@ const Container = styled.div`
 const Bottom = styled.div`
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
 `
 
 const Main = styled.div`
+    position: relative;
     flex-basis: 100px;
     flex-grow: 1;
 `
 
 const Panel = styled.div`
-    flex-basis: 200px;
-    flex-grow: 1;
-    width: 50%;
+    flex-basis: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
     min-width: 200px;
-    max-width: 480px;
 
     display: flex;
     flex-direction: row;
 `
 
 const ToolBarContainer = styled.div`
-    z-index: 2;
-    bottom: 0;
-    top: 0;
-    right: 0px;
+    display: flex;
+    flex-direction: column;
+    background-color: ${light};
 `
 const PaintingListContainer = styled.div`
     overflow: hidden;
     height: 100%;
-    margin-left: auto;
-`
-const RouteBuilderContainer = styled.div`
-    overflow: hidden;
-    height: 100%;
-    margin-left: auto;
+    background-color: ${light};
 `
 
 export const App = withCssReset(App_)
