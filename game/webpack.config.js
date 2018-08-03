@@ -3,7 +3,7 @@ const webpack = require('webpack')
 
 module.exports = {
     entry: {
-        app: ['./src/a.js'],
+        app: ['./src/index.js'],
     },
 
     output: {
