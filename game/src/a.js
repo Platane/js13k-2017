@@ -39,7 +39,7 @@ for(let b=0;b<256;b+= 42)
 // materials
 const wall = new THREE.MeshPhongMaterial({ color: 0xf8f8f8 })
 const lat = new THREE.MeshPhongMaterial({ color: 0xc8c8c8 })
-const ceiling = new THREE.MeshBasicMaterial({ color: 0x888888 })
+const ceiling = new THREE.MeshBasicMaterial({ color: 0xaaaaaa })
 
 // map
 
@@ -516,9 +516,13 @@ const generatePaintings = paintings => {
 
     const object = new THREE.Object3D()
 
-    paintings.forEach( (pa,i) => {
+    const loop = () => {
 
-        const u = generatePainting(pa.adn, i, [])
+        const pa = paintings.shift()
+
+        if ( !pa ) return
+
+        const u = generatePainting(pa.adn, p.length, [])
 
         p.push(u)
 
@@ -537,8 +541,10 @@ const generatePaintings = paintings => {
 
         object.add(u.object)
 
-    })
+        requestAnimationFrame( loop )
+    }
 
+    loop()
 
 
     let t = 0
@@ -602,7 +608,7 @@ const generateMazeObject = world => {
     // wall aomap
     {
         const canvas = document.createElement('canvas')
-        const s = 128
+        const s = 64
         canvas.width = canvas.height = s
 
         const ctx = canvas.getContext('2d')
@@ -682,7 +688,7 @@ const generateMazeObject = world => {
 
     // floor aomap
     {
-        const S = 1024
+        const S = 512
         const canvas = document.createElement('canvas')
         canvas.width = canvas.height = S
         const ctx = canvas.getContext('2d')
@@ -912,13 +918,13 @@ const generateMazeObject = world => {
 
     // ceiling
     {
-        const geom = new THREE.PlaneBufferGeometry(0.06, h * 2)
+        const geom = new THREE.PlaneBufferGeometry(0.08, h * 2)
 
         for (let x = 0; x < world.length; x += 3) {
             const mesh = new THREE.Mesh(geom, ceiling)
 
             mesh.rotation.x = Math.PI / 2
-            mesh.position.set(x + 0.03, 4.5, h/2)
+            mesh.position.set(x + 0.04, 4.5, h/2)
 
             maze.add(mesh)
         }
