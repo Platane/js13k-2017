@@ -1,3 +1,36 @@
+// floor mat
+const floor = new THREE.MeshLambertMaterial()
+{
+    const canvas = document.createElement('canvas')
+    canvas.width = 16 * 32
+    canvas.height = 1
+    const ctx = canvas.getContext('2d')
+    for (let i = 16; i--; ) {
+        ctx.beginPath()
+        ctx.rect(i * 32, 0, 32, 1)
+
+        const h = 32 + (0 | (8 * Math.random()))
+        const l = 22 + (0 | (20 * Math.random()))
+
+        ctx.fillStyle = `hsl(${h}, 55%, ${l}%)`
+        ctx.fill()
+    }
+
+    const texture = new THREE.Texture(
+        canvas,
+        THREE.UVMapping,
+        THREE.RepeatWrapping,
+        THREE.LinearFilter,
+        THREE.LinearFilter
+        // THREE.NearestFilter,
+        // THREE.NearestFilter
+    )
+    texture.needsUpdate = true
+    texture.repeat.set(10, 1)
+
+    floor.map = texture
+}
+
 const generateMazeObject = world => {
     const maze = new THREE.Object3D()
 
@@ -77,39 +110,6 @@ const generateMazeObject = world => {
         // wall.map = texture
         wall.aoMap = texture
         wall.aoMapIntensity = 0.8
-    }
-
-    // floor mat
-    const floor = new THREE.MeshLambertMaterial()
-    {
-        const canvas = document.createElement('canvas')
-        canvas.width = 16 * 32
-        canvas.height = 1
-        const ctx = canvas.getContext('2d')
-        for (let i = 16; i--; ) {
-            ctx.beginPath()
-            ctx.rect(i * 32, 0, 32, 1)
-
-            const h = 32 + (0 | (8 * Math.random()))
-            const l = 22 + (0 | (20 * Math.random()))
-
-            ctx.fillStyle = `hsl(${h}, 55%, ${l}%)`
-            ctx.fill()
-        }
-
-        const texture = new THREE.Texture(
-            canvas,
-            THREE.UVMapping,
-            THREE.RepeatWrapping,
-            THREE.LinearFilter,
-            THREE.LinearFilter
-            // THREE.NearestFilter,
-            // THREE.NearestFilter
-        )
-        texture.needsUpdate = true
-        texture.repeat.set(10, 1)
-
-        floor.map = texture
     }
 
     // floor aomap

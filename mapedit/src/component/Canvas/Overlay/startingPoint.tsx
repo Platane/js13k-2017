@@ -1,8 +1,6 @@
 import React from 'react'
 import { toScreen } from '../../../service/camera'
 
-const s = 0.75
-
 const orientations = [
     { x: 0, y: 1 },
     { x: 1, y: 0 },
@@ -31,8 +29,6 @@ const createDragEvent = startDragStartingPoint =>
             event.stopPropagation()
             startDragStartingPoint()
         }))
-
-const stopPropagation = event => event.stopPropagation()
 
 export const renderStartingPoint = ({
     camera,

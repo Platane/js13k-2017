@@ -9,8 +9,8 @@ export const selectMuseumAsBinary = createSelector(
     selectStableMuseum,
     selectPaintingParam,
     (museum, param) => {
-        const m = centerOrigin(addBorder(reduceGrid(museum), 4))
+        // museum = centerOrigin(addBorder(reduceGrid(museum), 4))
 
-        return param ? packMuseum(param, m) : []
+        return param ? packMuseum(param, museum) : []
     }
 )

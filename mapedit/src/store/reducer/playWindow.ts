@@ -20,6 +20,16 @@ export const reduce = (state: State, action: Action): State => {
                     autorefresh: !state.playWindow.autorefresh,
                 },
             }
+
+        case 'playwindow:gameposition:update':
+            return {
+                ...state,
+                playWindow: {
+                    ...state.playWindow,
+                    position: action.position,
+                    orientation: action.orientation,
+                },
+            }
     }
 
     return state
