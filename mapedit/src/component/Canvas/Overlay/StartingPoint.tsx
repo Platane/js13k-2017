@@ -30,12 +30,8 @@ const createDragEvent = startDragStartingPoint =>
             startDragStartingPoint()
         }))
 
-export const renderStartingPoint = ({
-    camera,
-    museum,
-    startDragStartingPoint,
-}) => (
-    <StartingPoint
+export const StartingPoint = ({ camera, museum, startDragStartingPoint }) => (
+    <StartingPointTic
         onMouseDown={createDragEvent(startDragStartingPoint)}
         style={{
             cursor: 'pointer',
@@ -53,7 +49,7 @@ export const renderStartingPoint = ({
     />
 )
 
-const StartingPoint = ({ ...props }) => (
+const StartingPointTic = ({ ...props }) => (
     <svg viewBox="-20 -20 40 40" {...props}>
         <circle cx={0} cy={0} r={3} />
         <path

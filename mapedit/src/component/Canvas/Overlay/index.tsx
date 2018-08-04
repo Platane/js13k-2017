@@ -1,17 +1,18 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { renderEraser } from './eraser'
+import { Eraser } from './Eraser'
 import { renderPaintings } from './paintings'
-import { renderStartingPoint } from './startingPoint'
-import { renderPlayWindowPosition } from './playWindowPosition'
+import { StartingPoint } from './StartingPoint'
+import { PlayWindowPosition } from './PlayWindowPosition'
 import { CubicGuy } from './CubicGuy'
 
 export const Overlay = props => (
     <Container>
-        {renderPlayWindowPosition(props)}
+        <PlayWindowPosition {...props} />
+        <PlayWindowPosition {...props} />
+        <StartingPoint {...props} />
         {renderPaintings(props)}
-        {renderStartingPoint(props)}
-        {renderEraser(props)}
+        <Eraser {...props} />
     </Container>
 )
 {

@@ -2,17 +2,28 @@ import React from 'react'
 import styled from 'react-emotion'
 import { RImage } from '../../RImage'
 import { toScreen } from '../../../service/camera'
-import {  grey } from '../../_abstract/palette'
-
-const s = 0.75
+import { grey } from '../../_abstract/palette'
 
 const createTransform = (camera, cell, orientation) => {
     const p = toScreen(camera)({
-        x: cell.x + 0.5 + 0.5 * orientation.x - s / 2,
-        y: cell.y + 0.5 + 0.5 * orientation.y - s / 2,
+        x: cell.x + 0.5 + 0.5 * orientation.x,
+        y: cell.y + 0.5 + 0.5 * orientation.y,
     })
 
     return `translate3d(${p.x}px,${p.y}px,0)`
+}
+
+const getSize = ({ a }) => Math.min(a * 0.75, 40)
+
+const createSize = camera => {
+    const s = getSize(camera)
+
+    return {
+        top: -s * 0.5 + 'px',
+        left: -s * 0.5 + 'px',
+        width: s + 'px',
+        height: s + 'px',
+    }
 }
 
 const m = {}
@@ -36,8 +47,7 @@ export const renderPaintings = ({
             key={id}
             onMouseDown={createDragEvent(startDragPainting, paintingId, id)}
             style={{
-                width: `${camera.a * s}px`,
-                height: `${camera.a * s}px`,
+                ...createSize(camera),
                 transform: createTransform(camera, cell, orientation),
             }}
         >
@@ -46,7 +56,7 @@ export const renderPaintings = ({
                     <RImage
                         param={param}
                         rImage={paintingsById[paintingId]}
-                        size={camera.a * s}
+                        size={getSize(camera)}
                     />
                 )}
         </Painting>
