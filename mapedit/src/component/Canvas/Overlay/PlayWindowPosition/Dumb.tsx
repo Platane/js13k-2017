@@ -41,6 +41,10 @@ export const PlayWindowPosition = ({ camera, path, playWindowOrientation }) => {
 
     const lline = line.map(({ x, y }) => ({ x: x - min.x, y: y - min.y }))
 
+    // left: 0,
+    // top: 0,
+    // transform: `translate3d(${min.x}px,${max.x}px,0)`,
+
     return (
         <svg
             viewBox={viewBox}
@@ -61,21 +65,21 @@ export const PlayWindowPosition = ({ camera, path, playWindowOrientation }) => {
                 )}
             />
 
-            <g opacity="0.4">
+            <g opacity="0.3">
                 {lline.map((_, i) => {
                     const a = lline[i - 1]
                     const b = lline[i]
 
                     if (!a) return
 
-                    const k = 1 - i / (lline.length + 2)
+                    const k = 1 - i / (lline.length + 1)
 
                     return (
                         <path
                             fill="none"
                             d={`M${a.x} ${a.y}L${b.x} ${b.y}`}
                             stroke={primary}
-                            strokeWidth={k * 8}
+                            strokeWidth={k * 8 + 1}
                             strokeLinecap="round"
                             strokeLinejoin="round"
                         />

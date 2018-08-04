@@ -1,24 +1,26 @@
 import { read, write } from '../service/localStorage'
 import { readFromLocalStorage } from '../store/action'
-import { reduceGrid, centerOrigin } from '../service/map/reduceGrid'
+import { selectStableMuseumCenter } from '../store/selector/museum'
+import { debounce } from '../util/time'
 
 export const attachToStore = store => {
     let lastMuseum = null
 
     const update = () => {
-        const { historyStableMuseum: museum } = store.getState()
+        const museum = selectStableMuseumCenter(store.getState())
 
-        if (lastMuseum != museum) {
-            lastMuseum = museum
-
-            write('museum', centerOrigin(reduceGrid(museum)))
-        }
+        if (lastMuseum != museum) write('museum', (lastMuseum = museum))
     }
+
+    const debouncedUpdate = debounce(1000)(update)
 
     const museum = read('museum')
     if (museum) store.dispatch(readFromLocalStorage(museum))
 
-    store.subscribe(update)
+    store.subscribe(debouncedUpdate)
 
-    update()
+    debouncedUpdate()
+
+    window.addEventListener('beforeunload', update)
+    window.addEventListener('unload', update)
 }

@@ -1,6 +1,6 @@
 const local = location.search.includes('local')
 
-const loadMap = resetTim =>
+const loadMap = (resetTim, resetPosition) =>
     (local
         ? Promise.resolve(localStorage.getItem('museumAsBinary').split(','))
         : fetch('./map').then(x => x.arrayBuffer())
@@ -11,25 +11,30 @@ const loadMap = resetTim =>
             world.worldGrid = grid
             world.paintings = paintings
 
-            if (!resetTim) return
+            if (resetTim) {
+                world.tim.position.x = s.x + 0.5
+                world.tim.position.y = s.y + 0.5
 
-            world.tim.position.x = s.x + 0.5
-            world.tim.position.y = s.y + 0.5
+                //
+                // hacky way to set a default camera rotation
+                // set a new base dx,dy
 
-            //
-            // hacky way to set a default camera rotation
-            // set a new base dx,dy
+                const a = (s.k - 2) * Math.PI * 0.5
 
-            const a = (s.k - 2) * Math.PI * 0.5
+                world.tim.d = {
+                    x: around[(s.k + 3) % 4].x,
+                    y: around[(s.k + 3) % 4].y,
+                    a,
+                }
 
-            world.tim.d = {
-                x: around[(s.k + 3) % 4].x,
-                y: around[(s.k + 3) % 4].y,
-                a,
+                if (world.tim.camera3d) {
+                    world.tim.camera3d.rotation.y = world.tim.d.a
+                }
             }
 
-            if (world.tim.camera3d) {
-                world.tim.camera3d.rotation.y = world.tim.d.a
+            if (resetPosition) {
+                world.tim.position.x = resetPosition.x
+                world.tim.position.y = resetPosition.y
             }
         })
 
@@ -152,8 +157,8 @@ AFRAME.registerComponent('museum', {
     init: function() {
         const container = this.el.object3D
 
-        window.refreshMap = (resetTim, p) =>
-            loadMap(resetTim, p).then(() => {
+        window.refreshMap = (resetTim, resetPosition) =>
+            loadMap(resetTim, resetPosition).then(() => {
                 // empty
                 while (container.children[0])
                     container.remove(container.children[0])
