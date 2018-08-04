@@ -44,7 +44,7 @@ export const defaultState: State = {
 
     playWindow: {
         refreshKey: null,
-        autorefresh: false,
+        autorefresh: true,
     },
 }
 

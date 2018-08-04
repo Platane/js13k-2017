@@ -10,15 +10,17 @@ export const PlayButton = ({
     <Container onClick={openPlayWindow}>
         <Button>
             Play
-            <Checkbox
-                type="checkbox"
-                onClick={event => {
-                    event.stopPropagation()
-                    togglePlayWindowAutoRefresh()
-                }}
-                title="auto refresh"
-                checked={autorefresh}
-            />
+            {false && (
+                <Checkbox
+                    type="checkbox"
+                    onClick={event => {
+                        event.stopPropagation()
+                        togglePlayWindowAutoRefresh()
+                    }}
+                    title="auto refresh"
+                    checked={autorefresh}
+                />
+            )}
         </Button>
     </Container>
 )

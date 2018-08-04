@@ -17,7 +17,8 @@ export const attachToStore = store => {
 
             if (win) win.onclose = () => (win = null)
         } else {
-            win.location.reload()
+            if (win.refreshMap) win.refreshMap()
+            else win.location.reload()
         }
 
         if (isWindowOpened() && forceFocus) win.focus()

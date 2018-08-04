@@ -1,5 +1,6 @@
 import { read, write } from '../service/localStorage'
 import { readFromLocalStorage } from '../store/action'
+import { reduceGrid, centerOrigin } from '../service/map/reduceGrid'
 
 export const attachToStore = store => {
     let lastMuseum = null
@@ -10,7 +11,7 @@ export const attachToStore = store => {
         if (lastMuseum != museum) {
             lastMuseum = museum
 
-            write('museum', museum)
+            write('museum', centerOrigin(reduceGrid(museum)))
         }
     }
 

@@ -1,6 +1,6 @@
 const local = location.search.includes('local')
 
-const loadMap = () =>
+const loadMap = resetTim =>
     (local
         ? Promise.resolve(localStorage.getItem('museumAsBinary').split(','))
         : fetch('./map').then(x => x.arrayBuffer())
@@ -10,6 +10,8 @@ const loadMap = () =>
         .then(({ grid, paintings, s }) => {
             world.worldGrid = grid
             world.paintings = paintings
+
+            if (!resetTim) return
 
             world.tim.position.x = s.x
             world.tim.position.y = s.y
@@ -27,7 +29,7 @@ const loadMap = () =>
             }
 
             if (world.tim.camera3d) {
-                world.tim.camera3d.rotation.y = a
+                world.tim.camera3d.rotation.y = world.tim.d.a
             }
         })
 
@@ -118,6 +120,8 @@ AFRAME.registerComponent('tim', {
             const camera = this.el.object3D
 
             world.tim.camera3d = camera
+
+            world.tim.camera3d.rotation.y = world.tim.d && world.tim.d.a
         }
     },
     tick: function() {
@@ -145,15 +149,21 @@ AFRAME.registerComponent('museum', {
     init: function() {
         const container = this.el.object3D
 
-        window.refresh = () =>
-            loadMap().then(() => {
+        window.refreshMap = (resetTim, p) =>
+            loadMap(resetTim, p).then(() => {
+                // empty
+                while (container.children[0])
+                    container.remove(container.children[0])
+
+                // fill with the maze
                 container.add(generateMazeObject(world.worldGrid))
 
+                // and the painting
                 this.p = generatePaintings(world.paintings)
                 container.add(this.p.object)
             })
 
-        window.refresh()
+        window.refreshMap(true)
     },
     tick: function() {
         this.p && this.p.update(world.tim)
