@@ -196,7 +196,12 @@ const generatePaintings = paintings => {
 
         const a = around[pa.k]
 
-        const l = 0.6 + 0.35 * Math.random()
+        const k =
+            ((pa.y * pa.x * 19 + pa.x * 37 + pa.y * pa.y + a.y * 7 + a.x * 23) %
+                27) /
+            27
+
+        const l = 0.6 + 0.35 * k
 
         u.object.scale.set(l, l, l)
         u.object.position.set(

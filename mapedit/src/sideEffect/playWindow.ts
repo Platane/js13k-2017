@@ -1,8 +1,27 @@
 import { selectMuseumAsBinary } from '../store/selector/binary'
+import { updatePlayWindowGamePosition } from '../store/action'
 
 const url = '/game?local=1'
 const features =
     'height=600,width=800,location=no,status=no,toolbar=no,centerscreen=yes'
+
+const throttle = delay => fn => {
+    let args = []
+    let timeout = null
+
+    const exec = () => {
+        clearTimeout(timeout)
+        timeout = null
+
+        fn(...args)
+    }
+
+    return (..._args) => {
+        args = _args
+
+        timeout = timeout || setTimeout(exec, delay)
+    }
+}
 
 export const attachToStore = store => {
     let win = null
@@ -50,6 +69,15 @@ export const attachToStore = store => {
             refresh(forceFocus)
         }
     }
+
+    window.updateGamePosition = throttle(150)(({ position, direction }) =>
+        store.dispatch(
+            updatePlayWindowGamePosition(
+                { x: position.x - 0.5, y: position.y - 0.5 },
+                { ...direction }
+            )
+        )
+    )
 
     store.subscribe(update)
 

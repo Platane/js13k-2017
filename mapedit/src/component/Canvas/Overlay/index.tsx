@@ -3,10 +3,12 @@ import styled from 'react-emotion'
 import { renderEraser } from './eraser'
 import { renderPaintings } from './paintings'
 import { renderStartingPoint } from './startingPoint'
+import { renderPlayWindowPosition } from './playWindowPosition'
 import { CubicGuy } from './CubicGuy'
 
 export const Overlay = props => (
     <Container>
+        {renderPlayWindowPosition(props)}
         {renderPaintings(props)}
         {renderStartingPoint(props)}
         {renderEraser(props)}

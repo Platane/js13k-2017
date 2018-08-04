@@ -56,5 +56,7 @@ export type State = {
     playWindow: {
         refreshKey: null | number
         autorefresh: boolean
+        position: Point | null
+        orientation: Point | null
     }
 }

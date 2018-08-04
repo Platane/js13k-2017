@@ -13,8 +13,8 @@ const loadMap = resetTim =>
 
             if (!resetTim) return
 
-            world.tim.position.x = s.x
-            world.tim.position.y = s.y
+            world.tim.position.x = s.x + 0.5
+            world.tim.position.y = s.y + 0.5
 
             //
             // hacky way to set a default camera rotation
@@ -136,6 +136,9 @@ AFRAME.registerComponent('tim', {
         world.tim.direction.y = dx * world.tim.d.y + dy * world.tim.d.x
 
         tick()
+
+        if (window.opener && window.opener.updateGamePosition)
+            window.opener.updateGamePosition(world.tim)
 
         this.el.object3D.position.set(
             world.tim.position.x,
