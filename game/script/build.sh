@@ -10,7 +10,7 @@ cat ./src/index.html \
 | sed '/generateMazeObject\.js/d' \
 | sed '/loadMap\.js/d' \
 | sed '/controls\.js/d' \
-| sed 's|index\.js|a\.js|' \
+| sed 's|game\.js|a\.js|' \
 > ./dist/index.html
 
 cp ./src/map ./dist/map
