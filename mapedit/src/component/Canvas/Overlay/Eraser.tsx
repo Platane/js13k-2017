@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'react-emotion'
 import { toScreen } from '../../../service/camera'
 
-export const renderEraser = ({ camera, dragEraseWall }) => {
+export const Eraser = ({ camera, dragEraseWall }) => {
     if (!dragEraseWall) return null
 
     const min = {

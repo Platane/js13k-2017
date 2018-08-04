@@ -70,12 +70,9 @@ export const attachToStore = store => {
         }
     }
 
-    window.updateGamePosition = throttle(150)(({ position, direction }) =>
+    window.updateGamePosition = throttle(80)(({ position, direction }) =>
         store.dispatch(
-            updatePlayWindowGamePosition(
-                { x: position.x - 0.5, y: position.y - 0.5 },
-                { ...direction }
-            )
+            updatePlayWindowGamePosition({ ...position }, { ...direction })
         )
     )
 
