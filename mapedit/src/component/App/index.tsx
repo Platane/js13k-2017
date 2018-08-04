@@ -31,9 +31,11 @@ const App_ = props => (
                     <PaintingList />
                 </PaintingListContainer>
 
-                <PaintingListContainer>
-                    <PaintingDownsizeList />
-                </PaintingListContainer>
+                {false && (
+                    <PaintingListContainer>
+                        <PaintingDownsizeList />
+                    </PaintingListContainer>
+                )}
             </Panel>
         </Bottom>
     </Container>
