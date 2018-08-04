@@ -12,7 +12,7 @@ const museum: Museum = {
     grid: [[]],
     paintings: [],
     startingPoint: { x: 5, y: 5 },
-    startingOrientation: { x: 0, y: 1 },
+    startingOrientation: { x: 0, y: -1 },
 }
 
 export const defaultState: State = {
