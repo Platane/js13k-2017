@@ -1,6 +1,7 @@
-import React from "react"
-import { UndoButton } from "../UndoButton"
-import styled from "react-emotion"
+import React from 'react'
+import { UndoButton } from '../UndoButton'
+import styled from 'react-emotion'
+import { grey } from '../_abstract/palette'
 
 export const Header = ({}) => (
     <Container>
@@ -14,5 +15,5 @@ const Container = styled.div`
     flex-direction: row;
     flex-shrink: 0;
     height: 40px;
-    background-color: #ccc;
+    background-color: ${grey};
 `
