@@ -32,9 +32,6 @@ const injectState = connect(
         param: selectPaintingParam(state),
 
         dragEraseWall: state.dragEraseWall,
-
-        playWindowPosition: state.playWindow.position,
-        playWindowOrientation: state.playWindow.orientation,
     }),
     {
         startDragStartingPoint,
