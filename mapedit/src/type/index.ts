@@ -15,12 +15,16 @@ export type PaintingSpot = {
     orientation: Orientation
 }
 
+export type Sign = string
+
 export type Museum = {
     origin: Point
 
     grid: boolean[][]
 
     paintings: PaintingSpot[]
+
+    signs: Sign[]
 
     startingPoint: Point
     startingOrientation: Orientation
