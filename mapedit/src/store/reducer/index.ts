@@ -11,6 +11,7 @@ const museum: Museum = {
     origin: { x: 0, y: 0 },
     grid: [[]],
     paintings: [],
+    signs: ['one, two, three\n11', 'aaa'],
     startingPoint: { x: 5, y: 5 },
     startingOrientation: { x: 0, y: -1 },
 }

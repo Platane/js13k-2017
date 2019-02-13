@@ -79,16 +79,25 @@ const unpackGrid = (w, h, buffer) => {
 const unpack = b => {
     const buffer = new Uint8Array(b)
 
-    const [width, height, paintingLength, x, y, k] = buffer
+    const [width, height, paintingLength, paintingNumber, x, y, k] = buffer
 
     const gridLength = Math.ceil((height * width) / 8)
 
     return {
-        grid: unpackGrid(width, height, buffer.slice(6, 6 + gridLength)),
+        grid: unpackGrid(width, height, buffer.slice(7, 7 + gridLength)),
         paintings: unpackPaintings(
             paintingLength,
-            buffer.slice(6 + gridLength)
+            buffer.slice(
+                7 + gridLength,
+                7 + gridLength + paintingLength * paintingNumber
+            )
         ),
         s: { x, y, k },
+        signs: String.fromCharCode
+            .apply(
+                null,
+                buffer.slice(7 + gridLength + paintingLength * paintingNumber)
+            )
+            .split('\0'),
     }
 }

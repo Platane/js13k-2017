@@ -6,6 +6,7 @@ import { samples as gridSamples } from './packGrid.spec'
 const samples = [
     {
         grid: [[]],
+        signs: [],
         paintings: [],
         startingPoint: { x: 0, y: 0 },
         startingOrientation: { x: 0, y: 1 },
@@ -13,6 +14,21 @@ const samples = [
 
     {
         grid: gridSamples[0],
+        signs: [],
+        paintings: [
+            {
+                cell: { x: 9, y: 19 },
+                orientation: { x: 1, y: 0 },
+                adn: paintingsSamples[0],
+            },
+        ],
+        startingPoint: { x: 0, y: 0 },
+        startingOrientation: { x: 0, y: 1 },
+    },
+
+    {
+        grid: gridSamples[0],
+        signs: ['aaa\n\nxxx asd'],
         paintings: [
             {
                 cell: { x: 9, y: 19 },
@@ -26,6 +42,7 @@ const samples = [
 
     {
         grid: gridSamples[4],
+        signs: ['aaa\n\nxxx', 'asd'],
         paintings: [
             {
                 cell: { x: 9, y: 19 },
