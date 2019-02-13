@@ -4,49 +4,45 @@
     "dependencies": {
         "emotion": "9.2.6",
         "emotion-server": "9.2.6",
-        "preact": "8.2.9",
-        "preact-compat": "3.18.2",
-        "preact-emotion": "9.2.6",
+        "preact": "8.4.2",
+        "preact-compat": "3.18.4",
+        "preact-emotion": "9.2.12",
         "preact-redux": "2.0.3",
-        "prop-types": "15.6.2"
+        "prop-types": "15.7.1"
     },
     "devDependencies": {
-        "@babel/cli": "7.0.0-beta.55",
-        "@babel/core": "7.0.0-beta.55",
-        "@babel/node": "7.0.0-beta.55",
-        "@babel/plugin-proposal-class-properties": "7.0.0-beta.55",
-        "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.55",
-        "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.55",
-        "@babel/preset-env": "7.0.0-beta.55",
-        "@babel/preset-flow": "7.0.0-beta.55",
-        "@babel/preset-react": "7.0.0-beta.55",
-        "@babel/preset-typescript": "7.0.0-beta.55",
-        "@types/react": "16.4.7",
-        "@types/react-dom": "16.0.6",
-        "@types/react-redux": "6.0.5",
+        "@babel/cli": "7.2.3",
+        "@babel/core": "7.2.2",
+        "@babel/node": "7.2.2",
+        "@babel/plugin-proposal-class-properties": "7.3.0",
+        "@babel/plugin-proposal-object-rest-spread": "7.3.2",
+        "@babel/plugin-transform-modules-commonjs": "7.2.0",
+        "@babel/preset-env": "7.3.1",
+        "@babel/preset-flow": "7.0.0",
+        "@babel/preset-react": "7.0.0",
+        "@babel/preset-typescript": "7.1.0",
+        "@types/react": "16.8.2",
+        "@types/react-dom": "16.8.0",
+        "@types/react-redux": "7.0.1",
         "@types/redux": "3.6.0",
-        "@types/tape": "4.2.32",
-        "babel-loader": "8.0.0-beta.3",
-        "babel-plugin-module-resolver": "3.1.1",
+        "@types/tape": "4.2.33",
+        "babel-loader": "8.0.5",
+        "babel-plugin-module-resolver": "3.2.0",
         "babel-plugin-transform-assets": "1.0.2",
-        "file-loader": "1.1.11",
+        "file-loader": "3.0.1",
         "tap-spec": "5.0.0",
-        "tape": "4.9.1",
-        "typescript": "3.0.1",
-        "webpack": "4.16.4",
-        "webpack-assets-manifest": "3.0.1",
-        "webpack-cli": "3.1.0",
-        "webpack-dev-server": "3.1.5"
+        "tape": "4.10.0",
+        "typescript": "3.3.3",
+        "webpack": "4.29.3",
+        "webpack-assets-manifest": "3.1.1",
+        "webpack-cli": "3.2.3",
+        "webpack-dev-server": "3.1.14"
     },
     "scripts": {
         "test:type": " yarn tsc --noEmit --project .",
-        "prepare":
-            "rm -rf src/lib && mkdir -p src/lib/common && cp -r ../common/map src/lib/common/map && cp -r ../common/rImage src/lib/common/rImage && cp -r ../common/adn src/lib/common/adn && cp -r ../common/color src/lib/common/color && cp -r ../common/ancestorTree src/lib/common/ancestorTree && cp ../common/param.js src/lib/common/param.js",
-        "start":
-            "yarn prepare && webpack-dev-server --mode development --config ./script/webpack.config.js",
-        "build":
-            "yarn prepare && rm -rf ./dist && mkdir ./dist && NODE_ENV=production webpack --mode production --config ./script/webpack.config.js --json > dist/stats.json  && node ./script/rewriteFileName.js && rm dist/stats.json",
-        "test":
-            "yarn prepare && NODE_ENV=test babel-node --extensions \".ts\" ./src/__tests__/index.ts | tap-spec"
+        "prepare": "rm -rf src/lib && mkdir -p src/lib/common && cp -r ../common/map src/lib/common/map && cp -r ../common/rImage src/lib/common/rImage && cp -r ../common/adn src/lib/common/adn && cp -r ../common/color src/lib/common/color && cp -r ../common/ancestorTree src/lib/common/ancestorTree && cp ../common/param.js src/lib/common/param.js",
+        "start": "yarn prepare && webpack-dev-server --mode development --config ./script/webpack.config.js",
+        "build": "yarn prepare && rm -rf ./dist && mkdir ./dist && NODE_ENV=production webpack --mode production --config ./script/webpack.config.js --json > dist/stats.json  && node ./script/rewriteFileName.js && rm dist/stats.json",
+        "test": "yarn prepare && NODE_ENV=test babel-node --extensions \".ts\" ./src/__tests__/index.ts | tap-spec"
     }
 }
