@@ -152,7 +152,7 @@ const generatePainting = (dots, i, text) => {
     const update = (k, t) => {
         if (i > step) k = 0
 
-        if (i == step && k > 0.9) step++
+        if (i == step && k > 0.9 && step < world.step_max - 1) step++
 
         if (k > 0 || Math.abs(k - ex_k) > 0.1 || (ex_k > 0 && k == 0)) {
             draw(canvas, size, dots, text, (ex_k = k), t)
@@ -180,17 +180,18 @@ const generatePainting = (dots, i, text) => {
     return { object, update, t: 0 }
 }
 
-const generatePaintings = paintings => {
+const generatePaintings = (paintings, signs) => {
     const p = []
 
     const object = new THREE.Object3D()
 
     const loop = () => {
         const pa = paintings.shift()
+        const text = signs.shift()
 
         if (!pa) return
 
-        const u = generatePainting(pa.adn, p.length, [])
+        const u = generatePainting(pa.adn, p.length, text || [])
 
         p.push(u)
 

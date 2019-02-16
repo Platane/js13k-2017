@@ -98,6 +98,8 @@ const unpack = b => {
                 null,
                 buffer.slice(7 + gridLength + paintingLength * paintingNumber)
             )
-            .split('\0'),
+            .split('\0')
+            .filter(Boolean)
+            .map(x => x.split('\n')),
     }
 }
