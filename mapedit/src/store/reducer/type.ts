@@ -11,6 +11,10 @@ export type State = {
         cameraOverwrite: boolean
     }
 
+    panel: {
+        current: Panel
+    }
+
     paintings: Painting[]
 
     // as the current museum may change a lot ( every mouse event basically )
