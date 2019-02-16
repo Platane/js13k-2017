@@ -37,7 +37,11 @@ export type Camera = {
 
 export type Tool = 'camera' | 'tracewall' | 'rectwall' | 'erasewall'
 
-export type Panel = 'wallbuilder' | 'placepainting' | 'routebuilder'
+export type Panel =
+    | 'wallbuilder'
+    | 'placepainting'
+    | 'routebuilder'
+    | 'downsizePainting'
 
 export type Painting = {
     id: string

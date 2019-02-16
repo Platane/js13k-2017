@@ -1,12 +1,12 @@
 import React from 'react'
 import { withCssReset } from '../_abstract/cssReset'
 import { Canvas } from '../Canvas'
-import { PaintingList } from '../PaintingList'
-import { PaintingDownsizeList } from '../PaintingDownsizeList'
+
 import { SaveButton } from '../SaveButton'
 import { PlayButton } from '../PlayButton'
 import { ToolBar } from '../ToolBar'
 import { Header } from '../Header'
+import { RightPanel } from '../RightPanel'
 import styled from 'react-emotion'
 import { light } from '../_abstract/palette'
 
@@ -27,15 +27,7 @@ const App_ = props => (
                     <PlayButton />
                 </ToolBarContainer>
 
-                <PaintingListContainer>
-                    <PaintingList />
-                </PaintingListContainer>
-
-                {false && (
-                    <PaintingListContainer>
-                        <PaintingDownsizeList />
-                    </PaintingListContainer>
-                )}
+                <RightPanel />
             </Panel>
         </Bottom>
     </Container>
@@ -74,11 +66,6 @@ const Panel = styled.div`
 const ToolBarContainer = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: ${light};
-`
-const PaintingListContainer = styled.div`
-    overflow: hidden;
-    height: 100%;
     background-color: ${light};
 `
 
