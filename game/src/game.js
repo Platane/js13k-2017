@@ -7,9 +7,12 @@ const loadMap = (resetTim, resetPosition) =>
     )
 
         .then(unpack)
-        .then(({ grid, paintings, s }) => {
+        .then(({ grid, paintings, signs, s }) => {
             world.worldGrid = grid
+            world.signs = signs
             world.paintings = paintings
+
+            world.step_max = world.signs.length
 
             if (resetTim) {
                 world.tim.position.x = s.x + 0.5
@@ -39,6 +42,7 @@ const loadMap = (resetTim, resetPosition) =>
         })
 
 let step = 1
+let step_max = 0
 
 const world = {
     tim: {
@@ -167,7 +171,7 @@ AFRAME.registerComponent('museum', {
                 container.add(generateMazeObject(world.worldGrid))
 
                 // and the painting
-                this.p = generatePaintings(world.paintings)
+                this.p = generatePaintings(world.paintings, world.signs)
                 container.add(this.p.object)
             })
 
