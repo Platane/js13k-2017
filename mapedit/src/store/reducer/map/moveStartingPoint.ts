@@ -1,12 +1,15 @@
 import { Action } from '../../action'
 import { State } from '../type'
-import {  Orientation } from '../../../type'
+import { Orientation } from '../../../type'
+import { selectCurrentPanel } from '../../selector/currentPanel'
 
 const pointEqual = (a, b) => a.x === b.x && a.y === b.y
 
 export const reduce = (state: State, action: Action): State => {
     switch (action.type) {
         case 'ui:dragstartingpoint:start':
+            if (selectCurrentPanel(state) !== 'placepainting') return state
+
             return {
                 ...state,
                 dragStartingPoint: true,

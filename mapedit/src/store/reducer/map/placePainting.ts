@@ -3,6 +3,7 @@ import { Action } from '../../action'
 import { State } from '../type'
 import { Museum, Point } from '../../../type'
 import { selectBestPaintingsById } from '../../selector/paintings'
+import { selectCurrentPanel } from '../../selector/currentPanel'
 
 const orientations = [
     { x: 1, y: 0 },
@@ -72,6 +73,8 @@ const haveThePaintingAlready = (
 export const reduce = (state: State, action: Action): State => {
     switch (action.type) {
         case 'ui:dragpainting:start': {
+            if (selectCurrentPanel(state) !== 'placepainting') return state
+
             const samePainting = state.museum.paintings.find(
                 x => x.paintingId === action.paintingId
             )
@@ -79,6 +82,10 @@ export const reduce = (state: State, action: Action): State => {
             const downsize = selectBestPaintingsById(state)[
                 action.paintingId
             ].find(x => !samePainting || samePainting.downsizeId === x.id)
+
+            const index = state.museum.paintings.findIndex(
+                x => x.id === action.existingId
+            )
 
             return {
                 ...state,
@@ -92,33 +99,32 @@ export const reduce = (state: State, action: Action): State => {
                     adn: downsize.adn,
                     downsizeId: downsize.id,
                     paintingId: action.paintingId,
-                    id: action.id,
+                    id: action.existingId || action.id,
+                    index: index === -1 ? state.museum.paintings.length : index,
                 },
             }
         }
 
         case 'ui:drag:move':
             if (state.dragPainting) {
-                const { originalMuseum, ...rest } = state.dragPainting
+                const { originalMuseum, index, ...rest } = state.dragPainting
 
                 const spot = getClosestSpot(originalMuseum, action.pointer)
 
                 if (spot) {
                     const paintingSpot = { ...spot, ...rest }
 
-                    if (haveThePaintingAlready(state.museum, paintingSpot))
-                        return state
-                    else
-                        return {
-                            ...state,
-                            museum: {
-                                ...originalMuseum,
-                                paintings: [
-                                    ...originalMuseum.paintings,
-                                    paintingSpot,
-                                ],
-                            },
-                        }
+                    const newState = {
+                        ...state,
+                        museum: {
+                            ...originalMuseum,
+                            paintings: [...originalMuseum.paintings],
+                        },
+                    }
+
+                    newState.museum.paintings.splice(index, 0, paintingSpot)
+
+                    return newState
                 } else
                     return {
                         ...state,
