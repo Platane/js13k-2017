@@ -1,6 +1,6 @@
 import React from 'react'
-import { toScreen } from '../../../../service/camera'
-import { primary } from '../../../_abstract/palette'
+import { toScreen } from '../../../service/camera'
+import { primary } from '../../_abstract/palette'
 
 const getOrientationAngle = ({ x, y }) => Math.atan2(y, x)
 
@@ -14,14 +14,29 @@ const createTransform = ({ a }, cell, orientation) => {
     `
 }
 
-export const PlayWindowPosition = ({ camera, path, playWindowOrientation }) => {
-    if (!path[0]) return null
+const flat = arr => [].concat(...arr)
 
-    const p = toScreen(camera)
+const toPath = arr =>
+    [
+        `M${arr[0].x} ${arr[0].y}`,
+        ...arr.slice(1).map(({ x, y }) => `L${x} ${y}`),
+    ].join('')
 
-    const line = path.map(p)
+export const RoutePath = ({ camera, routePath }) => {
+    if (!routePath) return
 
-    const { min, max } = line.reduce(
+    const line = routePath
+        .filter(Boolean)
+        .map(path =>
+            path
+                .map(({ x, y }) => ({ x: x + 0.5, y: y + 0.5 }))
+                .map(toScreen(camera))
+        )
+
+    const fline = flat(line)
+    if (!fline.length) return
+
+    const { min, max } = fline.reduce(
         (a, { x, y }) => {
             a.min.x = Math.floor(Math.min(a.min.x, x)) - 10
             a.min.y = Math.floor(Math.min(a.min.y, y)) - 10
@@ -39,11 +54,9 @@ export const PlayWindowPosition = ({ camera, path, playWindowOrientation }) => {
 
     const viewBox = `0 0 ${max.x - min.x} ${max.y - min.y}`
 
-    const lline = line.map(({ x, y }) => ({ x: x - min.x, y: y - min.y }))
-
-    // left: 0,
-    // top: 0,
-    // transform: `translate3d(${min.x}px,${max.x}px,0)`,
+    const lline = line.map(path =>
+        path.map(({ x, y }) => ({ x: x - min.x, y: y - min.y }))
+    )
 
     return (
         <svg
@@ -57,29 +70,17 @@ export const PlayWindowPosition = ({ camera, path, playWindowOrientation }) => {
                 top: min.y + 'px',
             }}
         >
-            <Tic
-                transform={createTransform(
-                    camera,
-                    lline[0],
-                    playWindowOrientation
-                )}
-            />
-
             <g opacity="0.3">
-                {lline.map((_, i) => {
-                    const a = lline[i - 1]
-                    const b = lline[i]
-
-                    if (!a) return
-
+                {lline.map((path, i) => {
                     const k = 1 - i / (lline.length + 1)
 
                     return (
                         <path
+                            key={i}
                             fill="none"
-                            d={`M${a.x} ${a.y}L${b.x} ${b.y}`}
+                            d={toPath(path)}
                             stroke={primary}
-                            strokeWidth={k * 8 + 1}
+                            strokeWidth={k * 4 + 1}
                             strokeLinecap="round"
                             strokeLinejoin="round"
                         />
@@ -89,17 +90,3 @@ export const PlayWindowPosition = ({ camera, path, playWindowOrientation }) => {
         </svg>
     )
 }
-
-const Tic = ({ ...props }) => (
-    <g {...props}>
-        <circle cx={0} cy={0} r={4} fill={primary} />
-        <path
-            fill={primary}
-            d="M7 -8L16 0L 7 8z"
-            stroke={primary}
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        />
-    </g>
-)

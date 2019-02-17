@@ -1,5 +1,5 @@
-import { Museum, Point } from "../../type"
-import { expandGrid } from "./expandGrid"
+import { Museum, Point } from '../../type'
+import { expandGrid } from './expandGrid'
 
 export const mutateCell = (
     { grid, origin }: Museum,
@@ -10,6 +10,12 @@ export const mutateCell = (
 export const readCell = ({ grid, origin }: Museum, cell: Point) =>
     (grid[cell.y - origin.y] && grid[cell.y - origin.y][cell.x - origin.x]) ||
     false
+
+export const isInside = ({ grid, origin }: Museum, cell: Point) =>
+    cell.y - origin.y >= 0 &&
+    cell.y - origin.y < grid.length &&
+    cell.x - origin.x >= 0 &&
+    cell.x - origin.x < grid[cell.y - origin.y].length
 
 export const cloneGrid = (grid: boolean[][]) => grid.map(x => x.slice())
 
