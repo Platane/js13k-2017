@@ -59,7 +59,7 @@ module.exports = {
             path.join(__dirname, '../../game/src'),
             path.join(
                 __dirname,
-                '../../game/node_modules/aframe/gh-pages/dist'
+                '../../game/node_modules/aframe/dist'
             ),
         ],
         watchOptions: {

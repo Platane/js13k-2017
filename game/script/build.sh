@@ -32,7 +32,7 @@ cd ..
 
 mv ./out.zip ./dist
 
-cp ./node_modules/aframe/gh-pages/dist/aframe-v*.min.js ./dist
+cp ./node_modules/aframe/dist/aframe-v*.min.js ./dist
 
 echo `stat --printf="%s\n" ./dist/out.zip` of `expr 13 \* 1024`
 
