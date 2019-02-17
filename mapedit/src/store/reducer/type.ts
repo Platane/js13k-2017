@@ -55,6 +55,7 @@ export type State = {
         downsizeId: string
         adn: Object
         id: string
+        index: number
     } | null
 
     playWindow: {
