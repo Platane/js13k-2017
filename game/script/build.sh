@@ -16,7 +16,7 @@ cat ./src/index.html \
 cp ./src/map ./dist/map
 
 # concat files
-cat ./src/constant.js ./src/generatePaintings.js ./src/generateMazeObject.js ./src/loadMap.js ./src/index.js ./src/controls.js > ./dist/a.js
+cat ./src/constant.js ./src/generatePaintings.js ./src/generateMazeObject.js ./src/loadMap.js ./src/game.js ./src/controls.js > ./dist/a.js
 
  # first pass : mangle all var
 env NODE_ENV=MANGLE_TOP_LEVEL ./node_modules/.bin/babel --plugins= -o ./dist/a.js ./dist/a.js
@@ -34,6 +34,6 @@ mv ./out.zip ./dist
 
 cp ./node_modules/aframe/gh-pages/dist/aframe-v*.min.js ./dist
 
-stat --printf="%s\n" ./dist/out.zip
+echo `stat --printf="%s\n" ./dist/out.zip` of `expr 13 \* 1024`
 
 echo ok
