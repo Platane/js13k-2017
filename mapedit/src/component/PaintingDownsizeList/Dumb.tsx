@@ -28,7 +28,7 @@ const List = styled.div`
 `
 const Container = styled.div`
     font-size: 0;
-    width: 330px;
+    width: 100%;
     height: 100%;
     position: relative;
     overflow-y: scroll;

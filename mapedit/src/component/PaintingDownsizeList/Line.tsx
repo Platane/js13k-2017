@@ -33,7 +33,7 @@ export class Line extends Component {
                     <RImage
                         param={param}
                         rImage={targetPaintingsById[paintingId]}
-                        size={64 + 16}
+                        size={64}
                     />
                 </Target>
 
@@ -63,6 +63,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
     margin: 8px 0;
+    padding-left: 4px;
 `
 const List = styled.div`
     margin-left: auto;
@@ -79,6 +80,9 @@ const Downsize = styled.div`
     border-radius: 2px;
     overflow: hidden;
     ${props => (props.selected ? `box-shadow: 0 0 0 4px ${grey}` : '')};
+    transform: ${props => (props.selected ? `scale(1,1)` : 'scale(0.75,0.75)')};
+    filter: ${props => (props.selected ? `none` : 'grayscale(0%)')};
     margin-left: 8px;
     margin-bottom: 8px;
+    transition: filter 200ms, transform 200ms;
 `
