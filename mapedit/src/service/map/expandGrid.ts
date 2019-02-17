@@ -57,7 +57,7 @@ export const addBorder = (museum: Museum, border: number = 1) =>
             y: museum.origin.y - border,
         },
         {
-            x: museum.origin.x + museum.grid[0].length + border,
-            y: museum.origin.y + museum.grid.length + border,
+            x: museum.origin.x + museum.grid[0].length - 1 + border,
+            y: museum.origin.y + museum.grid.length - 1 + border,
         }
     )
