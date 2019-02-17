@@ -5,17 +5,8 @@ import { reduce as reducePanel } from './panel'
 import { reduce as reducePaintings } from './paintings'
 import { reduce as reducePlayWindow } from './playWindow'
 import { reduce as reduceInit } from './init'
+import { defaultMuseum } from './defaultMuseum'
 import { State } from './type'
-import { Museum } from '../../type'
-
-const museum: Museum = {
-    origin: { x: 0, y: 0 },
-    grid: [[]],
-    paintings: [],
-    signs: ['one, two, three\n11', 'aaa'],
-    startingPoint: { x: 5, y: 5 },
-    startingOrientation: { x: 0, y: -1 },
-}
 
 export const defaultState: State = {
     camera: {
@@ -25,7 +16,7 @@ export const defaultState: State = {
 
     paintings: [],
 
-    museum,
+    museum: defaultMuseum,
 
     tool: {
         current: 'camera',
@@ -36,7 +27,7 @@ export const defaultState: State = {
         current: 'placepainting',
     },
 
-    historyStableMuseum: museum,
+    historyStableMuseum: defaultMuseum,
     historyCache: null,
     historyRedoStack: [],
     historyUndoStack: [],
