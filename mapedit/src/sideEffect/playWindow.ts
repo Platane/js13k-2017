@@ -7,7 +7,11 @@ import {
 import { throttle } from '../util/time'
 import { Museum } from '../type'
 
-const url = '/game?local=1'
+const url =
+    location.hostname === 'localhost'
+        ? '/game?local=1'
+        : location.href.replace(/\/mapedit(\/(index.html)?)?$/, '?local=1')
+
 const features =
     'height=600,width=800,location=no,status=no,toolbar=no,centerscreen=yes'
 
