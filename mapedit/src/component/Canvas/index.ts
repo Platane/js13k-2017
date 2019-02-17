@@ -2,11 +2,13 @@ import { connect } from 'react-redux'
 import { Canvas as Dumb } from './Dumb'
 import { withSize } from './withSize'
 import { selectCamera } from '../../store/selector/camera'
+import { selectCurrentPanel } from '../../store/selector/currentPanel'
 import { selectMuseum } from '../../store/selector/museum'
 import {
     selectTargetPaintingsById,
     selectPaintingParam,
 } from '../../store/selector/paintings'
+import { selectRoutePath } from '../../store/selector/route'
 
 import {
     mouseWheel,
@@ -30,6 +32,10 @@ const injectState = connect(
         paintingsById: selectTargetPaintingsById(state),
 
         param: selectPaintingParam(state),
+
+        routePath:
+            selectCurrentPanel(state) === 'routebuilder' &&
+            selectRoutePath(state),
 
         dragEraseWall: state.dragEraseWall,
     }),
