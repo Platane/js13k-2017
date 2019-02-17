@@ -1,7 +1,7 @@
 import React from 'react'
 import { withCssReset } from '../_abstract/cssReset'
 import { Canvas } from '../Canvas'
-
+import { lightGrey } from '../_abstract/palette'
 import { SaveButton } from '../SaveButton'
 import { PlayButton } from '../PlayButton'
 import { ToolBar } from '../ToolBar'
@@ -67,6 +67,8 @@ const ToolBarContainer = styled.div`
     display: flex;
     flex-direction: column;
     background-color: ${light};
+    border-left: solid 1px ${lightGrey};
+    border-right: solid 1px ${lightGrey};
 `
 
 export const App = withCssReset(App_)

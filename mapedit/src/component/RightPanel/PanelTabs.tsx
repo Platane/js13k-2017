@@ -4,7 +4,7 @@ import { light, lightGrey, black, grey } from '../_abstract/palette'
 import { Panel } from '../../type'
 
 const panelLabel: { [p in Panel]: string } = {
-    placepainting: 'Build',
+    placepainting: 'Scene',
     downsizePainting: 'Images',
     routebuilder: 'Route',
     wallbuilder: 'w',

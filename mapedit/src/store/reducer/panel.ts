@@ -16,7 +16,7 @@ export const reduce = (state: State, action: Action): State => {
              * ensure that the current tool is valid
              */
             if (
-                selectAvailableTools(newState).includes(newState.tool.current)
+                !selectAvailableTools(newState).includes(newState.tool.current)
             ) {
                 newState.tool = {
                     current: selectAvailableTools(newState)[0],

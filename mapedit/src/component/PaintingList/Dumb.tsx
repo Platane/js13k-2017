@@ -30,21 +30,11 @@ const List = styled.div`
     padding: 4px;
 `
 
-const scrollGutter = 28
-const breaks = [2, 3, 4].map(x => x * (64 + 8) + scrollGutter)
-
 const Container = styled.div`
-    width: ${breaks[0]}px;
+    width: 100%;
     height: 100%;
     position: relative;
     overflow-y: scroll;
-
-    @media (min-width: 1200px) {
-        width: ${breaks[1]}px;
-    }
-    @media (min-width: 1400px) {
-        width: ${breaks[2]}px;
-    }
 `
 
 const Painting = styled.div`
