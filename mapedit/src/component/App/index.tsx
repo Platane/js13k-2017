@@ -36,7 +36,8 @@ const App_ = props => (
 const Container = styled.div`
     position: relative;
     height: 100%;
-    width: 100;
+    width: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 `
@@ -45,6 +46,7 @@ const Bottom = styled.div`
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+    overflow: hidden;
 `
 
 const Main = styled.div`
@@ -58,6 +60,8 @@ const Panel = styled.div`
     flex-grow: 0;
     flex-shrink: 0;
     min-width: 200px;
+    height: 100%;
+    overflow: hidden;
 
     display: flex;
     flex-direction: row;
