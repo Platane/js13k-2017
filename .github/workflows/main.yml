@@ -1,0 +1,33 @@
+name: main
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - run: mkdir -p gh-pages
+
+      - run: mv ./screenshot/* gh-pages/
+
+      - run: cd game ; yarn install --frozen-lockfile ; chmod +x ./script/build.sh ; ./script/build.sh ; mv dist/* ../gh-pages/
+
+      - run: cd image-crusher-ui ; yarn install --frozen-lockfile ; yarn build ; mv dist ../gh-pages/image-crusher-ui
+
+      - run: cd mapedit ; yarn install --frozen-lockfile ; yarn build ; mv dist ../gh-pages/mapedit
+
+      - run: cd postmortem ; yarn install --frozen-lockfile ; yarn build ; mv dist ../gh-pages/postmortem
+
+      - uses: crazy-max/ghaction-github-pages@068e494
+        with:
+          target_branch: gh-pages
+          build_dir: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_GH_PAGES }}
+
