@@ -392,10 +392,10 @@ acorn@^6.2.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.4.0.tgz#b659d2ffbafa24baf5db1cdbb2c94a983ecd2784"
   integrity sha512-gac8OEcQ2Li1dxIEWGZzsp2BitJxwkwcOm0zHAJLcPJaVvm58FRnk6RkuLRpU1EujipU2ZFODv2P9DLMfnV8mw==
 
-aframe@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/aframe/-/aframe-1.0.2.tgz#d8376113d1d60b55ced0c99d908636af69199065"
-  integrity sha512-GgAhITeIxpWtpIcWs6Es7uzjQysRd5nKt++TbWEtUGdWAGThscyBVFezFO2UD0CPyegOD9VPrsUH6JJ5zJ0qrg==
+aframe@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/aframe/-/aframe-1.0.4.tgz#1b659533db0f5cf9b002c22804278da8349a32d2"
+  integrity sha512-iG/4VyRt22zUPxDsFjP4SHUXNPGIStM2hHX/iPblht6dtN8m09e7LAaFq4iQdXoT0EkZBWEVmXVBF1J7Tca3QQ==
   dependencies:
     custom-event-polyfill "^1.0.6"
     debug ngokevin/debug#noTimestamp
@@ -406,8 +406,8 @@ aframe@1.0.2:
     present "0.0.6"
     promise-polyfill "^3.1.0"
     super-animejs "^3.1.0"
-    super-three "^0.111.5"
-    three-bmfont-text dmarcos/three-bmfont-text#1babdf8507
+    super-three "^0.111.6"
+    three-bmfont-text dmarcos/three-bmfont-text#1babdf8507c731a18f8af3b807292e2b9740955e
     webvr-polyfill "^0.10.10"
 
 ajv-errors@^1.0.0:
@@ -5455,10 +5455,10 @@ super-animejs@^3.1.0:
   resolved "https://registry.yarnpkg.com/super-animejs/-/super-animejs-3.1.0.tgz#59435946faafe880710e348cf24ad3126e45aed1"
   integrity sha512-6MFAFJDRuvwkovxQZPruuyHinTa4rgj4hNLOndjcYYhZLckoXtVRY9rJPuq8p6c/tgZJrFYEAYAfJ2/hhNtUCA==
 
-super-three@^0.111.5:
-  version "0.111.5"
-  resolved "https://registry.yarnpkg.com/super-three/-/super-three-0.111.5.tgz#201d6f1eaf1fc475d1a609c460fceafaf02e92f6"
-  integrity sha512-buiuap/8a7//5dDnjVwgkRz5NcSFlMxclsPZDsSmN2z8m2AccK/SneGPqA7d02N/BUKaS0qtFqnLKVb3WZ1Zzg==
+super-three@^0.111.6:
+  version "0.111.6"
+  resolved "https://registry.yarnpkg.com/super-three/-/super-three-0.111.6.tgz#716df2323b9dbd3528f0ca5d48410d38a03bd444"
+  integrity sha512-/OJTOBpmm7MRx8R0G5Zr9sX8EqsELy7SwATb5n0FP145QsrP134pY2W489sfkJYqZmGkpHmG1ulQ0M94icThBw==
 
 supports-color@6.1.0, supports-color@^6.1.0:
   version "6.1.0"
@@ -5565,7 +5565,7 @@ terser@^4.1.2:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-"three-bmfont-text@github:dmarcos/three-bmfont-text#1babdf8507":
+"three-bmfont-text@github:dmarcos/three-bmfont-text#1babdf8507c731a18f8af3b807292e2b9740955e":
   version "2.3.0"
   resolved "https://codeload.github.com/dmarcos/three-bmfont-text/tar.gz/1babdf8507c731a18f8af3b807292e2b9740955e"
   dependencies:

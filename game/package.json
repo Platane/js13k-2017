@@ -2,7 +2,7 @@
     "name": "13k2017-game",
     "version": "1.1.0",
     "dependencies": {
-        "aframe": "1.0.2"
+        "aframe": "1.0.4"
     },
     "devDependencies": {
         "babel-cli": "6.26.0",
