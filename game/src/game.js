@@ -145,9 +145,15 @@ AFRAME.registerComponent('tim', {
         world.tim.direction.y = dx * world.tim.d.y + dy * world.tim.d.x
 
         tick()
-
-        if (window.opener && window.opener.updateGamePosition)
+        
+        // in case the game was opened from the editor,
+        // send back the current position to update the position on the editor's map
+        // accessing window.opener might throw an error related to cross site, silence that
+        try {
             window.opener.updateGamePosition(world.tim)
+        } catch(error) {
+            // silence   
+        }
 
         this.el.object3D.position.set(
             world.tim.position.x,
