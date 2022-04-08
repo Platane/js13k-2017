@@ -24,6 +24,8 @@ jobs:
 
       - run: cd postmortem ; yarn install --frozen-lockfile ; yarn build ; mv dist ../gh-pages/postmortem
 
+      - run: wget https://github.com/Platane/js13k-2017/raw/image-crush-result/image-crush-result.json --output-document=gh-pages/image-crusher-ui/image-crush-result.json
+
       - uses: crazy-max/ghaction-github-pages@068e494
         with:
           target_branch: gh-pages

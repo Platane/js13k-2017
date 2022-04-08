@@ -118,8 +118,8 @@ const update = () =>
 const wait = delay => new Promise(resolve => setTimeout(resolve, delay))
 
 const url_dynamic = 'https://us-central1-imagedot-179509.cloudfunctions.net/get'
-const url_fast =
-    'https://storage.googleapis.com/platane-imagedot-result/res.json'
+const url_fast = './image-crush-result.json'
+
 
 const reload = url =>
     fetch(url)
