@@ -1,11 +1,10 @@
 import { hydratePaintings } from "../store/action"
 
-const url_dynamic = "https://us-central1-imagedot-179509.cloudfunctions.net/get"
-const url_fast =
-    "https://storage.googleapis.com/platane-imagedot-result/res.json"
+const url =
+    "https://platane.github.io/js13k-2017/image-crusher-ui/image-crush-result.json"
 
 export const attachToStore = store => {
-    fetch(url_fast)
+    fetch(url)
         .then(res => res.json())
         .then(x => store.dispatch(hydratePaintings(x)))
 }
